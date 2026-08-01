@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acidphantasm-enablelabyrinth-server", "Server\acidphantasm-enablelabyrinth-server.csproj", "{CBA93A2E-1281-4819-89ED-7F2AD2B30373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acidphantasm-enablelabyrinth-client", "Client\acidphantasm-enablelabyrinth-client.csproj", "{5E58542D-A5BE-4303-A36A-2F94E130C828}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBA93A2E-1281-4819-89ED-7F2AD2B30373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBA93A2E-1281-4819-89ED-7F2AD2B30373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBA93A2E-1281-4819-89ED-7F2AD2B30373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBA93A2E-1281-4819-89ED-7F2AD2B30373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E58542D-A5BE-4303-A36A-2F94E130C828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E58542D-A5BE-4303-A36A-2F94E130C828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E58542D-A5BE-4303-A36A-2F94E130C828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E58542D-A5BE-4303-A36A-2F94E130C828}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,314 @@
+﻿@page "/enablelabyrinth/mainconfig"
+@using _enableLabyrinth.Globals
+@using _enableLabyrinth.Web.Core
+@using _enableLabyrinth.Web.Shared
+@using MudBlazor
+@layout MainLayout
+
+<MudMainContent>
+    <MudContainer Class="mb-20">
+        <MudExpansionPanels MultiExpansion="true">
+            <MudExpansionPanel Class="mud-expansion-panels-borders ma-3 pa-5" Text="Pmc Exfil Timers" Expanded=true>
+                <MudGrid>
+
+                    <MudItem xs="1"/>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Whether or not you want to adjust the Exfil Timer settings." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Change Pmc Exfil Timers</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSwitch T="bool" @bind-Value="ChangePmcExfilTimers" Color="Color.Success" UncheckedColor="Color.Default" LabelPlacement="Placement.End">@ChangePmcExfilTimers</MudSwitch>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("ChangePmcExfilTimers"))
+                        {
+                            
+                            <MudButton OnClick="@((e) => undo_ChangePmcExfilTimers())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && !ChangePmcExfilTimers)
+                        {
+                            <MudButton OnClick="@((e) => default_ChangePmcExfilTimers())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+
+                    <MudItem xs="1"/>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="How long it takes to exfil while standing in the exfil." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Primary Pmc Exfil Timer</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small" Disabled="!ChangePmcExfilTimers">@ExfiltrationTime</MudButton>
+                    </MudItem>
+                    <MudItem xs="5">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSlider @bind-Value="ExfiltrationTime" ValueLabel="true" Min="1" Max="60" Step="1" Color="Color.Info" Size="Size.Medium" Disabled="!ChangePmcExfilTimers"/>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("ExfiltrationTime"))
+                        {
+                            <MudButton OnClick="@((e) => undo_ExfiltrationTime())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && Math.Abs(ExfiltrationTime - 15.0) > 0.0001)
+                        {
+                            <MudButton OnClick="@((e) => default_ExfiltrationTime())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+
+                    <MudItem xs="1">
+                        <MudPaper Class="d-flex justify-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Individual = Anyone can exit on their own. Shared = Exfil disables after use. Manual = I don't remember" Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudIconButton Icon="@Icons.Material.Filled.Warning" Size="Size.Small" />
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="10">
+                        <MudSelect @bind-Value="SelectedExfiltrationType"
+                                   Variant="Variant.Filled"
+                                   Placeholder="@("Select one..")"
+                                   HelperText="@("Exfiltration Type")"
+                                   Dense="true">
+                            @foreach (var exfiltrationType in ExfiltrationType)
+                            {
+                                <MudSelectItem Value="exfiltrationType">@exfiltrationType</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("SelectedExfiltrationType"))
+                        {
+                            <MudButton OnClick="@((e) => undo_SelectedExfiltrationType())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && SelectedExfiltrationType != "Individual")
+                        {
+                            <MudButton OnClick="@((e) => default_SelectedExfiltrationType())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+                    
+                    <MudItem xs="1"/>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Amount of time that must pass in raid for the Pmc Exfil to become available." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Elapsed Seconds Before Available</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small" Disabled="!ChangePmcExfilTimers">@ElapsedSecondsBeforeAvailable</MudButton>
+                    </MudItem>
+                    <MudItem xs="5">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSlider @bind-Value="ElapsedSecondsBeforeAvailable" ValueLabel="true" Min="1" Max="1200" Step="1" Color="Color.Info" Size="Size.Medium" Disabled="!ChangePmcExfilTimers"/>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("ElapsedSecondsBeforeAvailable"))
+                        {
+                            <MudButton OnClick="@((e) => undo_ElapsedSecondsBeforeAvailable())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && Math.Abs(ElapsedSecondsBeforeAvailable - 600.0) > 0.0001)
+                        {
+                            <MudButton OnClick="@((e) => default_ElapsedSecondsBeforeAvailable())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+                </MudGrid>
+            </MudExpansionPanel>
+            <MudExpansionPanel Class="mud-expansion-panels-borders ma-3 pa-5" Text="General" Expanded=true>
+                <MudGrid>
+
+                    <MudItem xs="1"/>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Forces the secret exfil key to spawn on Shadow of Tagilla." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Guarantee Secret Exfil Key</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSwitch T="bool" @bind-Value="GuaranteeSecretExfilKey" Color="Color.Success" UncheckedColor="Color.Default" LabelPlacement="Placement.End">@GuaranteeSecretExfilKey</MudSwitch>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("GuaranteeSecretExfilKey"))
+                        {
+                            <MudButton OnClick="@((e) => undo_GuaranteeSecretExfilKey())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && !GuaranteeSecretExfilKey)
+                        {
+                            <MudButton OnClick="@((e) => default_GuaranteeSecretExfilKey())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+                    
+                    <MudItem xs="1">
+                        <MudPaper Class="d-flex justify-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Requires client restart" Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudIconButton Icon="@Icons.Material.Filled.Warning" Size="Size.Small" />
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="If this is not enabled then scav entry from the map select screen will OBVIOUSLY not work." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Remove Keycard Requirement</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSwitch T="bool" @bind-Value="RemoveKeycardRequirement" Color="Color.Success" UncheckedColor="Color.Default" LabelPlacement="Placement.End">@RemoveKeycardRequirement</MudSwitch>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("RemoveKeycardRequirement"))
+                        {
+                            <MudButton OnClick="@((e) => undo_RemoveKeycardRequirement())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && !RemoveKeycardRequirement)
+                        {
+                            <MudButton OnClick="@((e) => default_RemoveKeycardRequirement())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+
+                    <MudItem xs="1">
+                        <MudPaper Class="d-flex justify-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Requires client restart" Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudIconButton Icon="@Icons.Material.Filled.Warning" Size="Size.Small" />
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center mud-width-full ma-1" Elevation="0">
+                            <MudTooltip Text="Allows you to scav into Labyrinth. Does not work unless you remove the keycard requirements." Color="Color.Primary" Placement="Placement.Right" Arrow="true">
+                                <MudText>Map Select Scav Entry</MudText>
+                            </MudTooltip>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudPaper Class="d-flex align-center mud-width-full" Elevation="0">
+                            <MudSwitch T="bool" @bind-Value="AllowScavEntryToLabyrinthFromMap" Color="Color.Success" UncheckedColor="Color.Default" LabelPlacement="Placement.End" Disabled="!RemoveKeycardRequirement">@AllowScavEntryToLabyrinthFromMap</MudSwitch>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="1">
+                        @if (MainLayout._appUndoButtonToggle && MainLayout.pendingChanges.Contains("AllowScavEntryToLabyrinthFromMap"))
+                        {
+                            <MudButton OnClick="@((e) => undo_AllowScavEntryToLabyrinthFromMap())" Variant="Variant.Filled" Color="Color.Inherit" Size="Size.Small">Undo</MudButton>
+                        }
+                        else if (MainLayout._appDefaultButtonToggle && !AllowScavEntryToLabyrinthFromMap)
+                        {
+                            <MudButton OnClick="@((e) => default_AllowScavEntryToLabyrinthFromMap())" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Small">Default</MudButton>
+                        }
+                    </MudItem>
+                    
+                </MudGrid>
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </MudContainer>
+</MudMainContent>
+
+@code {
+    private bool ChangePmcExfilTimers
+    {
+        get => ModConfig.Config.ChangePmcExfilTimers;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.ChangePmcExfilTimers);
+            ModConfig.Config.ChangePmcExfilTimers = value;
+        }
+    }
+    private void undo_ChangePmcExfilTimers() => ChangePmcExfilTimers = ModConfig.OriginalConfig.ChangePmcExfilTimers;
+    private void default_ChangePmcExfilTimers() => ChangePmcExfilTimers = true;
+    
+    private double ExfiltrationTime
+    {
+        get => ModConfig.Config.PrimaryPmcExfilTimer.ExfiltrationTime;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ExfiltrationTime);
+            ModConfig.Config.PrimaryPmcExfilTimer.ExfiltrationTime = value;
+        }
+    }
+    private void undo_ExfiltrationTime() => ExfiltrationTime = ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ExfiltrationTime;
+    private void default_ExfiltrationTime() => ExfiltrationTime = 15.0d;
+    
+    private string SelectedExfiltrationType
+    {
+        get => ModConfig.Config.PrimaryPmcExfilTimer.ExfiltrationType;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ExfiltrationType);
+            ModConfig.Config.PrimaryPmcExfilTimer.ExfiltrationType = value;
+        }
+    }
+    private string[] ExfiltrationType =
+    {
+        "Individual", "SharedTimer", "Manual"
+    };
+
+    private void undo_SelectedExfiltrationType() => SelectedExfiltrationType = ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ExfiltrationType;
+    private void default_SelectedExfiltrationType() => SelectedExfiltrationType = "Individual";
+    
+    private double ElapsedSecondsBeforeAvailable
+    {
+        get => ModConfig.Config.PrimaryPmcExfilTimer.ElapsedSecondsBeforeAvailable;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ElapsedSecondsBeforeAvailable);
+            ModConfig.Config.PrimaryPmcExfilTimer.ElapsedSecondsBeforeAvailable = value;
+        }
+    }
+    private void undo_ElapsedSecondsBeforeAvailable() => ElapsedSecondsBeforeAvailable = ModConfig.OriginalConfig.PrimaryPmcExfilTimer.ElapsedSecondsBeforeAvailable;
+    private void default_ElapsedSecondsBeforeAvailable() => ElapsedSecondsBeforeAvailable = 600.0d;
+    
+    private bool GuaranteeSecretExfilKey
+    {
+        get => ModConfig.Config.GuaranteeSecretExfilKey;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.GuaranteeSecretExfilKey);
+            ModConfig.Config.GuaranteeSecretExfilKey = value;
+        }
+    }
+    private void undo_GuaranteeSecretExfilKey() => GuaranteeSecretExfilKey = ModConfig.OriginalConfig.GuaranteeSecretExfilKey;
+    private void default_GuaranteeSecretExfilKey() => GuaranteeSecretExfilKey = true;
+    
+    private bool RemoveKeycardRequirement
+    {
+        get => ModConfig.Config.RemoveKeycardRequirement;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.RemoveKeycardRequirement);
+            ModConfig.Config.RemoveKeycardRequirement = value;
+            if (!value)
+            {
+                AllowScavEntryToLabyrinthFromMap = false;
+            }
+        }
+    }
+    private void undo_RemoveKeycardRequirement() => RemoveKeycardRequirement = ModConfig.OriginalConfig.RemoveKeycardRequirement;
+    private void default_RemoveKeycardRequirement() => RemoveKeycardRequirement = true;
+    
+    private bool AllowScavEntryToLabyrinthFromMap
+    {
+        get => ModConfig.Config.AllowScavEntryToLabyrinthFromMap;
+        set
+        {
+            Utils.UpdateView(value, ModConfig.OriginalConfig.AllowScavEntryToLabyrinthFromMap);
+            ModConfig.Config.AllowScavEntryToLabyrinthFromMap = value;
+        }
+    }
+    private void undo_AllowScavEntryToLabyrinthFromMap() => AllowScavEntryToLabyrinthFromMap = ModConfig.OriginalConfig.AllowScavEntryToLabyrinthFromMap;
+    private void default_AllowScavEntryToLabyrinthFromMap() => AllowScavEntryToLabyrinthFromMap = true;
+
+    #region CASCADING PARAMETERS
+    [CascadingParameter] public MainLayout? Layout { get; set; }
+    #endregion
+}

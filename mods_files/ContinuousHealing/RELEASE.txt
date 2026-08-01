@@ -1,0 +1,3 @@
+repo=Lacyway/ContinuousHealing
+tag=v1.5.0
+downloaded=2026-08-01T21:34:34Z

@@ -1,0 +1,22 @@
+{
+  "ReturnTimeOverrideSeconds": 3600,
+  "RunIntervalSeconds": 60,
+  "StorageTimeOverrideSeconds": 0,
+  "ReturnMagazinesWithAmmo": true,
+  "ReturnContainersWithContents": true,
+  "SimulateItemsBeingTaken": true,
+  "LostChancePercent": {
+    "Prapor": 0,
+    "Therapist": 0
+  },
+  "TraderReturnHours": {
+    "Prapor": {
+      "Min": 1,
+      "Max": 2
+    },
+    "Therapist": {
+      "Min": 1,
+      "Max": 1
+    }
+  }
+}

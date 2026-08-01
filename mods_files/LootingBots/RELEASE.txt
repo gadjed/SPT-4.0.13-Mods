@@ -1,0 +1,3 @@
+repo=Skwizzy/SPT-LootingBots
+tag=v1.7.0-spt-4.0
+downloaded=2026-08-01T21:34:48Z

@@ -1,0 +1,3 @@
+repo=gadjed/FastSurgery-SPT-mod
+tag=v1.1.0
+downloaded=2026-08-01T21:34:38Z

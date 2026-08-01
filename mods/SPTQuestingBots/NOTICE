@@ -1,0 +1,23 @@
+Questing Bots Continuous
+========================
+
+This project is a derivative work based on:
+
+1) Questing Bots by DanW
+   Source: https://github.com/dwesterwick/SPTQuestingBots
+   License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+   https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+2) Scav Population by gadjed (scav reinforcement / continuous population ideas and wave-injection approach)
+   Source: https://github.com/gadjed/Scav-population-SPT-mod
+   License: MIT
+   Copyright (c) 2026 gadjed
+
+Questing Bots Continuous keeps the CC BY-NC-SA 4.0 terms of the upstream Questing Bots project (ShareAlike).
+The MIT-licensed Scav Population portions / adaptations are included with attribution as required by MIT;
+the combined work is distributed under CC BY-NC-SA 4.0.
+
+Required client dependencies (not bundled; install separately):
+- BigBrain (DrakiaXYZ)
+- Waypoints (DrakiaXYZ)
+Recommended: SAIN, Looting Bots
