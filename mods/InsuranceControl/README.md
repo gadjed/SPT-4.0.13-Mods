@@ -1,10 +1,10 @@
 # Insurance Refund
 
-**SPT 4.0.13 Compatible**
+**SPT 4.1.0 Compatible**
 
 Server mod that controls insurance return time, lost-item chance, and whether magazines / backpacks / rigs come back with their contents.
 
-Developed and tested against **SPT 4.0.13**.
+Developed and tested against **SPT 4.1.0**.
 
 [Latest release](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 

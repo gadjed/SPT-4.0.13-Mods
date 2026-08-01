@@ -6,7 +6,7 @@ Server mod that adds the custom trader **Saria** with a rebalanced loyalty-level
 
 Fork of [nameless / KillerDJLang — Saria 4.x.x](https://github.com/KillerDJLang/Saria-4.x.x) with a rewritten shop progression and pricing.
 
-Developed and tested against **SPT 4.0**.
+Developed and tested against **SPT 4.1.0**.
 
 [Latest release](https://github.com/gadjed/SariaTrader2.0-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 

@@ -1,19 +1,19 @@
-﻿using QuestingBots.Configuration;
-using QuestingBots.Helpers;
+﻿using QuestingBots.Helpers;
+using QuestingBots.Patches.PScavGeneration;
 using QuestingBots.Services.Internal;
 using QuestingBots.Utils;
 using SPTarkov.DI.Annotations;
+using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Generators.Bot;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Spt.Config;
-using SPTarkov.Server.Core.Servers;
-using SPTarkov.Server.Core.Services;
-using System.Collections;
-using System.Collections.Generic;
+using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Services.Bot;
 
 namespace QuestingBots.Services.Spawning
 {
-    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET + 1)]
+    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET + 1)]
     public class InitSpawningSystemService : AbstractService
     {
         private LoggingUtil _logger;
@@ -21,16 +21,31 @@ namespace QuestingBots.Services.Spawning
         private PmcConfig _pmcConfig;
         private BotConfig _botConfig;
         private LocationConfig _locationConfig;
-        private DatabaseService _databaseService;
+        private LocationTable _locationTable;
+        private PatchManager _patchManager;
+        private BotNameService _botNameService;
+        private BotGenerator _botGenerator;
 
-        public InitSpawningSystemService(LoggingUtil logger, ConfigUtil config, ConfigServer configServer, DatabaseService databaseService) : base(logger, config)
+        public InitSpawningSystemService(
+            LoggingUtil logger,
+            ConfigUtil config,
+            PmcConfig pmcConfig,
+            BotConfig botConfig,
+            LocationConfig locationConfig,
+            LocationTable locationTable,
+            PatchManager patchManager,
+            BotNameService botNameService,
+            BotGenerator botGenerator) : base(logger, config)
         {
             _logger = logger;
             _config = config;
-            _pmcConfig = configServer.GetConfig<PmcConfig>();
-            _botConfig = configServer.GetConfig<BotConfig>();
-            _locationConfig = configServer.GetConfig<LocationConfig>();
-            _databaseService = databaseService;
+            _pmcConfig = pmcConfig;
+            _botConfig = botConfig;
+            _locationConfig = locationConfig;
+            _locationTable = locationTable;
+            _patchManager = patchManager;
+            _botNameService = botNameService;
+            _botGenerator = botGenerator;
         }
 
         protected override void OnLoadIfModIsEnabled()
@@ -61,7 +76,8 @@ namespace QuestingBots.Services.Spawning
 
             _botConfig.ChanceAssaultScavHasPlayerScavName = 0;
 
-            new Patches.PScavGeneration.GenerateBotWavePatch().Enable();
+            _patchManager.PatcherName = ModInfo.MODNAME;
+            _patchManager.EnablePatch(new GenerateBotWavePatch(_logger, _botNameService, _botGenerator));
         }
 
         private bool ShouldDisablePlayerScavConversionChance()
@@ -96,7 +112,7 @@ namespace QuestingBots.Services.Spawning
         private void RemovePvEPMCWaves()
         {
             int removedWaves = 0;
-            foreach(Location location in _databaseService.GetLocations().GetDictionary().Values)
+            foreach(Location location in _locationTable.GetDictionary().Values)
             {
                 removedWaves += RemovePvEPMCWavesFromLocation(location);
             }
@@ -148,7 +164,7 @@ namespace QuestingBots.Services.Spawning
 
         private void UseEFTBotCaps()
         {
-            foreach (Location location in _databaseService.GetLocations().GetDictionary().Values)
+            foreach (Location location in _locationTable.GetDictionary().Values)
             {
                 if (location?.Base == null)
                 {

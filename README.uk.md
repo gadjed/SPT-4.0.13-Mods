@@ -1,8 +1,8 @@
 # SPT Mods
 
-Monorepo: вихідники, релізні архіви та інсталяційний патч для SPT **4.0.13**.
+Monorepo: вихідники, релізні архіви та інсталяційний патч для SPT **4.1.0**.
 
-Ціль: лише **SPT 4.0.13**. Не орієнтуватися на 4.1.0+ як на базову версію.
+Ціль: **SPT 4.1.0**.
 
 ## Структура
 
@@ -17,9 +17,9 @@ SPT mods/
 
 ## Автоматичне встановлення / оновлення
 
-Рекомендований спосіб поставити або оновити всю збірку на чистому **SPT 4.0.13**.
+Рекомендований спосіб поставити або оновити власні моди на чистому **SPT 4.1.0**.
 
-1. Завантаж реліз інсталера: [`mods_pack_installer`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer) (асет `SPT-4.0.13-ModsPack-Installer.zip`).
+1. Завантаж реліз інсталера: [`mods_pack_installer`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer) (асет `SPT-4.1.0-ModsPack-Installer.zip`).
 2. Розпакуй **обидва** файли `manage-modpack.cmd` і `manage-modpack.ps1` у корінь SPT (туди, де `EscapeFromTarkov.exe` / `SPT.Server.exe`).
 3. Запусти `manage-modpack.cmd` і обери пункт меню:
    - **1** — Автооновлення: видалити поточні моди, завантажити останній ModPack з GitHub, встановити
@@ -28,52 +28,32 @@ SPT mods/
    - **4** — Встановити SVM з офіційного релізу [GhostFenixx/svm-csharp](https://github.com/GhostFenixx/svm-csharp) (не входить у збірку; PUSL забороняє редистрибуцію)
    - **5** — Вихід
 
-Для пунктів **1** / **4** і для **3** без локального `SPT-4.0.13-ModPack.zip` потрібен інтернет. Сам ModPack — на [GitHub Releases](https://github.com/gadjed/SPT-4.0.13-Mods/releases).
+Для пунктів **1** / **4** і для **3** без локального `SPT-4.1.0-ModPack.zip` потрібен інтернет. Сам ModPack — на [GitHub Releases](https://github.com/gadjed/SPT-4.0.13-Mods/releases).
 
 macOS / Linux: той самий процес через `mods_patch/manage-modpack.sh` (`./manage-modpack.sh "/шлях/до/SPT"`).
 
 ## Моди
 
-### Власні / підтримуються тут
+### Власні / підтримуються тут (SPT 4.1.0)
 
 | Тека | Опис | Джерело |
 |------|------|---------|
-| `FastSurgery` | Швидше застосування хірургії / шин | [gadjed/FastSurgery-SPT-mod](https://github.com/gadjed/FastSurgery-SPT-mod) |
-| `FastTaxi` | Коротший час очікування авто / таксі-екстракту | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
-| `InsuranceControl` | Керування поверненням страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
-| `QuickSearch` | Швидший обшук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
+| `FastSurgery` | Швидша хірургія / шини | [gadjed/FastSurgery-SPT-mod](https://github.com/gadjed/FastSurgery-SPT-mod) |
+| `FastTaxi` | Коротший час очікування таксі / авто | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
+| `InsuranceControl` | Контроль повернення страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
+| `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
 | `Saria-4.x.x` | Торговець Saria 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
-| `SPTQuestingBots` | QuestingBots Continuous (включно з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
-| `YellowFlareCurse` | Прокляття жовтої ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
+| `SPTQuestingBots` | QuestingBots Continuous (з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
+| `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 
-### Сторонні (збірка сервера + залежності)
+### Сторонні (сорси збережені; у паку 4.1.0 поки немає)
 
-| Тека | Мод | Джерело |
-|------|-----|---------|
-| `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
-| `GildedKeyStorage` | Gilded Key Storage 2.0.4 (C#) | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
-| `LiveFleaPrices` | Live Flea Prices 2.0.1 (C#) | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
-| `Fika-Server` | Fika (сервер) | [project-fika/Fika-Server-CSharp](https://github.com/project-fika/Fika-Server-CSharp) |
-| `Fika-Plugin` | Fika (клієнт) | [project-fika/Fika-Plugin](https://github.com/project-fika/Fika-Plugin) |
-| `MoreBotsAPI` | MoreBotsAPI | [TacticalToaster/MoreBotsAPI](https://github.com/TacticalToaster/MoreBotsAPI) |
-| `MoreCheckmarks` | MoreCheckmarks (+ backend) | [TommySoucy/MoreCheckmarks](https://github.com/TommySoucy/MoreCheckmarks) |
-| `DynamicMaps` | Dynamic Maps | [acidphantasm/SPT-DynamicMaps](https://github.com/acidphantasm/SPT-DynamicMaps) |
-| `LootingBots` | Looting Bots | [Skwizzy/SPT-LootingBots](https://github.com/Skwizzy/SPT-LootingBots) |
-| `SAIN` | SAIN | [ArchangelWTF/SAIN](https://github.com/ArchangelWTF/SAIN) |
-| `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
-| `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
-| `SPT-BigBrain` | BigBrain (залежність SAIN / ботів) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
-| `ContinuousHealing` | Continuous Healing | [Lacyway/ContinuousHealing](https://github.com/Lacyway/ContinuousHealing) |
+Повний колишній loadout під 4.0.13 (Fika, SAIN, UIFixes, BigBrain, …) лишається в `mods/` / `mods_files/` як референс. У ModPack для **SPT 4.1.0** вони **не** входять, доки upstream не випустить порти під 4.1.
 
 ## Примітки щодо збірки
 
-- Використовується **`SPTQuestingBots`** (Continuous); оригінал DanW і окремий **Scav Population** не включені (population уже в Continuous)
-- Є **`YellowFlareCurse`** і **`Saria-4.x.x`** 2.0.1
-- **SVM не редистрибується** (upstream PUSL). Опційне встановлення — пункт **4** у manage-modpack з офіційного релізу GhostFenixx
-- Інсталяційний пак: `mods_patch/SPT-4.0.13-ModPack.zip` (GitHub Releases) — або інсталер вище
-- Скрипти менеджера: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
-
-## Примітки
-
-- Для встановлення краще інсталер / реліз ModPack; це дерево — для читання й правки вихідного коду.
-- Upstream-посилання наведені вище (вкладена git-історія окремих модів у monorepo не зберігається).
+- **ModPack 4.1.0** містить лише власні моди (див. MANIFEST у zip)
+- Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
+- **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
+- Пакт: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — або інсталер вище
+- Історичний **SPT 4.0.13** ModPack лишається на старіших релізах

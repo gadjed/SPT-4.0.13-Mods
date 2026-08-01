@@ -1,14 +1,14 @@
-﻿using SPTarkov.DI.Annotations;
+﻿using SPTarkov.Common.Models.Logging;
+using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 
 namespace SariaShop.Helpers;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
-public class SariaFluentTraderAssortHelper(DatabaseService databaseService, ISptLogger<SariaFluentTraderAssortHelper> logger)
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+public class SariaFluentTraderAssortHelper(TradersTable tradersTable, ISptLogger<SariaFluentTraderAssortHelper> logger)
 {
     private readonly List<Item> _itemsToSell = [];
     private readonly Dictionary<string, List<List<BarterScheme>>> _barterScheme = new();
@@ -132,7 +132,7 @@ public class SariaFluentTraderAssortHelper(DatabaseService databaseService, ISpt
 
     public SariaFluentTraderAssortHelper? Export(string traderId)
     {
-        var traderData = databaseService.GetTables().Traders.GetValueOrDefault(traderId);
+        var traderData = tradersTable.GetValueOrDefault(traderId);
 
         var rootItemAddedId = _itemsToSell.FirstOrDefault().Id;
         if (traderData.Assort.Items.Exists(x => x.Id == rootItemAddedId))

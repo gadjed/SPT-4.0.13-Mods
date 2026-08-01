@@ -1,10 +1,10 @@
 # Fast Taxi
 
-**SPT 4.0.13 Compatible**
+**SPT 4.1.0 Compatible**
 
 Server mod that reduces paid car / taxi extract wait time from **60 seconds** to **8 seconds**.
 
-Developed and tested against **SPT 4.0.13**.
+Developed and tested against **SPT 4.1.0**.
 
 [Latest release](https://github.com/gadjed/FastTaxi-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 

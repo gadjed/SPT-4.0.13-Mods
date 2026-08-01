@@ -5,7 +5,7 @@
 | **Version** | v2.0.1 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/SariaTrader2.0-SPT-mod |
-| **Target** | SPT 4.0.13 |
+| **Target** | SPT 4.1.0 |
 
 ---
 

@@ -5,7 +5,7 @@
 | **Version** | v1.0.0 |
 | **Type** | Client / Клієнт |
 | **Source** | https://github.com/gadjed/Quick-search-SPT-mod |
-| **Target** | SPT 4.0.13 |
+| **Target** | SPT 4.1.0 |
 
 ---
 

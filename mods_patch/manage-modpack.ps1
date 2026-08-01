@@ -1,4 +1,4 @@
-# SPT 4.0.13 Mod Pack Manager
+# SPT 4.1.0 Mod Pack Manager
 # Керування встановленням / оновленням / очищенням модів збірки.
 # Запуск: powershell -ExecutionPolicy Bypass -File .\manage-modpack.ps1 [шлях_до_SPT]
 [CmdletBinding()]
@@ -10,7 +10,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $Repo = "gadjed/SPT-4.0.13-Mods"
-$AssetName = "SPT-4.0.13-ModPack.zip"
+$AssetName = "SPT-4.1.0-ModPack.zip"
 $SvmRepo = "GhostFenixx/svm-csharp"
 $SvmAssetName = "SVM.Server.Value.Modifier.zip"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -225,7 +225,7 @@ function Install-Mods {
         $src = $tmp
         if ($entries.Count -eq 1 -and $entries[0].PSIsContainer) {
             $name = $entries[0].Name
-            if ($name -eq "SPT-4.0.13-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user"))) {
+            if ($name -eq "SPT-4.1.0-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user"))) {
                 if ($name -ne "BepInEx") {
                     $src = $entries[0].FullName
                 }
@@ -327,7 +327,7 @@ function Invoke-Update {
     Write-Host ""
     Write-Warn "Автоматичне оновлення:"
     Write-Warn "  1) видалити всі поточні моди"
-    Write-Warn "  2) завантажити останній SPT-4.0.13-ModPack.zip з GitHub"
+    Write-Warn "  2) завантажити останній SPT-4.1.0-ModPack.zip з GitHub"
     Write-Warn "  3) встановити збірку"
     Write-Info "SPT: $root"
     Write-Info "Repo: https://github.com/$Repo"
@@ -360,7 +360,7 @@ function Invoke-InstallSvm {
 function Show-Menu {
     Clear-Host
     Write-Host "========================================" -ForegroundColor White
-    Write-Host "  SPT 4.0.13 Mod Pack — менеджер" -ForegroundColor White
+    Write-Host "  SPT 4.1.0 Mod Pack — менеджер" -ForegroundColor White
     Write-Host "========================================" -ForegroundColor White
     Write-Host "  Репозиторій: $Repo"
     if (Test-Path -LiteralPath $LocalZip) {

@@ -5,7 +5,7 @@
 | **Version** | v1.1.0 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/FastSurgery-SPT-mod |
-| **Target** | SPT 4.0.13 |
+| **Target** | SPT 4.1.0 |
 
 ---
 

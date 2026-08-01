@@ -48,7 +48,14 @@ internal static class ContainerSearchPatch
 
     private static (MethodInfo? InitialMoveNext, MethodInfo? RevealMoveNext) DiscoverSearchStateMachines()
     {
-        // Prefer known SPT 4.0.13 nested state-machine names.
+        // SPT 4.1 deobfuscates client types; discover by IL constants (2000 ms / 1000f delays).
+        var byIl = DiscoverByIlConstants();
+        if (byIl.InitialMoveNext is not null && byIl.RevealMoveNext is not null)
+        {
+            return byIl;
+        }
+
+        // Legacy SPT 4.0.13 obfuscated nested state-machine names (kept as last-chance fallback).
         var knownInitial = AccessTools.TypeByName("GClass3515+Struct915");
         var knownReveal = AccessTools.TypeByName("GClass3515+Struct916");
         if (knownInitial is not null && knownReveal is not null)
@@ -59,8 +66,7 @@ internal static class ContainerSearchPatch
             );
         }
 
-        // Fall back: find a parent type that nests BOTH delay state machines.
-        return DiscoverByIlConstants();
+        return (null, null);
     }
 
     private static (MethodInfo? InitialMoveNext, MethodInfo? RevealMoveNext) DiscoverByIlConstants()

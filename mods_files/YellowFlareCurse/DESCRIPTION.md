@@ -5,7 +5,7 @@
 | **Version** | v1.0.0 |
 | **Type** | Client + server / Клієнт + сервер |
 | **Source** | https://github.com/gadjed/Yellow-flare-curse-SPT-mod |
-| **Target** | SPT 4.0.13 |
+| **Target** | SPT 4.1.0 |
 
 ---
 

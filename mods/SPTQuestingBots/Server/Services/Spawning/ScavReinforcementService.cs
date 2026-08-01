@@ -7,32 +7,32 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Utils;
 
 namespace QuestingBots.Services.Spawning
 {
-    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET + 2)]
+    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET + 2)]
     public class ScavReinforcementService : AbstractService
     {
         private const string SCAV_POPULATION_GUID = "gadjed.scavpopulation";
 
         private readonly LoggingUtil _logger;
         private readonly ConfigUtil _config;
-        private readonly DatabaseService _databaseService;
+        private readonly LocationTable _locationTable;
         private readonly RandomUtil _randomUtil;
         private readonly IReadOnlyList<SptMod> _loadedMods;
 
         public ScavReinforcementService(
             LoggingUtil logger,
             ConfigUtil config,
-            DatabaseService databaseService,
+            LocationTable locationTable,
             RandomUtil randomUtil,
             IReadOnlyList<SptMod> loadedMods) : base(logger, config)
         {
             _logger = logger;
             _config = config;
-            _databaseService = databaseService;
+            _locationTable = locationTable;
             _randomUtil = randomUtil;
             _loadedMods = loadedMods;
         }
@@ -65,7 +65,7 @@ namespace QuestingBots.Services.Spawning
             int mapsTouched = 0;
             int scavWavesAdded = 0;
 
-            foreach (Location location in _databaseService.EnumerateLocations())
+            foreach (Location location in _locationTable.EnumerateLocations())
             {
                 LocationBase? locationBase = location.Base;
                 if (locationBase == null)

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# SPT 4.0.13 Mod Pack Manager
+# SPT 4.1.0 Mod Pack Manager
 # Керування встановленням / оновленням / очищенням модів збірки.
 set -euo pipefail
 
 REPO="gadjed/SPT-4.0.13-Mods"
-ASSET_NAME="SPT-4.0.13-ModPack.zip"
+ASSET_NAME="SPT-4.1.0-ModPack.zip"
 SVM_REPO="GhostFenixx/svm-csharp"
 SVM_ASSET_NAME="SVM.Server.Value.Modifier.zip"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -247,7 +247,7 @@ install_mods() {
   if [[ ${#entries[@]} -eq 1 && -d "${entries[0]}" ]]; then
     local name
     name="$(basename "${entries[0]}")"
-    if [[ "$name" == SPT-4.0.13-ModPack || "$name" == BepInEx || -d "${entries[0]}/BepInEx" || -d "${entries[0]}/user" ]]; then
+    if [[ "$name" == SPT-4.1.0-ModPack || "$name" == BepInEx || -d "${entries[0]}/BepInEx" || -d "${entries[0]}/user" ]]; then
       if [[ "$name" != BepInEx ]]; then
         src="${entries[0]}"
       fi
@@ -345,7 +345,7 @@ do_update() {
   printf '\n'
   warn "Автоматичне оновлення:"
   warn "  1) видалити всі поточні моди"
-  warn "  2) завантажити останній SPT-4.0.13-ModPack.zip з GitHub"
+  warn "  2) завантажити останній SPT-4.1.0-ModPack.zip з GitHub"
   warn "  3) встановити збірку"
   info "SPT: ${root}"
   info "Repo: https://github.com/${REPO}"
@@ -373,7 +373,7 @@ do_install_svm() {
 show_menu() {
   clear 2>/dev/null || true
   printf '%s\n' "${BOLD}========================================${RESET}"
-  printf '%s\n' "${BOLD}  SPT 4.0.13 Mod Pack — менеджер${RESET}"
+  printf '%s\n' "${BOLD}  SPT 4.1.0 Mod Pack — менеджер${RESET}"
   printf '%s\n' "${BOLD}========================================${RESET}"
   printf '  Репозиторій: %s\n' "$REPO"
   printf '  Локальний zip: %s\n' "$( [[ -f "$LOCAL_ZIP" ]] && echo "є (${LOCAL_ZIP})" || echo "немає" )"

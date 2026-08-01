@@ -1,8 +1,8 @@
 # SPT Mods
 
-Monorepo with source trees, release archives, and an installable mod pack for SPT **4.0.13**.
+Monorepo with source trees, release archives, and an installable mod pack for SPT **4.1.0**.
 
-Target: **SPT 4.0.13** only. Do not treat 4.1.0+ as the baseline.
+Target: **SPT 4.1.0**.
 
 ## Layout
 
@@ -17,9 +17,9 @@ SPT mods/
 
 ## Automatic install / update
 
-Preferred way to install or refresh the full loadout on a clean **SPT 4.0.13** install.
+Preferred way to install or refresh the owned-mods loadout on a clean **SPT 4.1.0** install.
 
-1. Download the **Mods Pack Installer** release asset: [`mods_pack_installer`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer) (`SPT-4.0.13-ModsPack-Installer.zip`).
+1. Download the **Mods Pack Installer** release asset: [`mods_pack_installer`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer) (`SPT-4.1.0-ModsPack-Installer.zip`).
 2. Unpack **both** `manage-modpack.cmd` and `manage-modpack.ps1` into the SPT root (same folder as `EscapeFromTarkov.exe` / `SPT.Server.exe`).
 3. Run `manage-modpack.cmd` and pick a menu item:
    - **1** — Auto-update: remove current mods, download the latest ModPack from GitHub, install
@@ -28,13 +28,13 @@ Preferred way to install or refresh the full loadout on a clean **SPT 4.0.13** i
    - **4** — Install SVM from the official [GhostFenixx/svm-csharp](https://github.com/GhostFenixx/svm-csharp) release (not bundled; PUSL forbids redistribution)
    - **5** — Exit
 
-Internet is required for options **1** / **4**, and for **3** when `SPT-4.0.13-ModPack.zip` is not beside the scripts. The ModPack itself is published on [GitHub Releases](https://github.com/gadjed/SPT-4.0.13-Mods/releases).
+Internet is required for options **1** / **4**, and for **3** when `SPT-4.1.0-ModPack.zip` is not beside the scripts. The ModPack itself is published on [GitHub Releases](https://github.com/gadjed/SPT-4.0.13-Mods/releases).
 
 macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpack.sh "/path/to/SPT"`).
 
 ## Mods
 
-### Own / maintained here
+### Own / maintained here (SPT 4.1.0)
 
 | Folder | Notes | Source |
 |--------|--------|--------|
@@ -46,13 +46,15 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `SPTQuestingBots` | QuestingBots Continuous (includes former Scav Population; replaces DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
 | `YellowFlareCurse` | Yellow flare curse | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 
-### Third-party (server loadout + deps)
+### Third-party (sources kept; not in 4.1.0 pack yet)
+
+The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains under `mods/` / `mods_files/` for reference. Those mods are **not** bundled in the SPT 4.1.0 ModPack until upstream publishes 4.1-compatible releases.
 
 | Folder | Mod | Source |
 |--------|-----|--------|
 | `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
-| `GildedKeyStorage` | Gilded Key Storage 2.0.4 (C#) | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
-| `LiveFleaPrices` | Live Flea Prices 2.0.1 (C#) | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
+| `GildedKeyStorage` | Gilded Key Storage | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
+| `LiveFleaPrices` | Live Flea Prices | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
 | `Fika-Server` | Fika server | [project-fika/Fika-Server-CSharp](https://github.com/project-fika/Fika-Server-CSharp) |
 | `Fika-Plugin` | Fika client | [project-fika/Fika-Plugin](https://github.com/project-fika/Fika-Plugin) |
 | `MoreBotsAPI` | MoreBotsAPI | [TacticalToaster/MoreBotsAPI](https://github.com/TacticalToaster/MoreBotsAPI) |
@@ -67,11 +69,12 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included (population features live in Continuous)
-- Includes **`YellowFlareCurse`** and **`Saria-4.x.x`** 2.0.1
-- **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4** from the official GhostFenixx release
-- Install pack: `mods_patch/SPT-4.0.13-ModPack.zip` (GitHub Releases) — or use the installer above
+- **4.1.0 ModPack** ships owned mods only (see MANIFEST in the zip)
+- Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
+- **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**
+- Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
+- Historical **SPT 4.0.13** ModPack remains available on older releases
 
 ## Notes
 

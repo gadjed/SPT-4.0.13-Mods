@@ -1,30 +1,30 @@
 using System.Reflection;
+using Spectre.Console;
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Helpers;
+using SPTarkov.Server.Core.Helpers.Server;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using Path = System.IO.Path;
 
 namespace FastTaxi;
 
-public record ModMetadata : AbstractModMetadata
+public record ModMetadata : IModMetadata
 {
-    public override string ModGuid { get; init; } = "gadjed.fasttaxi";
-    public override string Name { get; init; } = "Fast Taxi";
-    public override string Author { get; init; } = "gadjed";
-    public override List<string>? Contributors { get; init; } = null;
-    public override SemanticVersioning.Version Version { get; init; } = new("1.0.0");
-    public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
-    public override List<string>? Incompatibilities { get; init; } = null;
-    public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
-    public override string? Url { get; init; } = "https://github.com/gadjed/FastTaxi-SPT-mod";
-    public override bool? IsBundleMod { get; init; } = false;
-    public override string? License { get; init; } = "MIT";
+    public string ModGuid { get; init; } = "gadjed.fasttaxi";
+    public string Name { get; init; } = "Fast Taxi";
+    public string Author { get; init; } = "gadjed";
+    public List<string>? Contributors { get; init; } = null;
+    public SemanticVersioning.Version Version { get; init; } = new("1.1.0");
+    public SemanticVersioning.Range SptVersion { get; init; } = new("~4.1.0");
+    public bool HasPrepatcher { get; init; } = false;
+    public List<string>? Incompatibilities { get; init; } = null;
+    public Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
+    public string? Url { get; init; } = "https://github.com/gadjed/FastTaxi-SPT-mod";
+    public string License { get; init; } = "MIT";
 }
 
 public class ModConfig
@@ -36,14 +36,14 @@ public class ModConfig
     public double WaitTimeSeconds { get; set; } = 8;
 }
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class FastTaxiMod(
     ISptLogger<FastTaxiMod> logger,
     ModHelper modHelper,
-    DatabaseService databaseService
+    LocationTable locationTable
 ) : IOnLoad
 {
-    public Task OnLoad()
+    public Task OnLoadAsync(CancellationToken cancellationToken)
     {
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         var configPath = Path.Combine(pathToMod, "config.json");
@@ -54,8 +54,10 @@ public class FastTaxiMod(
         var waitTime = config.WaitTimeSeconds <= 0 ? 8 : config.WaitTimeSeconds;
         var changed = 0;
 
-        foreach (var (locationId, location) in databaseService.GetLocations().GetDictionary())
+        foreach (var (locationId, location) in locationTable.GetDictionary())
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             if (location?.Base?.Exits is not null)
             {
                 foreach (var exit in location.Base.Exits)
@@ -104,7 +106,7 @@ public class FastTaxiMod(
 
         logger.LogWithColor(
             $"[FastTaxi] {locationId}/{exit.Name}: ExfiltrationTime {previous} -> {waitTime}s",
-            LogTextColor.Cyan
+            Color.Cyan
         );
 
         return true;

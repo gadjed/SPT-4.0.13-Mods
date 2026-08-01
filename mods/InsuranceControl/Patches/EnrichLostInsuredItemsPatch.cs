@@ -8,7 +8,7 @@ using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Match;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Services.InRaid;
 
 namespace InsuranceControl.Patches;
 
@@ -118,7 +118,7 @@ public class EnrichLostInsuredItemsPatch : AbstractPatch
         request.LostInsuredItems = lostList.Concat(extras);
     }
 
-    private static bool IsAmmoChild(Item child, SPTarkov.Server.Core.Helpers.ItemHelper itemHelper)
+    private static bool IsAmmoChild(Item child, SPTarkov.Server.Core.Helpers.Items.ItemHelper itemHelper)
     {
         if (!itemHelper.IsOfBaseclass(child.Template, BaseClasses.AMMO))
         {

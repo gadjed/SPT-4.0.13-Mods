@@ -11,7 +11,7 @@ public class QuickSearchPlugin : BaseUnityPlugin
 {
     public const string PluginGuid = "gadjed.quicksearch";
     public const string PluginName = "Quick Search";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "1.1.0";
 
     /// <summary>
     /// How many times faster container / corpse search should be.

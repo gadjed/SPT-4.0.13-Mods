@@ -1,6 +1,6 @@
 # Questing Bots Continuous
 
-**SPT 4.0.13 Compatible**
+**SPT 4.1.0 Compatible**
 
 Fork of [DanW's Questing Bots](https://github.com/dwesterwick/SPTQuestingBots) with **continuous map population** (PMC top-up + scav reinforcement waves) merged from [Scav Population](https://github.com/gadjed/Scav-population-SPT-mod).
 

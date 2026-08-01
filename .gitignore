@@ -17,7 +17,7 @@
 **/*.log
 
 # Unpacked install pack (track only the zip)
-mods_patch/SPT-4.0.13-ModPack/
+mods_patch/SPT-*-ModPack/
 
 # Downloaded release cache for manage-modpack scripts
 mods_patch/.modpack-cache/

@@ -1,3 +1,1 @@
-repo=gadjed/Yellow-flare-curse-SPT-mod
-tag=v1.0.0
-downloaded=2026-08-01T21:35:04Z
+v1.1.0
