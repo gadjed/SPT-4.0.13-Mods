@@ -7,7 +7,7 @@ using SPTarkov.Server.Core.Models.Spt.Mod;
 
 namespace QuestingBots.Services
 {
-    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET)]
+    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET)]
     public class AutoDisableSpawningSystemService : AbstractService
     {
         private readonly string[] SPAWNING_MOD_GUIDS = ["li.barlog.unda", "com.acidphantasm.botplacementsystem"];
@@ -60,7 +60,7 @@ namespace QuestingBots.Services
             {
                 if (mod.ModMetadata.ModGuid == SCAV_POPULATION_GUID)
                 {
-                    _logger.Warning("Scav Population detected. Questing Bots already includes scav reinforcements. Uninstall Scav Population to avoid stacking spawns.");
+                    _logger.Warning("Scav Population detected. Questing Bots now includes continuous population (PMC top-up + scav reinforcements). Uninstall Scav Population to avoid stacking spawns.");
                     return;
                 }
             }

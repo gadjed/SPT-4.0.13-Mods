@@ -2,35 +2,27 @@
 
 | | |
 |---|---|
-| **Version** | v1.4.1 |
-| **Type** | Client + server / Клієнт + сервер |
+| **Version** | v1.0.1 |
+| **Type** | Server (+ client plugin if present) / Сервер (+ клієнтський плагін) |
 | **Source** | https://github.com/gadjed/Yellow-flare-curse-SPT-mod |
-| **Target** | SPT 4.1.0 |
+| **Target** | SPT 4.0.13 |
 
 ---
 
 ## English
 
 ### Description
-Using an RSP-30 Yellow (once per raid) teleports eligible scav/PMC AI into a **100–150 m** ring near you, allies them against players only, spawns **Tagilla** nearby, then triggers a high-value airdrop after a delay (skipped on maps without airdrop points).
-
-### Settings
-**Server** (`SPT/user/mods/YellowFlareCurse/config.json`): Enabled; AirdropDelaySeconds (600); ForcedLoot stacks.
-**Client (F12):** Enabled; AirdropDelaySeconds; ShowCountdown; IncludePlayerGroup; TeleportBotsNearPlayer; TeleportMin/MaxRadius; AiAlliance; SpawnTagilla; TagillaType (Factory/Labyrinth); TagillaSpawnMin/MaxRadius; Debug.
+Using an RSP-30 Yellow (once per raid) starts the curse event and forced high-value airdrop loot on the server side.
 
 ### Notes
-Install: `SPT/user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`. SAIN / QuestingBots optional bridges.
+**SPT 4.0.13 only.** Install: `user/mods/YellowFlareCurse/` (+ optional `BepInEx/plugins/YellowFlareCurse.Client.dll`).
 
 ---
 
 ## Українська
 
 ### Опис
-Успішне використання RSP-30 Yellow (раз за рейд) телепортує скавів/PMC у кільце **100–150 м**, блокує їхні бої між собою (полюють лише на гравців), спавнить **Tagilla** і через затримку викликає аірдроп із цінним лутом (на мапах без airdrop points аірдроп пропускається).
-
-### Налаштування
-**Сервер** (`SPT/user/mods/YellowFlareCurse/config.json`): Enabled; AirdropDelaySeconds (600); ForcedLoot.
-**Клієнт (F12):** Enabled; AirdropDelaySeconds; ShowCountdown; IncludePlayerGroup; Teleport; Alliance; SpawnTagilla; TagillaType; TagillaSpawn radius; Debug.
+Успішне використання RSP-30 Yellow (раз за рейд) запускає подію прокляття та форсований цінний лут аірдропу на сервері.
 
 ### Примітки
-Встановлення: `SPT/user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`. SAIN / QuestingBots опційно.
+**Лише SPT 4.0.13.** Встановлення: `user/mods/YellowFlareCurse/` (+ опційно `BepInEx/plugins/YellowFlareCurse.Client.dll`).

@@ -1,11 +1,10 @@
 async (page) => {
   const PACK_REPO = "https://github.com/gadjed/SPT-4.0.13-Mods";
   const INSTALLER =
-    "https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer";
+    "https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13";
   const vt = (hash) => "https://www.virustotal.com/gui/file/" + hash;
 
   const mods = [
-    // Med Rebalance (Forge: was Fast Surgery) already created as 2869 — only add 4.0.13 version if needed
     {
       create: false,
       modId: 2869,
@@ -20,7 +19,7 @@ async (page) => {
             "b17235e756b9bb58b0423eb066de784cc4b09ef0edb53424aab9c41e1c6fcd72"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `MedRebalance-1.3.0.zip`\n\nFor SPT 4.1.0 use [v1.2.0](https://github.com/gadjed/MedRebalance-SPT-mod/releases/tag/v1.2.0).",
+            "SPT **4.0.13** release.\n\nArchive: `MedRebalance-1.3.0.zip`.",
         },
       ],
     },
@@ -28,8 +27,7 @@ async (page) => {
       create: true,
       name: "Fast Taxi",
       guid: "gadjed.fasttaxi",
-      teaser:
-        "SPT 4.1.0 / 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
+      teaser: "SPT 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
       category: "Locations",
       source: "https://github.com/gadjed/FastTaxi-SPT-mod",
       profileSafe: true,
@@ -37,7 +35,6 @@ async (page) => {
         "Shortens paid car/taxi extract wait times (typically ~60s → configurable, default **8 seconds**).",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.1.0) (`FastTaxi-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
         "",
         "## Install",
@@ -58,17 +55,6 @@ async (page) => {
       ].join("\n"),
       versions: [
         {
-          version: "1.1.0",
-          spt: "~4.1.0",
-          download:
-            "https://github.com/gadjed/FastTaxi-SPT-mod/releases/download/v1.1.0/FastTaxi-1.1.0.zip",
-          virusTotal: vt(
-            "4e8851d9e2fe491b41d6582594ac60d9ec5163f5e149851a5ac9c39f83e7f11c"
-          ),
-          description:
-            "SPT **4.1.0** release.\n\n- Ported to SPT 4.1.0 (`IModMetadata`, `OnLoadAsync`, `LocationTable`, net10.0)\n- Archive: `FastTaxi-1.1.0.zip`\n\nFor SPT 4.0.13 use [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0).",
-        },
-        {
           version: "1.0.0",
           spt: "~4.0.13",
           download:
@@ -76,8 +62,7 @@ async (page) => {
           virusTotal: vt(
             "d2e486ca25cbdd9083c41ec0b73f8318f66608226e2a8664204b45da99d921bc"
           ),
-          description:
-            "SPT **4.0.13** release.\n\nArchive: `FastTaxi-1.0.0.zip`\n\nFor SPT 4.1.0 use [v1.1.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.1.0).",
+          description: "SPT **4.0.13** release.\n\nArchive: `FastTaxi-1.0.0.zip`.",
         },
       ],
     },
@@ -86,7 +71,7 @@ async (page) => {
       name: "Insurance Control",
       guid: "gadjed.insurancerefund",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — insurance return time, lost chance, magazine/container contents.",
+        "SPT 4.0.13 — insurance return time, lost chance, magazine/container contents.",
       category: "Scripting",
       source: "https://github.com/gadjed/Insurance-refund-SPT-mod",
       profileSafe: false,
@@ -94,8 +79,7 @@ async (page) => {
         "Controls insurance return timing, lost chance, and whether magazines/containers return with contents.",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.1.0) (`InsuranceControl-1.1.0.zip`)",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.0) (`InsuranceControl-1.0.0.zip`)",
+        "- **SPT 4.0.13** — [v1.0.1](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.1) (`InsuranceControl-1.0.1.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -117,26 +101,15 @@ async (page) => {
       ].join("\n"),
       versions: [
         {
-          version: "1.1.0",
-          spt: "~4.1.0",
-          download:
-            "https://github.com/gadjed/Insurance-refund-SPT-mod/releases/download/v1.1.0/InsuranceControl-1.1.0.zip",
-          virusTotal: vt(
-            "44e6578fb7dde4c315296a125f35f265a764ca4732319aa38a3f104503d80b5c"
-          ),
-          description:
-            "SPT **4.1.0** release.\n\n- Ported to SPT 4.1.0 (injectable configs/tables, Services.InRaid patch target)\n- Archive: `InsuranceControl-1.1.0.zip`\n\nFor SPT 4.0.13 use [v1.0.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.0).",
-        },
-        {
-          version: "1.0.0",
+          version: "1.0.1",
           spt: "~4.0.13",
           download:
-            "https://github.com/gadjed/Insurance-refund-SPT-mod/releases/download/v1.0.0/InsuranceControl-1.0.0.zip",
+            "https://github.com/gadjed/Insurance-refund-SPT-mod/releases/download/v1.0.1/InsuranceControl-1.0.1.zip",
           virusTotal: vt(
             "94849dd67482b86b40176c9d4e4d708dcaa9200bf863e3406dac26b7411a00b4"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `InsuranceControl-1.0.0.zip`\n\nFor SPT 4.1.0 use [v1.1.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.1.0).",
+            "SPT **4.0.13** release.\n\nArchive: `InsuranceControl-1.0.1.zip`.",
         },
       ],
     },
@@ -144,8 +117,7 @@ async (page) => {
       create: true,
       name: "Quick Search",
       guid: "gadjed.quicksearch",
-      teaser:
-        "SPT 4.1.0 / 4.0.13 — search containers and corpses faster (default 3×).",
+      teaser: "SPT 4.0.13 — search containers and corpses faster (default 3×).",
       category: "Scripting",
       source: "https://github.com/gadjed/Quick-search-SPT-mod",
       profileSafe: true,
@@ -153,7 +125,6 @@ async (page) => {
         "Speeds up searching containers and corpses by a configurable multiplier (default **3×**).",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.1.0) (`QuickSearch-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
         "",
         "## Install",
@@ -174,17 +145,6 @@ async (page) => {
       ].join("\n"),
       versions: [
         {
-          version: "1.1.0",
-          spt: "~4.1.0",
-          download:
-            "https://github.com/gadjed/Quick-search-SPT-mod/releases/download/v1.1.0/QuickSearch-1.1.0.zip",
-          virusTotal: vt(
-            "ae58d9c0103d28692cff4c9771d4a4bde8555b45d3a416b26729c6383e4c08b2"
-          ),
-          description:
-            "SPT **4.1.0** release.\n\n- IL-constant discovery of search state machines + legacy GClass fallback\n- Archive: `QuickSearch-1.1.0.zip`\n\nFor SPT 4.0.13 use [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0).",
-        },
-        {
           version: "1.0.0",
           spt: "~4.0.13",
           download:
@@ -193,7 +153,7 @@ async (page) => {
             "67d64df7698d7fb681aec2a0b8da8784f7785caf9fd6c875d16a63ba2bf505dd"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `QuickSearch-1.0.0.zip`\n\nFor SPT 4.1.0 use [v1.1.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.1.0).",
+            "SPT **4.0.13** release.\n\nArchive: `QuickSearch-1.0.0.zip`.",
         },
       ],
     },
@@ -202,7 +162,7 @@ async (page) => {
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
+        "SPT 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
       category: "Overhauls",
       source: "https://github.com/gadjed/Yellow-flare-curse-SPT-mod",
       profileSafe: true,
@@ -210,8 +170,7 @@ async (page) => {
         "Using an RSP-30 Yellow (once per raid) curses nearby scavs/PMCs, then triggers a high-value airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.1.0) (`YellowFlareCurse-1.1.0.zip`)",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.0) (`YellowFlareCurse-1.0.0.zip`)",
+        "- **SPT 4.0.13** — [v1.0.1](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.1) (`YellowFlareCurse-1.0.1.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -234,26 +193,15 @@ async (page) => {
       ].join("\n"),
       versions: [
         {
-          version: "1.1.0",
-          spt: "~4.1.0",
-          download:
-            "https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/download/v1.1.0/YellowFlareCurse-1.1.0.zip",
-          virusTotal: vt(
-            "3f89f526aee85df1aeb94ceae4489659f524b50f8d54c2382f8f329828eb4627"
-          ),
-          description:
-            "SPT **4.1.0** release.\n\n- Server airdrop config injection + client version bump\n- Archive: `YellowFlareCurse-1.1.0.zip`\n\nFor SPT 4.0.13 use [v1.0.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.0).",
-        },
-        {
-          version: "1.0.0",
+          version: "1.0.1",
           spt: "~4.0.13",
           download:
-            "https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/download/v1.0.0/YellowFlareCurse-1.0.0.zip",
+            "https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/download/v1.0.1/YellowFlareCurse-1.0.1.zip",
           virusTotal: vt(
             "44975c635008dc15a81d3669d2dd350b42ac4d285154cf01953e9bc34c0803fe"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `YellowFlareCurse-1.0.0.zip`\n\nFor SPT 4.1.0 use [v1.1.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.1.0).",
+            "SPT **4.0.13** release.\n\nArchive: `YellowFlareCurse-1.0.1.zip`.",
         },
       ],
     },

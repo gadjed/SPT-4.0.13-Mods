@@ -246,11 +246,11 @@ namespace QuestingBots.BotLogic.Objective
                 if (!wasStuck)
                 {
                     ObjectiveManager.StuckCount++;
-                    Singleton<LoggingUtil>.Instance.LogWarning(BotOwner.GetText() + " got stuck while going to " + DesiredWorldInteractiveObject!.Id + " and will be redirected near a player.");
+                    Singleton<LoggingUtil>.Instance.LogWarning(BotOwner.GetText() + " got stuck while going to " + DesiredWorldInteractiveObject!.Id + " and will get a new objective.");
                 }
                 wasStuck = true;
 
-                if (ObjectiveManager.TryRedirectNearHumanPlayer() || ObjectiveManager.TryChangeObjective())
+                if (ObjectiveManager.TryChangeObjective())
                 {
                     restartStuckTimer();
                 }

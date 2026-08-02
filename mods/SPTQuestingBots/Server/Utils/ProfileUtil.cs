@@ -1,10 +1,9 @@
 ﻿using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Helpers.Profile;
+using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Spt.Tables;
-using SPTarkov.Server.Core.Services.Commerce;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 
 namespace QuestingBots.Utils
@@ -12,14 +11,14 @@ namespace QuestingBots.Utils
     [Injectable(InjectionType.Singleton)]
     public class ProfileUtil
     {
-        private GlobalTable _globalTable;
+        private DatabaseService _databaseService;
         private ProfileHelper _profileHelper;
         private TimeUtil _timeUtil;
         private FenceService _fenceService;
 
-        public ProfileUtil(GlobalTable globalTable, ProfileHelper profileHelper, TimeUtil timeUtil, FenceService fenceService)
+        public ProfileUtil(DatabaseService databaseService, ProfileHelper profileHelper, TimeUtil timeUtil, FenceService fenceService)
         {
-            _globalTable = globalTable;
+            _databaseService = databaseService;
             _profileHelper = profileHelper;
             _timeUtil = timeUtil;
             _fenceService = fenceService;
@@ -28,7 +27,7 @@ namespace QuestingBots.Utils
         public PmcData? GetPmcProfile(MongoId sessionId) => _profileHelper.GetPmcProfile(sessionId);
         public PmcData? GetScavProfile(MongoId sessionId) => _profileHelper.GetScavProfile(sessionId);
 
-        public int GetBaseScavCooldownTime() => _globalTable.Configuration.SavagePlayCooldown;
+        public int GetBaseScavCooldownTime() => _databaseService.GetGlobals().Configuration.SavagePlayCooldown;
         public double GetMaxScavCooldownTime(PmcData pmcData) => GetBaseScavCooldownTime() * GetTotalScavCooldownTimeModifier(pmcData);
 
         public double GetTotalScavCooldownTimeModifier(PmcData pmcData)

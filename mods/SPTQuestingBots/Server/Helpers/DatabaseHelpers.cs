@@ -2,7 +2,7 @@
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Services;
 
 namespace QuestingBots.Helpers
 {
@@ -14,9 +14,9 @@ namespace QuestingBots.Helpers
         public static List<WildSpawnType> NormalScavRoles { get; } = [WildSpawnType.assault, WildSpawnType.assaultGroup, WildSpawnType.marksman];
         public static IEnumerable<string> NormalScavRoleNames => NormalScavRoles.Select(role => role.ToString());
 
-        public static Location GetAndVerifyLocation(this LocationTable locationTable, string locationId)
+        public static Location GetAndVerifyLocation(this DatabaseService databaseService, string locationId)
         {
-            Location? location = locationTable.GetLocation(locationId);
+            Location? location = databaseService.GetLocation(locationId);
             if (location == null)
             {
                 throw new InvalidOperationException($"Cannot find location \"${locationId}\" in database.");
@@ -25,14 +25,14 @@ namespace QuestingBots.Helpers
             return location;
         }
 
-        public static IEnumerable<Location> EnumerateLocations(this LocationTable locationTable)
+        public static IEnumerable<Location> EnumerateLocations(this DatabaseService databaseService)
         {
-            return locationTable.GetDictionary().Values;
+            return databaseService.GetLocations().GetDictionary().Values;
         }
 
-        public static IEnumerable<string> EnumerateLocationIDs(this LocationTable locationTable)
+        public static IEnumerable<string> EnumerateLocationIDs(this DatabaseService databaseService)
         {
-            return locationTable.GetDictionary().Keys;
+            return databaseService.GetLocations().GetDictionary().Keys;
         }
 
         public static bool IsFence(this Trader? trader) => trader?.Base?.Id == Traders.FENCE;

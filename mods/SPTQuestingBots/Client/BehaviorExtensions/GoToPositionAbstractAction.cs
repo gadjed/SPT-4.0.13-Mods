@@ -45,7 +45,7 @@ namespace QuestingBots.BehaviorExtensions
             }
         }
 
-        public GoToPositionAbstractAction(BotOwner _BotOwner) : this(_BotOwner, DefaultUpdateInterval)
+        public GoToPositionAbstractAction(BotOwner _BotOwner) : this(_BotOwner, updateInterval)
         {
 
         }

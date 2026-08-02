@@ -1,51 +1,28 @@
-﻿# Insurance Control (Insurance Refund)
+﻿# Insurance Control
 
 | | |
 |---|---|
 | **Version** | v1.0.1 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/Insurance-refund-SPT-mod |
-| **Target** | SPT 4.1.0 |
+| **Target** | SPT 4.0.13 |
 
 ---
 
 ## English
 
 ### Description
-Controls insurance return timing, lost chance, and whether magazines/containers return with contents.
-
-### Settings
-(`user/mods/InsuranceControl/config.json`)
-- **ReturnTimeOverrideSeconds** (3600; 0 = use TraderReturnHours)
-- **RunIntervalSeconds** (60)
-- **StorageTimeOverrideSeconds** (0)
-- **ReturnMagazinesWithAmmo** / **ReturnContainersWithContents** (true)
-- **SimulateItemsBeingTaken** (true)
-- **LostChancePercent** — Prapor/Therapist (default 0)
-- **TraderReturnHours** — per-trader hour ranges
+Control insurance return time, lost chance, and whether magazine / container contents come back with insured items.
 
 ### Notes
-Fixed PatchManager init (`AddPatch` + `EnablePatches`) that crashed SPT 4.0.13 when content return patches were enabled.
-Install: `user/mods/InsuranceControl/`. Avoid stacking with other insurance-return mods.
+Install: `user/mods/InsuranceControl/` (or `SPT/user/mods/InsuranceControl/` on nested layout).
 
 ---
 
 ## Українська
 
 ### Опис
-Керує часом повернення страховки, шансом втрати та поверненням магазинів/контейнерів із вмістом.
-
-### Налаштування
-(`user/mods/InsuranceControl/config.json`)
-- **ReturnTimeOverrideSeconds** (3600; 0 = брати TraderReturnHours)
-- **RunIntervalSeconds** (60)
-- **StorageTimeOverrideSeconds** (0)
-- **ReturnMagazinesWithAmmo** / **ReturnContainersWithContents** (true)
-- **SimulateItemsBeingTaken** (true)
-- **LostChancePercent** — Прапор/Терапевт (типово 0)
-- **TraderReturnHours** — діапазони годин по торговцях
+Контроль часу повернення страховки, шансу втрати та повернення вмісту магазинів / контейнерів разом із застрахованими речами.
 
 ### Примітки
-Встановлення: `user/mods/InsuranceControl/`. Не ставте разом з іншими модами повернення страховки.
-
-
+Встановлення: `user/mods/InsuranceControl/` (або `SPT/user/mods/InsuranceControl/`).

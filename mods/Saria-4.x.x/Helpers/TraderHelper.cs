@@ -1,16 +1,17 @@
-﻿using SPTarkov.Common.Models.Logging;
-using SPTarkov.DI.Annotations;
+﻿using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Config;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils.Cloners;
 
 namespace SariaShop.Helpers;
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
-public class SariaTraderHelper(ISptLogger<SariaTraderHelper> logger, ICloner cloner, TradersTable tradersTable, LocaleTable localeTable)
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+public class SariaTraderHelper(ISptLogger<SariaTraderHelper> logger, ICloner cloner, DatabaseService databaseService)
 {
     public void SetTraderUpdateTime(TraderConfig traderConfig, TraderBase baseJson, int refreshTimeSecondsMin, int refreshTimeSecondsMax)
     {
@@ -45,15 +46,15 @@ public class SariaTraderHelper(ISptLogger<SariaTraderHelper> logger, ICloner clo
             Dialogue = [],
         };
 
-        if (!tradersTable.TryAdd(traderDetailsToAdd.Id, traderDataToAdd))
+        if (!databaseService.GetTables().Traders.TryAdd(traderDetailsToAdd.Id, traderDataToAdd))
         {
-            logger.LogWithColor("Failed to add trader details to database", Spectre.Console.Color.Cyan);
+            logger.LogWithColor("Failed to add trader details to database", LogTextColor.Cyan);
         }
     }
 
     public void AddTraderToLocales(TraderBase baseJson, string firstName, string description)
     {
-        var locales = localeTable.Global;
+        var locales = databaseService.GetTables().Locales.Global;
         var newTraderId = baseJson.Id;
         var fullName = baseJson.Name;
         var nickName = baseJson.Nickname;
@@ -75,11 +76,11 @@ public class SariaTraderHelper(ISptLogger<SariaTraderHelper> logger, ICloner clo
 
     public void OverwriteTraderAssort(string traderId, TraderAssort newAssorts)
     {
-        if (!tradersTable.TryGetValue(traderId, out var traderToEdit))
+        if (!databaseService.GetTables().Traders.TryGetValue(traderId, out var traderToEdit))
         {
             logger.LogWithColor(
                 $"Unable to update assorts for trader: {traderId}, they couldn't be found on the server",
-                Spectre.Console.Color.Cyan
+                LogTextColor.Cyan
             );
 
             return;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,18 +31,15 @@ namespace QuestingBots.BotLogic.HiveMind
 
     public class BotHiveMindMonitor : MonoBehaviourDelayedUpdate
     {
-        internal static HashSet<BotOwner> deadBots = new HashSet<BotOwner>();
+        internal static List<BotOwner> deadBots = new List<BotOwner>();
         internal static Dictionary<BotOwner, BotOwner> botBosses = new Dictionary<BotOwner, BotOwner>();
         internal static Dictionary<BotOwner, List<BotOwner>> botFollowers = new Dictionary<BotOwner, List<BotOwner>>();
 
         private static Dictionary<BotHiveMindSensorType, BotHiveMindAbstractSensor> sensors = new Dictionary<BotHiveMindSensorType, BotHiveMindAbstractSensor>();
 
-        private readonly List<BotOwner> keysScratch = new List<BotOwner>(64);
-        private readonly List<BotOwner> followersScratch = new List<BotOwner>(16);
-
         public BotHiveMindMonitor()
         {
-            UpdateInterval = 300;
+            UpdateInterval = 50;
 
             sensors.Add(BotHiveMindSensorType.InCombat, new BotHiveMindIsInCombatSensor());
             sensors.Add(BotHiveMindSensorType.IsSuspicious, new BotHiveMindIsSuspiciousSensor());
@@ -168,39 +166,21 @@ namespace QuestingBots.BotLogic.HiveMind
             return botBosses.ContainsKey(bot) ? botBosses[bot] : null!;
         }
 
-        private static readonly IReadOnlyList<BotOwner> emptyFollowers = Array.Empty<BotOwner>();
-
-        public static IReadOnlyList<BotOwner> GetFollowers(BotOwner bot)
+        public static ReadOnlyCollection<BotOwner> GetFollowers(BotOwner bot)
         {
-            if (botFollowers.TryGetValue(bot, out List<BotOwner> followers))
-            {
-                return followers;
-            }
-
-            return emptyFollowers;
+            return botFollowers.ContainsKey(bot) ? new ReadOnlyCollection<BotOwner>(botFollowers[bot]) : new ReadOnlyCollection<BotOwner>(new BotOwner[0]);
         }
 
-        public static IReadOnlyList<BotOwner> GetAllGroupMembers(BotOwner bot)
+        public static ReadOnlyCollection<BotOwner> GetAllGroupMembers(BotOwner bot)
         {
             BotOwner boss = GetBoss(bot) ?? bot;
-            IReadOnlyList<BotOwner> followers = GetFollowers(boss);
 
-            List<BotOwner> allGroupMembers = new List<BotOwner>(followers.Count);
-            for (int i = 0; i < followers.Count; i++)
-            {
-                BotOwner follower = followers[i];
-                if (follower.Id != bot.Id)
-                {
-                    allGroupMembers.Add(follower);
-                }
-            }
+            BotOwner[] allGroupMembers = GetFollowers(boss)
+                .AddItem(boss)
+                .Where(b => b.Id != bot.Id)
+                .ToArray();
 
-            if (boss.Id != bot.Id)
-            {
-                allGroupMembers.Add(boss);
-            }
-
-            return allGroupMembers;
+            return new ReadOnlyCollection<BotOwner>(allGroupMembers);
         }
 
         public static string GetActiveBrainLayerOfBoss(BotOwner bot)
@@ -271,11 +251,8 @@ namespace QuestingBots.BotLogic.HiveMind
 
             Singleton<LoggingUtil>.Instance.LogInfo("Separating " + bot.GetText() + " from its group...");
 
-            List<BotOwner> keys = new List<BotOwner>(64);
-
             // Clear stored information about the bot's boss (if applicable)
-            copyKeysToScratch(botBosses, keys);
-            foreach (BotOwner follower in keys)
+            foreach (BotOwner follower in botBosses.Keys.ToArray())
             {
                 if (botBosses[follower] == bot)
                 {
@@ -289,8 +266,7 @@ namespace QuestingBots.BotLogic.HiveMind
             }
 
             // Clear stored information about the bot's followers (if applicable)
-            copyKeysToScratch(botFollowers, keys);
-            foreach (BotOwner boss in keys)
+            foreach (BotOwner boss in botFollowers.Keys.ToArray())
             {
                 if (boss == bot)
                 {
@@ -379,9 +355,7 @@ namespace QuestingBots.BotLogic.HiveMind
 
         private void updateBosses()
         {
-            copyKeysToScratch(botBosses, keysScratch);
-
-            foreach (BotOwner bot in keysScratch)
+            foreach (BotOwner bot in botBosses.Keys.ToArray())
             {
                 // Need to check if the reference is for a null object, meaning the bot was despawned and disposed
                 if ((bot == null) || bot.IsDead)
@@ -450,9 +424,7 @@ namespace QuestingBots.BotLogic.HiveMind
 
         private void updateBossFollowers()
         {
-            copyKeysToScratch(botFollowers, keysScratch);
-
-            foreach (BotOwner boss in keysScratch)
+            foreach (BotOwner boss in botFollowers.Keys.ToArray())
             {
                 // Need to check if the reference is for a null object, meaning the bot was despawned and disposed
                 if ((boss == null) || boss.IsDead)
@@ -470,11 +442,7 @@ namespace QuestingBots.BotLogic.HiveMind
                     continue;
                 }
 
-                List<BotOwner> followers = botFollowers[boss];
-                followersScratch.Clear();
-                followersScratch.AddRange(followers);
-
-                foreach (BotOwner follower in followersScratch)
+                foreach (BotOwner follower in botFollowers[boss].ToArray())
                 {
                     if (follower == null)
                     {
@@ -485,9 +453,9 @@ namespace QuestingBots.BotLogic.HiveMind
 
                     if (deadBots.Contains(follower!))
                     {
-                        if (followers.Contains(follower!))
+                        if (botFollowers[boss].Contains(follower!))
                         {
-                            followers.Remove(follower!);
+                            botFollowers[boss].Remove(follower!);
                         }
 
                         continue;
@@ -500,15 +468,6 @@ namespace QuestingBots.BotLogic.HiveMind
                         deadBots.Add(follower);
                     }
                 }
-            }
-        }
-
-        private static void copyKeysToScratch<TValue>(Dictionary<BotOwner, TValue> dict, List<BotOwner> scratch)
-        {
-            scratch.Clear();
-            foreach (BotOwner key in dict.Keys)
-            {
-                scratch.Add(key);
             }
         }
     }

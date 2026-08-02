@@ -1,10 +1,10 @@
 # Quick Search
 
-**SPT 4.1.0 Compatible**
+**SPT 4.0.13 Compatible**
 
 Client mod that makes searching **any container or corpse three times faster**.
 
-Developed and tested against **SPT 4.1.0**.
+Developed and tested against **SPT 4.0.13**.
 
 [Latest release](https://github.com/gadjed/Quick-search-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 

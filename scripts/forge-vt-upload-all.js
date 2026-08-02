@@ -2,15 +2,10 @@ async (page) => {
   const dir = "/Users/alexsukhykh/projects/SPT mods/scripts/vt-uploads";
   const files = [
     "MedRebalance-1.3.0.zip",
-    "MedRebalance-1.3.0.zip",
-    "FastTaxi-1.1.0.zip",
     "FastTaxi-1.0.0.zip",
-    "InsuranceControl-1.1.0.zip",
-    "InsuranceControl-1.0.0.zip",
-    "QuickSearch-1.1.0.zip",
+    "InsuranceControl-1.0.1.zip",
     "QuickSearch-1.0.0.zip",
-    "YellowFlareCurse-1.1.0.zip",
-    "YellowFlareCurse-1.0.0.zip",
+    "YellowFlareCurse-1.0.1.zip",
   ];
   const results = {};
   for (const file of files) {

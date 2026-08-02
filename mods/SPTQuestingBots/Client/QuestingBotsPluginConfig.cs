@@ -139,13 +139,13 @@ namespace QuestingBots
                 ScavLimitsEnabled = Config.Bind("Scav Spawn Restrictions", "Enable Scav Spawn Restrictions",
                     true, "Restrict where and how frequently Scavs are allowed to spawn");
                 ScavSpawningExclusionRadiusMapFraction = Config.Bind("Scav Spawn Restrictions", "Map Fraction for Scav Spawning Exclusion Radius",
-                    0.08f, new ConfigDescription("Adjusts the distance (relative to the map size) that Scavs are allowed to spawn near human players, PMC's, and player Scavs", new AcceptableValueRange<float>(0.01f, 0.15f)));
+                    0.1f, new ConfigDescription("Adjusts the distance (relative to the map size) that Scavs are allowed to spawn near human players, PMC's, and player Scavs", new AcceptableValueRange<float>(0.01f, 0.15f)));
                 ScavSpawnRateLimit = Config.Bind("Scav Spawn Restrictions", "Permitted Scav Spawn Rate",
-                    5f, new ConfigDescription("After the Scav spawn threshold is exceeded, only this number of Scavs will be allowed to spawn per minute (on average)", new AcceptableValueRange<float>(0.5f, 6f)));
+                    2.5f, new ConfigDescription("After the Scav spawn threshold is exceeded, only this number of Scavs will be allowed to spawn per minute (on average)", new AcceptableValueRange<float>(0.5f, 6f)));
                 ScavSpawnLimitThreshold = Config.Bind("Scav Spawn Restrictions", "Threshold for Scav Spawn Rate Limit",
-                    18, new ConfigDescription("The Scav spawn rate limit will only be active after this many Scavs spawn in the raid", new AcceptableValueRange<int>(1, 50)));
+                    10, new ConfigDescription("The Scav spawn rate limit will only be active after this many Scavs spawn in the raid", new AcceptableValueRange<int>(1, 50)));
                 ScavMaxAliveLimit = Config.Bind("Scav Spawn Restrictions", "Max Alive Scavs",
-                    22, new ConfigDescription("The maximum number of Scavs that can be alive at the same time (including Sniper Scavs)", new AcceptableValueRange<int>(5, 25)));
+                    15, new ConfigDescription("The maximum number of Scavs that can be alive at the same time (including Sniper Scavs)", new AcceptableValueRange<int>(5, 25)));
             }
 
             int minDistanceAILimitNormal = Singleton<ConfigUtil>.Instance.CurrentConfig.Debug.Enabled && Singleton<ConfigUtil>.Instance.CurrentConfig.Debug.AllowZeroDistanceSleeping ? 0 : 50;
@@ -202,7 +202,7 @@ namespace QuestingBots
             ShowQuestInfoForSpawnSearchQuests = Config.Bind("Debug", "Show Quest Info for Spawn-Search Quests",
                 false, new ConfigDescription("Include quest markers and information for spawn-search quests like 'Spawn Point Wander' and 'Boss Hunter' quests", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             ShowBotPopulationOverlay = Config.Bind("Debug", "Show Bot Population Overlay",
-                false, "Show the current number of alive PMC bots and total AI bots in the raid");
+                true, "Show the current number of alive PMC bots and total AI bots in the raid");
             QuestOverlayMaxDistance = Config.Bind("Debug", "Max Distance (m) to Show Quest Info",
                 100, new ConfigDescription("Quest markers and info overlays will only be shown if the objective location is within this distance from you", new AcceptableValueRange<int>(10, 300)));
             QuestOverlayFontSize = Config.Bind("Debug", "Font Size for Quest Info",
@@ -210,7 +210,7 @@ namespace QuestingBots
             BotFilter = Config.Bind("Debug", "Bot Filter",
                 "", new ConfigDescription("Show debug info only for bots listed e.g 2,4", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             RespawnAllBotsButton = Config.Bind("Debug", "Respawn All Bots",
-                "", new ConfigDescription("Despawn all living AI bots and queue replacement PScav groups", null, new ConfigurationManagerAttributes
+                "", new ConfigDescription("Despawn all living AI bots and queue replacement PMC/PScav groups", null, new ConfigurationManagerAttributes
                 {
                     Order = 100,
                     HideDefaultButton = true,

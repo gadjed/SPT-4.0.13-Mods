@@ -2,7 +2,7 @@ async (page) => {
   const FORGE_MOD_INDEX = 0; // 0..4
   const PACK_REPO = "https://github.com/gadjed/SPT-4.0.13-Mods";
   const INSTALLER =
-    "https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer";
+    "https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13";
 
   const mods = [
     {
@@ -43,7 +43,7 @@ async (page) => {
       name: "Fast Taxi",
       guid: "gadjed.fasttaxi",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
+        "SPT 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
       category: "Locations",
       source: "https://github.com/gadjed/FastTaxi-SPT-mod",
       profileSafe: true,
@@ -51,7 +51,6 @@ async (page) => {
         "Shortens paid car/taxi extract wait times (typically ~60s → configurable, default **8 seconds**).",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.1.0) (`FastTaxi-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
         "",
         "## Install",
@@ -75,7 +74,7 @@ async (page) => {
       name: "Insurance Control",
       guid: "gadjed.insurancerefund",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — insurance return time, lost chance, magazine/container contents.",
+        "SPT 4.0.13 — insurance return time, lost chance, magazine/container contents.",
       category: "Scripting",
       source: "https://github.com/gadjed/Insurance-refund-SPT-mod",
       profileSafe: false,
@@ -83,7 +82,6 @@ async (page) => {
         "Controls insurance return timing, lost chance, and whether magazines/containers return with contents.",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.1.0) (`InsuranceControl-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.0) (`InsuranceControl-1.0.0.zip`)",
         "",
         "## Install",
@@ -109,7 +107,7 @@ async (page) => {
       name: "Quick Search",
       guid: "gadjed.quicksearch",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — search containers and corpses faster (default 3×).",
+        "SPT 4.0.13 — search containers and corpses faster (default 3×).",
       category: "Scripting",
       source: "https://github.com/gadjed/Quick-search-SPT-mod",
       profileSafe: true,
@@ -117,7 +115,6 @@ async (page) => {
         "Speeds up searching containers and corpses by a configurable multiplier (default **3×**).",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.1.0) (`QuickSearch-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
         "",
         "## Install",
@@ -141,7 +138,7 @@ async (page) => {
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:
-        "SPT 4.1.0 / 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
+        "SPT 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
       category: "Overhauls",
       source: "https://github.com/gadjed/Yellow-flare-curse-SPT-mod",
       profileSafe: true,
@@ -149,7 +146,6 @@ async (page) => {
         "Using an RSP-30 Yellow (once per raid) curses nearby scavs/PMCs, then triggers a high-value airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.1.0** — [v1.1.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.1.0) (`YellowFlareCurse-1.1.0.zip`)",
         "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.0) (`YellowFlareCurse-1.0.0.zip`)",
         "",
         "## Install",

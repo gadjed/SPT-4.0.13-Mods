@@ -1,6 +1,7 @@
-﻿# SPT 4.1.0 Mod Pack Manager
+﻿# SPT 4.0.13 Mod Pack Manager
 # Керування встановленням / оновленням / очищенням модів збірки.
-# Запуск: powershell -ExecutionPolicy Bypass -File .\manage-modpack.ps1 [шлях_до_SPT]
+# Зазвичай запускається через manage-modpack.cmd (bootstrap з GitHub).
+# Прямий запуск: powershell -ExecutionPolicy Bypass -File .\manage-modpack.ps1 [шлях_до_SPT]
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
@@ -10,18 +11,24 @@ param(
 $ErrorActionPreference = "Stop"
 
 $Repo = "gadjed/SPT-4.0.13-Mods"
-$AssetName = "SPT-4.1.0-ModPack.zip"
+$AssetName = "SPT-4.0.13-ModPack.zip"
 $SvmRepo = "GhostFenixx/svm-csharp"
 $SvmAssetName = "SVM.Server.Value.Modifier.zip"
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$CacheDir = Join-Path $ScriptDir ".modpack-cache"
-$LocalZip = Join-Path $ScriptDir $AssetName
+$ScriptPath = $MyInvocation.MyCommand.Path
+$ScriptDir = Split-Path -Parent $ScriptPath
 
-$PackRootFiles = @("Greed.exe", "INSTALL.txt", "MANIFEST.txt")
+$PackRootFiles = @("INSTALL.txt", "MANIFEST.txt")
+# Greed.exe + [SVM] Server Value Modifier are user-owned (presets); never wipe on clean/update.
 $PackManagedDlls = @(
     "Unity.InternalAPIEngineBridge.003.dll",
     "Unity.VectorGraphics.dll"
 )
+
+# Filled by Initialize-GamePaths — always the SPT game root, even if this .ps1 lives in .modpack-cache.
+$script:ResolvedSptRoot = $null
+$script:CacheDir = $null
+$script:LocalZip = $null
+$script:ScriptSource = "local"
 
 function Write-Info  { param([string]$Message) Write-Host $Message -ForegroundColor Cyan }
 function Write-Ok    { param([string]$Message) Write-Host $Message -ForegroundColor Green }
@@ -51,28 +58,74 @@ function Test-SptRoot {
         ((Test-Path -LiteralPath $bep) -and (Test-Path -LiteralPath $user))
 }
 
-function Resolve-SptRootPath {
+function Get-CacheParentGameRoot {
+    # Bootstrap stores the live script at <game>\.modpack-cache\manage-modpack.ps1
+    if ((Split-Path -Leaf $ScriptDir) -ne ".modpack-cache") { return $null }
+    $parent = Split-Path -Parent $ScriptDir
+    if (Test-SptRoot $parent) { return $parent }
+    return $null
+}
+
+function Initialize-GamePaths {
+    if ($script:ResolvedSptRoot) { return }
+
+    $candidate = $null
     if (-not [string]::IsNullOrWhiteSpace($script:SptRoot) -and (Test-SptRoot $script:SptRoot)) {
-        return (Resolve-Path -LiteralPath $script:SptRoot).Path
+        $candidate = $script:SptRoot
     }
-    if ($env:SPT_ROOT -and (Test-SptRoot $env:SPT_ROOT)) {
-        return (Resolve-Path -LiteralPath $env:SPT_ROOT).Path
+    elseif ($env:SPT_ROOT -and (Test-SptRoot $env:SPT_ROOT)) {
+        $candidate = $env:SPT_ROOT
     }
-    if (Test-SptRoot (Get-Location).Path) {
-        return (Get-Location).Path
+    elseif (Test-SptRoot (Get-Location).Path) {
+        $candidate = (Get-Location).Path
     }
-    if (Test-SptRoot $ScriptDir) {
-        return $ScriptDir
+    else {
+        $fromCache = Get-CacheParentGameRoot
+        if ($fromCache) {
+            $candidate = $fromCache
+        }
+        elseif (Test-SptRoot $ScriptDir) {
+            $candidate = $ScriptDir
+        }
     }
 
-    Write-Host ""
-    Write-Warn "Вкажіть шлях до кореня SPT (де EscapeFromTarkov.exe / SPT.Server.exe)."
-    $inputPath = Read-Host "Шлях SPT"
-    if (-not (Test-SptRoot $inputPath)) {
-        Write-Err "Не схоже на корінь SPT: $inputPath"
-        throw "Invalid SPT root"
+    if (-not $candidate) {
+        Write-Host ""
+        Write-Warn "Вкажіть шлях до кореня SPT (де EscapeFromTarkov.exe / SPT.Server.exe)."
+        $inputPath = Read-Host "Шлях SPT"
+        if (-not (Test-SptRoot $inputPath)) {
+            Write-Err "Не схоже на корінь SPT: $inputPath"
+            throw "Invalid SPT root"
+        }
+        $candidate = $inputPath
     }
-    return (Resolve-Path -LiteralPath $inputPath).Path
+
+    $script:ResolvedSptRoot = (Resolve-Path -LiteralPath $candidate).Path
+    $script:CacheDir = Join-Path $script:ResolvedSptRoot ".modpack-cache"
+    $script:LocalZip = Join-Path $script:ResolvedSptRoot $AssetName
+    New-Item -ItemType Directory -Force -Path $script:CacheDir | Out-Null
+
+    if ((Split-Path -Leaf $ScriptDir) -eq ".modpack-cache") {
+        $script:ScriptSource = "github-cache"
+    }
+    else {
+        $script:ScriptSource = "local"
+    }
+}
+
+function Resolve-SptRootPath {
+    Initialize-GamePaths
+    return $script:ResolvedSptRoot
+}
+
+function Get-ModpackCacheDir {
+    Initialize-GamePaths
+    return $script:CacheDir
+}
+
+function Get-LocalModPackZip {
+    Initialize-GamePaths
+    return $script:LocalZip
 }
 
 function Ensure-SptDirs {
@@ -147,7 +200,7 @@ function Remove-LegacyQuestingConflicts {
 function Remove-LegacyMedConflicts {
     param([string]$Root)
     # Fast Surgery / Continuous Healing were folded into Med Rebalance (4.0.13).
-    # Also strip leftovers when the 4.1 pack no longer ships FastSurgery.
+    # Strip leftovers if an older pack still shipped FastSurgery.
     foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
         if (-not (Test-Path -LiteralPath $modsDir)) { continue }
         foreach ($legacy in @("FastSurgery")) {
@@ -208,6 +261,8 @@ function Clear-Mods {
 
     # Never delete SPT's own BepInEx modules (spt-core.dll lives here).
     $preservePluginNames = @("spt")
+    # SVM is installed separately; keep presets / Greed state across pack updates.
+    $preserveModFolderNames = @("[SVM] Server Value Modifier")
 
     $pluginsDir = Join-Path $Root "BepInEx\plugins"
     if (Test-Path -LiteralPath $pluginsDir) {
@@ -217,16 +272,26 @@ function Clear-Mods {
         Write-Ok "  очищено BepInEx\plugins (збережено: $($preservePluginNames -join ', '))"
     }
 
-    $targets = @(
-        (Join-Path $Root "BepInEx\patchers"),
-        (Join-Path $Root "user\mods"),
-        (Join-Path $Root "SPT\user\mods")
-    )
+    $patchersDir = Join-Path $Root "BepInEx\patchers"
+    if (Test-Path -LiteralPath $patchersDir) {
+        Get-ChildItem -LiteralPath $patchersDir -Force | Remove-Item -Recurse -Force
+        Write-Ok "  очищено BepInEx\patchers"
+    }
 
-    foreach ($dir in $targets) {
-        if (Test-Path -LiteralPath $dir) {
-            Get-ChildItem -LiteralPath $dir -Force | Remove-Item -Recurse -Force
-            Write-Ok "  очищено $($dir.Substring($Root.Length).TrimStart('\','/'))"
+    foreach ($modsRel in @("user\mods", "SPT\user\mods")) {
+        $dir = Join-Path $Root $modsRel
+        if (-not (Test-Path -LiteralPath $dir)) { continue }
+        Get-ChildItem -LiteralPath $dir -Force | Where-Object {
+            $preserveModFolderNames -notcontains $_.Name
+        } | Remove-Item -Recurse -Force
+        $kept = @(Get-ChildItem -LiteralPath $dir -Force -ErrorAction SilentlyContinue |
+            Where-Object { $preserveModFolderNames -contains $_.Name } |
+            ForEach-Object { $_.Name })
+        if ($kept.Count -gt 0) {
+            Write-Ok "  очищено $modsRel (збережено: $($kept -join ', '))"
+        }
+        else {
+            Write-Ok "  очищено $modsRel"
         }
     }
 
@@ -334,19 +399,46 @@ function Get-LatestSvm {
 function Resolve-PackZip {
     param([bool]$PreferDownload = $false)
 
+    $cacheDir = Get-ModpackCacheDir
+    $localZip = Get-LocalModPackZip
+
     if ($PreferDownload) {
-        $zip = Join-Path $CacheDir $AssetName
+        $zip = Join-Path $cacheDir $AssetName
         return (Get-LatestModPack -Dest $zip)
     }
 
-    if (Test-Path -LiteralPath $LocalZip) {
-        Write-Info "Використовую локальний архів: $LocalZip"
-        return $LocalZip
+    if (Test-Path -LiteralPath $localZip) {
+        Write-Info "Використовую локальний архів: $localZip"
+        return $localZip
     }
 
     Write-Warn "Локальний $AssetName не знайдено — завантажую з GitHub."
-    $zip = Join-Path $CacheDir $AssetName
+    $zip = Join-Path $cacheDir $AssetName
     return (Get-LatestModPack -Dest $zip)
+}
+
+function Assert-Net9ServerModsOnly {
+    param([string]$SearchRoot)
+    # SPT 4.0.13 runs on net9. net10 DLLs (SPT 4.1 builds) crash DI with System.Runtime 10.0.0.0.
+    $bad = @()
+    foreach ($modsDir in @(
+            (Join-Path $SearchRoot "user\mods"),
+            (Join-Path $SearchRoot "SPT\user\mods")
+        )) {
+        if (-not (Test-Path -LiteralPath $modsDir)) { continue }
+        Get-ChildItem -LiteralPath $modsDir -Recurse -Filter "*.dll" -File -ErrorAction SilentlyContinue | ForEach-Object {
+            $bytes = [System.IO.File]::ReadAllBytes($_.FullName)
+            $ascii = [System.Text.Encoding]::ASCII.GetString($bytes)
+            if ($ascii.Contains(".NETCoreApp,Version=v10")) {
+                $bad += $_.FullName.Substring($SearchRoot.Length).TrimStart('\', '/')
+            }
+        }
+    }
+    if ($bad.Count -gt 0) {
+        Write-Err "Відхилено: у пакеті є серверні DLL під .NET 10 (SPT 4.1), а цей інсталер лише для SPT 4.0.13:"
+        $bad | ForEach-Object { Write-Err "  $_" }
+        throw "ModPack містить net10 серверні моди. Потрібен SPT-4.0.13-ModPack з YellowFlareCurse 1.0.x (net9)."
+    }
 }
 
 function Install-Mods {
@@ -371,12 +463,14 @@ function Install-Mods {
         $src = $tmp
         if ($entries.Count -eq 1 -and $entries[0].PSIsContainer) {
             $name = $entries[0].Name
-            if ($name -eq "SPT-4.1.0-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user")) -or (Test-Path (Join-Path $entries[0].FullName "SPT"))) {
+            if ($name -eq "SPT-4.0.13-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user")) -or (Test-Path (Join-Path $entries[0].FullName "SPT"))) {
                 if ($name -ne "BepInEx") {
                     $src = $entries[0].FullName
                 }
             }
         }
+
+        Assert-Net9ServerModsOnly -SearchRoot $src
 
         Write-Info "Копіювання в $Root..."
         Copy-Item -Path (Join-Path $src "*") -Destination $Root -Recurse -Force
@@ -384,6 +478,7 @@ function Install-Mods {
         Remove-LegacyQuestingConflicts -Root $Root
         Remove-LegacyMedConflicts -Root $Root
         Remove-LegacySainConflicts -Root $Root
+        Assert-Net9ServerModsOnly -SearchRoot $Root
         Write-Ok "Встановлення завершено."
         Write-Info "SVM не входить у збірку. За потреби оберіть пункт меню «Встановити SVM»."
     }
@@ -439,7 +534,7 @@ function Invoke-Clean {
     $root = Resolve-SptRootPath
     Write-Host ""
     Write-Warn "Буде видалено моди з BepInEx\plugins (крім spt\), BepInEx\patchers, user\mods"
-    Write-Warn "та службові файли пакета (INSTALL/MANIFEST, Greed.exe якщо був)."
+    Write-Warn "та службові файли пакета (INSTALL/MANIFEST). Greed.exe і [SVM] зберігаються."
     Write-Info "SPT: $root"
     if (-not (Confirm-Yes "Очистити моди?")) {
         Write-Warn "Скасовано."
@@ -453,8 +548,9 @@ function Invoke-Install {
     Write-Host ""
     Write-Info "SPT: $root"
 
-    if (Test-Path -LiteralPath $LocalZip) {
-        Write-Info "Знайдено локальний архів: $LocalZip"
+    $localZip = Get-LocalModPackZip
+    if (Test-Path -LiteralPath $localZip) {
+        Write-Info "Знайдено локальний архів: $localZip"
         if (Confirm-Yes "Завантажити свіжіший реліз з GitHub замість локального?") {
             $zip = Resolve-PackZip -PreferDownload $true
         }
@@ -478,7 +574,7 @@ function Invoke-Update {
     Write-Host ""
     Write-Warn "Автоматичне оновлення:"
     Write-Warn "  1) видалити всі поточні моди"
-    Write-Warn "  2) завантажити останній SPT-4.1.0-ModPack.zip з GitHub"
+    Write-Warn "  2) завантажити останній SPT-4.0.13-ModPack.zip з GitHub"
     Write-Warn "  3) встановити збірку"
     Write-Info "SPT: $root"
     Write-Info "Repo: https://github.com/$Repo"
@@ -503,19 +599,27 @@ function Invoke-InstallSvm {
         Write-Warn "Скасовано."
         return
     }
-    $zip = Join-Path $CacheDir $SvmAssetName
+    $zip = Join-Path (Get-ModpackCacheDir) $SvmAssetName
     Get-LatestSvm -Dest $zip | Out-Null
     Install-SvmFromZip -Root $root -ZipPath $zip
 }
 
 function Show-Menu {
     Clear-Host
+    Initialize-GamePaths
     Write-Host "========================================" -ForegroundColor White
-    Write-Host "  SPT 4.1.0 Mod Pack — менеджер" -ForegroundColor White
+    Write-Host "  SPT 4.0.13 Mod Pack — менеджер" -ForegroundColor White
     Write-Host "========================================" -ForegroundColor White
     Write-Host "  Репозиторій: $Repo"
-    if (Test-Path -LiteralPath $LocalZip) {
-        Write-Host "  Локальний zip: є ($LocalZip)"
+    if ($script:ScriptSource -eq "github-cache") {
+        Write-Host "  Скрипт: з GitHub (кеш .modpack-cache)" -ForegroundColor DarkGray
+    }
+    else {
+        Write-Host "  Скрипт: локальний файл" -ForegroundColor DarkGray
+    }
+    $localZip = Get-LocalModPackZip
+    if (Test-Path -LiteralPath $localZip) {
+        Write-Host "  Локальний zip: є ($localZip)"
     }
     else {
         Write-Host "  Локальний zip: немає"

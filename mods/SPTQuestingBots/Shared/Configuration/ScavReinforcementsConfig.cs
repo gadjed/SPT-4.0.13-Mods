@@ -10,19 +10,19 @@ namespace QuestingBots.Configuration
         public bool Enabled { get; set; } = true;
 
         [DataMember(Name = "start_after_seconds", IsRequired = true)]
-        public int StartAfterSeconds { get; set; } = 90;
+        public int StartAfterSeconds { get; set; } = 180;
 
         [DataMember(Name = "interval_seconds", IsRequired = true)]
-        public int IntervalSeconds { get; set; } = 120;
+        public int IntervalSeconds { get; set; } = 180;
 
         [DataMember(Name = "slots_min", IsRequired = true)]
-        public int SlotsMin { get; set; } = 3;
+        public int SlotsMin { get; set; } = 2;
 
         [DataMember(Name = "slots_max", IsRequired = true)]
-        public int SlotsMax { get; set; } = 6;
+        public int SlotsMax { get; set; } = 4;
 
         [DataMember(Name = "waves_per_interval", IsRequired = true)]
-        public int WavesPerInterval { get; set; } = 3;
+        public int WavesPerInterval { get; set; } = 2;
 
         [DataMember(Name = "difficulty", IsRequired = true)]
         public string Difficulty { get; set; } = "normal";

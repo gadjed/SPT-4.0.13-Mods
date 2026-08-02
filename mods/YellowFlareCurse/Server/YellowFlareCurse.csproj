@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>YellowFlareCurse</RootNamespace>
     <AssemblyName>YellowFlareCurse</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.4.1</Version>
+    <Version>1.0.0</Version>
     <Authors>gadjed</Authors>
   </PropertyGroup>
 
@@ -16,10 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SPTarkov.Common" Version="4.1.0" />
-    <PackageReference Include="SPTarkov.DI" Version="4.1.0" />
-    <PackageReference Include="SPTarkov.Server.Core" Version="4.1.0" />
-    <PackageReference Include="SPTarkov.Reflection" Version="4.1.0" />
+    <PackageReference Include="SPTarkov.Common" Version="4.0.11" />
+    <PackageReference Include="SPTarkov.DI" Version="4.0.11" />
+    <PackageReference Include="SPTarkov.Server.Core" Version="4.0.11" />
+    <PackageReference Include="SPTarkov.Reflection" Version="4.0.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +32,5 @@
     <MakeDir Directories="$(ProjectDir)../Build/SPT/user/mods/YellowFlareCurse" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)../Build/SPT/user/mods/YellowFlareCurse" />
     <Copy SourceFiles="$(ProjectDir)config.json" DestinationFolder="$(ProjectDir)../Build/SPT/user/mods/YellowFlareCurse" />
-    <Copy SourceFiles="$(ProjectDir)../LICENSE" DestinationFolder="$(ProjectDir)../Build/SPT/user/mods/YellowFlareCurse" Condition="Exists('$(ProjectDir)../LICENSE')" />
-    <Copy SourceFiles="$(ProjectDir)../README.md" DestinationFolder="$(ProjectDir)../Build/SPT/user/mods/YellowFlareCurse" Condition="Exists('$(ProjectDir)../README.md')" />
   </Target>
 </Project>

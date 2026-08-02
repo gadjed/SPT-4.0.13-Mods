@@ -3,19 +3,20 @@ using QuestingBots.Utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Config;
+using SPTarkov.Server.Core.Servers;
 
 namespace QuestingBots.Services
 {
-    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET)]
+    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET)]
     public class UpdatePMCAndPScavBrainTypesService : AbstractService
     {
         private PmcConfig _pmcConfig;
         private BotConfig _botConfig;
 
-        public UpdatePMCAndPScavBrainTypesService(LoggingUtil logger, ConfigUtil config, PmcConfig pmcConfig, BotConfig botConfig) : base(logger, config)
+        public UpdatePMCAndPScavBrainTypesService(LoggingUtil logger, ConfigUtil config, ConfigServer configServer) : base(logger, config)
         {
-            _pmcConfig = pmcConfig;
-            _botConfig = botConfig;
+            _pmcConfig = configServer.GetConfig<PmcConfig>();
+            _botConfig = configServer.GetConfig<BotConfig>();
         }
 
         protected override void OnLoadIfModIsEnabled()

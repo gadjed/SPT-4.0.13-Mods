@@ -37,21 +37,17 @@ namespace QuestingBots.Components
         private ExfiltrationPoint exfiltrationPoint = null!;
         private Stopwatch timeSpentAtObjectiveTimer = new Stopwatch();
         private Components.BotQuestBuilder botQuestBuilder = null!;
-        private Vector3? temporaryObjectiveOverride = null;
-        private static readonly System.Random redirectRandom = new System.Random();
 
-        public Vector3? Position => temporaryObjectiveOverride ?? assignment?.Position;
+        public Vector3? Position => assignment?.Position;
         public Vector3? LookToPosition => assignment?.LookToPosition;
         public Vector3? TargetPosition => assignment?.TargetPosition;
-        public bool IsJobAssignmentActive => assignment?.IsActive == true || temporaryObjectiveOverride.HasValue;
+        public bool IsJobAssignmentActive => assignment?.IsActive == true;
         public bool HasTeleportingAssignment => assignment?.MustTeleport == true;
-        public bool HasCompletePath => assignment?.HasCompletePath ?? true;
+        public bool HasCompletePath => assignment.HasCompletePath;
         public string DoorIDToUnlockForObjective => assignment?.QuestObjectiveAssignment?.DoorIDToUnlock ?? "";
         public Vector3? InteractionPositionForDoorToUnlockForObjective => assignment?.QuestObjectiveAssignment?.InteractionPositionToUnlockDoor?.ToUnityVector3();
         public bool MustUnlockDoor => assignment?.DoorToUnlock != null;
-        public QuestAction CurrentQuestAction => temporaryObjectiveOverride.HasValue
-            ? QuestAction.MoveToPosition
-            : (assignment?.QuestObjectiveStepAssignment?.ActionType ?? QuestAction.Undefined);
+        public QuestAction CurrentQuestAction => assignment?.QuestObjectiveStepAssignment?.ActionType ?? QuestAction.Undefined;
         public double MinElapsedActionTime => assignment?.MinElapsedTime ?? 0;
         public float ChanceOfHavingKey => assignment?.QuestObjectiveStepAssignment?.ChanceOfHavingKey ?? 0;
         public float? MaxDistanceForCurrentStep => assignment?.QuestObjectiveStepAssignment?.MaxDistance;
@@ -63,38 +59,15 @@ namespace QuestingBots.Components
         public double TimeSpentAtObjective => timeSpentAtObjectiveTimer.ElapsedMilliseconds / 1000.0;
         public float DistanceToObjective => Position.HasValue ? Vector3.Distance(Position.Value, botOwner.Position) : float.NaN;
         public float DistanceFromLastObjective => (lastAssignment?.Position != null) ? Vector3.Distance(lastAssignment.Position.Value, botOwner.Position) : float.MaxValue;
-        public bool HasTemporaryObjectiveOverride => temporaryObjectiveOverride.HasValue;
 
         public bool IsCloseToObjective(float distance) => DistanceToObjective <= distance;
         public bool IsCloseToObjective() => IsCloseToObjective(Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotSearchDistances.OjectiveReachedIdeal);
 
-        public void StartJobAssigment()
-        {
-            if (temporaryObjectiveOverride.HasValue)
-            {
-                return;
-            }
+        public void StartJobAssigment() => assignment.Start();
+        public void ReportIncompletePath() => assignment.HasCompletePath = false;
+        public void RetryPath() => assignment.HasCompletePath = true;
 
-            assignment?.Start();
-        }
-
-        public void ReportIncompletePath()
-        {
-            if (assignment != null)
-            {
-                assignment.HasCompletePath = false;
-            }
-        }
-
-        public void RetryPath()
-        {
-            if (assignment != null)
-            {
-                assignment.HasCompletePath = true;
-            }
-        }
-
-        public double? TimeSinceJobAssigmentStarted() => assignment?.TimeSinceStarted();
+        public double? TimeSinceJobAssigmentStarted() => assignment.TimeSinceStarted();
 
         public override string ToString()
         {
@@ -272,8 +245,6 @@ namespace QuestingBots.Components
                 return;
             }
 
-            ClearTemporaryObjectiveOverride();
-
             lastAssignment = assignment;
             assignment = objective;
 
@@ -292,21 +263,6 @@ namespace QuestingBots.Components
 
         public void CompleteObjective()
         {
-            if (temporaryObjectiveOverride.HasValue)
-            {
-                ClearTemporaryObjectiveOverride();
-                assignment?.Inactivate();
-
-                if (botOwner != null)
-                {
-                    SetObjective(botOwner.GetNewBotJobAssignment());
-                    Singleton<LoggingUtil>.Instance.LogInfo("Bot " + botOwner.GetText() + " finished near-player redirect and is now doing " + (assignment?.ToString() ?? "[NULL]"));
-                }
-
-                StuckCount = 0;
-                return;
-            }
-
             assignment.Complete();
 
             BotPath.ClearPath();
@@ -331,12 +287,7 @@ namespace QuestingBots.Components
 
         public void FailObjective()
         {
-            if (temporaryObjectiveOverride.HasValue)
-            {
-                ClearTemporaryObjectiveOverride();
-            }
-
-            assignment?.Fail();
+            assignment.Fail();
         }
 
         public bool TryChangeObjective()
@@ -347,7 +298,6 @@ namespace QuestingBots.Components
                 return false;
             }
 
-            ClearTemporaryObjectiveOverride();
             assignment?.Inactivate();
 
             if (botOwner == null)
@@ -359,96 +309,6 @@ namespace QuestingBots.Components
             Singleton<LoggingUtil>.Instance.LogInfo("Bot " + botOwner.GetText() + " is now doing " + (assignment?.ToString() ?? "[NULL]"));
 
             return true;
-        }
-
-        /// <summary>
-        /// When a bot is stuck standing still, send it toward a NavMesh point near a human player
-        /// instead of teleporting or immediately picking an unrelated quest objective.
-        /// </summary>
-        public bool TryRedirectNearHumanPlayer(float minDistance = 20f, float maxDistance = 45f)
-        {
-            if (botOwner == null || Singleton<GameWorld>.Instance == null)
-            {
-                return false;
-            }
-
-            Vector3? anchor = GetNearestHumanPlayerPosition();
-            if (!anchor.HasValue)
-            {
-                return false;
-            }
-
-            LocationData locationData = Singleton<GameWorld>.Instance.GetComponent<LocationData>();
-            if (locationData == null)
-            {
-                return false;
-            }
-
-            for (int attempt = 0; attempt < 8; attempt++)
-            {
-                float distance = minDistance + (float)(redirectRandom.NextDouble() * (maxDistance - minDistance));
-                float angle = (float)(redirectRandom.NextDouble() * Math.PI * 2.0);
-                Vector3 candidate = anchor.Value + new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
-
-                Vector3? navMeshPosition = locationData.FindNearestNavMeshPosition(candidate, 5f);
-                if (!navMeshPosition.HasValue)
-                {
-                    continue;
-                }
-
-                // Avoid picking a point essentially on top of the bot's current position
-                if (Vector3.Distance(navMeshPosition.Value, botOwner.Position) < 8f)
-                {
-                    continue;
-                }
-
-                temporaryObjectiveOverride = navMeshPosition;
-                if (assignment != null)
-                {
-                    assignment.HasCompletePath = true;
-                }
-
-                BotPath?.ForcePathRecalculation();
-                Singleton<LoggingUtil>.Instance.LogWarning(
-                    "Bot " + botOwner.GetText() + " was stuck; redirecting near player to " + navMeshPosition.Value);
-                return true;
-            }
-
-            return false;
-        }
-
-        public void ClearTemporaryObjectiveOverride()
-        {
-            temporaryObjectiveOverride = null;
-        }
-
-        private Vector3? GetNearestHumanPlayerPosition()
-        {
-            GameWorld gameWorld = Singleton<GameWorld>.Instance;
-            if (gameWorld?.AllAlivePlayersList == null)
-            {
-                return LocationData.GetMainPlayerPosition();
-            }
-
-            Vector3? nearest = null;
-            float nearestDistance = float.MaxValue;
-
-            foreach (Player player in gameWorld.AllAlivePlayersList)
-            {
-                if (player == null || player.IsAI || !player.HealthController.IsAlive)
-                {
-                    continue;
-                }
-
-                float distance = Vector3.Distance(botOwner.Position, player.Position);
-                if (distance < nearestDistance)
-                {
-                    nearestDistance = distance;
-                    nearest = player.Position;
-                }
-            }
-
-            return nearest ?? LocationData.GetMainPlayerPosition();
         }
 
         public void UnlockDoor(EFT.Interactive.WorldInteractiveObject door)

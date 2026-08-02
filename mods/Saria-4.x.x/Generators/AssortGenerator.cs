@@ -1,14 +1,13 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using SariaShop.Helpers;
-using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Helpers.Items;
-using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using Path = System.IO.Path;
 
@@ -56,11 +55,11 @@ public class ItemData
     public object Upd { get; set; }
 }
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class SariaAssortGenerator(
     SariaFluentTraderAssortHelper assortUtils,
     ModHelper modHelper,
-    TradersTable tradersTable,
+    DatabaseService databaseService,
     RandomUtil randomUtil,
     ItemHelper itemHelper,
     ISptLogger<SariaAssortGenerator> logger
@@ -269,7 +268,7 @@ public class SariaAssortGenerator(
 
     private void RandomizeStock()
     {
-        var trader = tradersTable.GetTrader("66f4db5ca4958508883d700c");
+        var trader = databaseService.GetTrader("66f4db5ca4958508883d700c");
         var traderAssortItems = trader?.Assort.Items;
 
         if (traderAssortItems == null)

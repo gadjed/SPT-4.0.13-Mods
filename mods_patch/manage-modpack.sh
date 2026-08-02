@@ -1,18 +1,99 @@
-#!/usr/bin/env bash
-# SPT 4.1.0 Mod Pack Manager
-# Керування встановленням / оновленням / очищенням модів збірки.
+﻿#!/usr/bin/env bash
+# SPT 4.0.13 Mod Pack Manager
+# Зазвичай: тонкий bootstrap тягне актуальну копію з GitHub у .modpack-cache і exec.
 set -euo pipefail
 
 REPO="gadjed/SPT-4.0.13-Mods"
-ASSET_NAME="SPT-4.1.0-ModPack.zip"
+ASSET_NAME="SPT-4.0.13-ModPack.zip"
 SVM_REPO="GhostFenixx/svm-csharp"
 SVM_ASSET_NAME="SVM.Server.Value.Modifier.zip"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CACHE_DIR="${SCRIPT_DIR}/.modpack-cache"
-LOCAL_ZIP="${SCRIPT_DIR}/${ASSET_NAME}"
+SCRIPT_URL="https://raw.githubusercontent.com/gadjed/SPT-4.0.13-Mods/main/mods_patch/manage-modpack.sh"
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || realpath "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
 
-# Файли з кореня SPT, що приходять із пакета / опційного SVM
-PACK_ROOT_FILES=(Greed.exe INSTALL.txt MANIFEST.txt)
+is_spt_root() {
+  local dir="$1"
+  [[ -f "${dir}/EscapeFromTarkov.exe" ]] || [[ -f "${dir}/SPT.Server.exe" ]] || [[ -d "${dir}/BepInEx" && -d "${dir}/user" ]]
+}
+
+guess_game_root() {
+  if [[ -n "${1:-}" ]] && is_spt_root "$1"; then
+    printf '%s' "$1"
+    return 0
+  fi
+  if [[ -n "${SPT_ROOT:-}" ]] && is_spt_root "$SPT_ROOT"; then
+    printf '%s' "$SPT_ROOT"
+    return 0
+  fi
+  if is_spt_root "$PWD"; then
+    printf '%s' "$PWD"
+    return 0
+  fi
+  if [[ "$(basename "$SCRIPT_DIR")" == ".modpack-cache" ]] && is_spt_root "$(dirname "$SCRIPT_DIR")"; then
+    printf '%s' "$(dirname "$SCRIPT_DIR")"
+    return 0
+  fi
+  if is_spt_root "$SCRIPT_DIR"; then
+    printf '%s' "$SCRIPT_DIR"
+    return 0
+  fi
+  return 1
+}
+
+# Bootstrap once: download latest script from GitHub and re-exec from cache.
+if [[ "${MODPACK_BOOTSTRAPPED:-0}" != "1" ]]; then
+  GAME_ROOT="$(guess_game_root "${1:-}" || true)"
+  if [[ -z "${GAME_ROOT:-}" ]]; then
+    GAME_ROOT="$PWD"
+  fi
+  CACHE_DIR="${GAME_ROOT}/.modpack-cache"
+  REMOTE_SCRIPT="${CACHE_DIR}/manage-modpack.sh"
+  mkdir -p "$CACHE_DIR"
+  echo "[modpack] Завантаження актуального manage-modpack.sh з GitHub..."
+  tmp="${REMOTE_SCRIPT}.tmp"
+  if command -v curl >/dev/null 2>&1 && curl -fsSL -H 'Cache-Control: no-cache' -A 'SPT-ModPack-Bootstrap' "$SCRIPT_URL" -o "$tmp"; then
+    if [[ "$(wc -c < "$tmp")" -ge 200 ]]; then
+      mv -f "$tmp" "$REMOTE_SCRIPT"
+      chmod +x "$REMOTE_SCRIPT" || true
+      echo "[modpack] Скрипт оновлено."
+    else
+      rm -f "$tmp"
+      echo "[modpack] Порожнє завантаження — fallback."
+    fi
+  elif command -v wget >/dev/null 2>&1 && wget -q -O "$tmp" "$SCRIPT_URL"; then
+    mv -f "$tmp" "$REMOTE_SCRIPT"
+    chmod +x "$REMOTE_SCRIPT" || true
+    echo "[modpack] Скрипт оновлено."
+  else
+    rm -f "$tmp" 2>/dev/null || true
+    echo "[modpack] Не вдалося завантажити — локальний/кеш fallback."
+    if [[ ! -f "$REMOTE_SCRIPT" && -f "$SCRIPT_PATH" ]]; then
+      cp -f "$SCRIPT_PATH" "$REMOTE_SCRIPT"
+    fi
+  fi
+  if [[ ! -f "$REMOTE_SCRIPT" ]]; then
+    echo "[modpack] ПОМИЛКА: немає скрипта менеджера." >&2
+    exit 1
+  fi
+  export MODPACK_BOOTSTRAPPED=1
+  export SPT_ROOT="$GAME_ROOT"
+  exec bash "$REMOTE_SCRIPT" "$GAME_ROOT" "$@"
+fi
+
+# --- running bootstrapped copy ---
+GAME_ROOT="$(guess_game_root "${1:-}" || true)"
+if [[ -z "${GAME_ROOT:-}" ]]; then
+  echo "Не вдалося визначити корінь SPT." >&2
+  exit 1
+fi
+export SPT_ROOT="$GAME_ROOT"
+CACHE_DIR="${GAME_ROOT}/.modpack-cache"
+LOCAL_ZIP="${GAME_ROOT}/${ASSET_NAME}"
+mkdir -p "$CACHE_DIR"
+
+# Файли з кореня SPT, що приходять із пакета (Greed.exe не чіпаємо — користувацький SVM)
+PACK_ROOT_FILES=(INSTALL.txt MANIFEST.txt)
+PRESERVE_MOD_FOLDERS=("[SVM] Server Value Modifier")
 PACK_MANAGED_DLLS=(
   Unity.InternalAPIEngineBridge.003.dll
   Unity.VectorGraphics.dll
@@ -45,22 +126,18 @@ confirm() {
   esac
 }
 
-is_spt_root() {
-  local dir="$1"
-  [[ -f "${dir}/EscapeFromTarkov.exe" ]] || [[ -f "${dir}/SPT.Server.exe" ]] || [[ -d "${dir}/BepInEx" && -d "${dir}/user" ]]
-}
-
 resolve_spt_root() {
+  local guessed
+  if guessed="$(guess_game_root "${1:-}")"; then
+    printf '%s' "$guessed"
+    return 0
+  fi
   if [[ -n "${SPT_ROOT:-}" ]] && is_spt_root "$SPT_ROOT"; then
     printf '%s' "$SPT_ROOT"
     return 0
   fi
   if is_spt_root "$PWD"; then
     printf '%s' "$PWD"
-    return 0
-  fi
-  if is_spt_root "$SCRIPT_DIR"; then
-    printf '%s' "$SCRIPT_DIR"
     return 0
   fi
 
@@ -184,14 +261,29 @@ clear_mods() {
     find "${root}/BepInEx/patchers" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
     ok "  очищено BepInEx/patchers/"
   fi
-  if [[ -d "${root}/user/mods" ]]; then
-    find "${root}/user/mods" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    ok "  очищено user/mods/"
-  fi
-  if [[ -d "${root}/SPT/user/mods" ]]; then
-    find "${root}/SPT/user/mods" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    ok "  очищено SPT/user/mods/"
-  fi
+
+  local mods_dir name keep
+  for mods_dir in "${root}/user/mods" "${root}/SPT/user/mods"; do
+    [[ -d "$mods_dir" ]] || continue
+    keep=0
+    while IFS= read -r -d '' name; do
+      local base
+      base="$(basename "$name")"
+      local skip=0
+      local p
+      for p in "${PRESERVE_MOD_FOLDERS[@]}"; do
+        if [[ "$base" == "$p" ]]; then skip=1; keep=1; break; fi
+      done
+      if [[ "$skip" -eq 0 ]]; then
+        rm -rf "$name"
+      fi
+    done < <(find "$mods_dir" -mindepth 1 -maxdepth 1 -print0 2>/dev/null)
+    if [[ "$keep" -eq 1 ]]; then
+      ok "  очищено ${mods_dir#"${root}/"}/ (збережено: ${PRESERVE_MOD_FOLDERS[*]})"
+    else
+      ok "  очищено ${mods_dir#"${root}/"}/"
+    fi
+  done
 
   local f
   for f in "${PACK_ROOT_FILES[@]}"; do
@@ -350,7 +442,7 @@ install_mods() {
   if [[ ${#entries[@]} -eq 1 && -d "${entries[0]}" ]]; then
     local name
     name="$(basename "${entries[0]}")"
-    if [[ "$name" == SPT-4.1.0-ModPack || "$name" == BepInEx || -d "${entries[0]}/BepInEx" || -d "${entries[0]}/user" ]]; then
+    if [[ "$name" == SPT-4.0.13-ModPack || "$name" == BepInEx || -d "${entries[0]}/BepInEx" || -d "${entries[0]}/user" ]]; then
       if [[ "$name" != BepInEx ]]; then
         src="${entries[0]}"
       fi
@@ -424,7 +516,7 @@ do_clean() {
   root="$(resolve_spt_root)" || return 1
   printf '\n'
   warn "Буде видалено моди з BepInEx/plugins (крім spt/), BepInEx/patchers, user/mods"
-  warn "та службові файли пакета (INSTALL/MANIFEST, Greed.exe якщо був)."
+  warn "та службові файли пакета (INSTALL/MANIFEST). Greed.exe і [SVM] зберігаються."
   info "SPT: ${root}"
   confirm "Очистити моди?" || { warn "Скасовано."; return 0; }
   clear_mods "$root"
@@ -455,7 +547,7 @@ do_update() {
   printf '\n'
   warn "Автоматичне оновлення:"
   warn "  1) видалити всі поточні моди"
-  warn "  2) завантажити останній SPT-4.1.0-ModPack.zip з GitHub"
+  warn "  2) завантажити останній SPT-4.0.13-ModPack.zip з GitHub"
   warn "  3) встановити збірку"
   info "SPT: ${root}"
   info "Repo: https://github.com/${REPO}"
@@ -483,7 +575,7 @@ do_install_svm() {
 show_menu() {
   clear 2>/dev/null || true
   printf '%s\n' "${BOLD}========================================${RESET}"
-  printf '%s\n' "${BOLD}  SPT 4.1.0 Mod Pack — менеджер${RESET}"
+  printf '%s\n' "${BOLD}  SPT 4.0.13 Mod Pack — менеджер${RESET}"
   printf '%s\n' "${BOLD}========================================${RESET}"
   printf '  Репозиторій: %s\n' "$REPO"
   printf '  Локальний zip: %s\n' "$( [[ -f "$LOCAL_ZIP" ]] && echo "є (${LOCAL_ZIP})" || echo "немає" )"

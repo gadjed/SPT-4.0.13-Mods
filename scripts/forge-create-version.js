@@ -1,13 +1,13 @@
 async (page) => {
-  // Fill via page URL containing mod id, or pass args below
+  // One-shot helper: create a Forge version for Med Rebalance on SPT 4.0.13.
   const args = {
     modId: 2869,
-    version: "1.2.0",
-    sptConstraint: "~4.1.0",
+    version: "1.1.0",
+    sptConstraint: "~4.0.13",
     download:
       "https://github.com/gadjed/MedRebalance-SPT-mod/releases/download/v1.3.0/MedRebalance-1.3.0.zip",
     description:
-      "SPT **4.1.0** release.\n\n- Ported to SPT 4.1.0 (`IModMetadata`, `OnLoadAsync`, `TemplateTable`, net10.0)\n- Direct download: MedRebalance-1.3.0.zip\n\nOlder SPT 4.0.13 build: [v1.1.0](https://github.com/gadjed/MedRebalance-SPT-mod/releases/tag/v1.1.0)",
+      "SPT **4.0.13** release.\n\n- Archive: `MedRebalance-1.3.0.zip`",
   };
 
   await page.goto(
@@ -23,14 +23,12 @@ async (page) => {
     .locator('input[name="sptVersionConstraint"]')
     .fill(args.sptConstraint);
 
-  // Publish now if button exists
   const nowBtn = page.getByRole("button", { name: "Now", exact: true });
   if ((await nowBtn.count()) > 0) {
     await nowBtn.click();
     await page.waitForTimeout(300);
   }
 
-  // Prefer Compatible Unknown / leave Fika as-is unless needed
   const submit = page
     .getByRole("button", { name: /Create Version|Create Mod Version|Submit/i })
     .first();

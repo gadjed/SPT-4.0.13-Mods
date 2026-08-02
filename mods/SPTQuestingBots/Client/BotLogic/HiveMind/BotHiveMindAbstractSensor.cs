@@ -12,8 +12,6 @@ namespace QuestingBots.BotLogic.HiveMind
         protected Dictionary<BotOwner, bool> botState = new Dictionary<BotOwner, bool>();
         protected bool defaultValue = false;
 
-        private readonly List<BotOwner> keysScratch = new List<BotOwner>(64);
-
         public BotHiveMindAbstractSensor()
         {
 
@@ -49,13 +47,7 @@ namespace QuestingBots.BotLogic.HiveMind
 
         public virtual void Update(Action<BotOwner> additionalAction = null!)
         {
-            keysScratch.Clear();
-            foreach (BotOwner bot in botState.Keys)
-            {
-                keysScratch.Add(bot);
-            }
-
-            foreach (BotOwner bot in keysScratch)
+            foreach (BotOwner bot in botState.Keys.ToArray())
             {
                 // Need to check if the reference is for a null object, meaning the bot was despawned and disposed
                 if (bot == null)
@@ -130,12 +122,12 @@ namespace QuestingBots.BotLogic.HiveMind
 
         private bool checkStateForAnyFollowers(Dictionary<BotOwner, bool> dict, BotOwner bot)
         {
-            if (!BotHiveMindMonitor.botFollowers.TryGetValue(bot, out List<BotOwner> followers))
+            if (!BotHiveMindMonitor.botFollowers.ContainsKey(bot))
             {
                 return false;
             }
 
-            foreach (BotOwner follower in followers)
+            foreach (BotOwner follower in BotHiveMindMonitor.botFollowers[bot].ToArray())
             {
                 if (!dict.TryGetValue(follower, out bool value))
                 {

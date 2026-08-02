@@ -1,12 +1,12 @@
 # Saria Trader 2.0
 
-**SPT 4.0 Compatible**
+**SPT 4.0.13 Compatible**
 
 Server mod that adds the custom trader **Saria** with a rebalanced loyalty-level assort (meds, ammo, grenades, weapons, gear).
 
 Fork of [nameless / KillerDJLang — Saria 4.x.x](https://github.com/KillerDJLang/Saria-4.x.x) with a rewritten shop progression and pricing.
 
-Developed and tested against **SPT 4.1.0**.
+Developed and tested against **SPT 4.0.13**.
 
 [Latest release](https://github.com/gadjed/SariaTrader2.0-SPT-mod/releases/latest) · [License: MIT](LICENSE)
 
@@ -22,7 +22,7 @@ Developed and tested against **SPT 4.1.0**.
 
 - Full assort rewrite focused on progressive PvE usefulness (early survival → late-game crown)
 - Prices standardized in **roubles**
-- Default config: all options off (vanilla loyalty requirements, fixed stock)
+- Default config: money LL requirements removed (`RemoveMoneyLlRequirements: true`)
 - See [ASSORT.md](ASSORT.md) for the full item/price list
 
 ## Install
@@ -53,8 +53,8 @@ Edit `user/mods/Saria/config.json`:
 
 ```json
 {
-  "RandomizeStockCount": false,
-  "RemoveMoneyLlRequirements": false,
+  "RandomizeStockCount": true,
+  "RemoveMoneyLlRequirements": true,
   "RemoveLevelLlRequirements": false
 }
 ```

@@ -66,11 +66,11 @@ namespace QuestingBots.BotLogic.Objective
                 if (!wasStuck)
                 {
                     ObjectiveManager.StuckCount++;
-                    Singleton<LoggingUtil>.Instance.LogWarning("Bot " + BotOwner.GetText() + " is stuck and will be redirected near a player.");
+                    Singleton<LoggingUtil>.Instance.LogWarning("Bot " + BotOwner.GetText() + " is stuck and will get a new objective.");
                 }
                 wasStuck = true;
 
-                if (ObjectiveManager.TryRedirectNearHumanPlayer() || ObjectiveManager.TryChangeObjective())
+                if (ObjectiveManager.TryChangeObjective())
                 {
                     restartStuckTimer();
                 }

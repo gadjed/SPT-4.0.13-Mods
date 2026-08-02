@@ -7,32 +7,32 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 
 namespace QuestingBots.Services.Spawning
 {
-    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET + 2)]
+    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET + 2)]
     public class ScavReinforcementService : AbstractService
     {
         private const string SCAV_POPULATION_GUID = "gadjed.scavpopulation";
 
         private readonly LoggingUtil _logger;
         private readonly ConfigUtil _config;
-        private readonly LocationTable _locationTable;
+        private readonly DatabaseService _databaseService;
         private readonly RandomUtil _randomUtil;
         private readonly IReadOnlyList<SptMod> _loadedMods;
 
         public ScavReinforcementService(
             LoggingUtil logger,
             ConfigUtil config,
-            LocationTable locationTable,
+            DatabaseService databaseService,
             RandomUtil randomUtil,
             IReadOnlyList<SptMod> loadedMods) : base(logger, config)
         {
             _logger = logger;
             _config = config;
-            _locationTable = locationTable;
+            _databaseService = databaseService;
             _randomUtil = randomUtil;
             _loadedMods = loadedMods;
         }
@@ -65,7 +65,7 @@ namespace QuestingBots.Services.Spawning
             int mapsTouched = 0;
             int scavWavesAdded = 0;
 
-            foreach (Location location in _locationTable.EnumerateLocations())
+            foreach (Location location in _databaseService.EnumerateLocations())
             {
                 LocationBase? locationBase = location.Base;
                 if (locationBase == null)
@@ -196,8 +196,6 @@ namespace QuestingBots.Services.Spawning
             {
                 string zone = zones[_randomUtil.GetInt(0, zones.Count - 1)];
                 int slots = _randomUtil.GetInt(config.SlotsMin, config.SlotsMax);
-                // Stagger waves within a pulse so host spawn cost is not a single-frame spike
-                int waveTime = time + (i * 25);
 
                 location.Waves.Add(
                     new Wave
@@ -211,12 +209,12 @@ namespace QuestingBots.Services.Spawning
                         Number = waveNumber++,
                         SlotsMin = Math.Max(0, slots - 1),
                         SlotsMax = slots,
-                        TimeMin = waveTime,
-                        TimeMax = waveTime + 60,
+                        TimeMin = time,
+                        TimeMax = time + 90,
                         ChanceGroup = 100,
                         SpawnMode = new HashSet<string> { "regular", "pve" },
                         OpenZones = zone,
-                        SptId = $"questingbots-scav-{location.Id}-{waveTime}-{i}"
+                        SptId = $"questingbots-scav-{location.Id}-{time}-{i}"
                     }
                 );
                 added++;

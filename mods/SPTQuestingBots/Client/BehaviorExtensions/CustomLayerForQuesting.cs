@@ -18,7 +18,7 @@ namespace QuestingBots.BehaviorExtensions
             objectiveManager = _botOwner.GetOrAddObjectiveManager();
         }
 
-        public CustomLayerForQuesting(BotOwner _botOwner, int _priority) : this(_botOwner, _priority, DefaultUpdateInterval)
+        public CustomLayerForQuesting(BotOwner _botOwner, int _priority) : this(_botOwner, _priority, updateInterval)
         {
 
         }

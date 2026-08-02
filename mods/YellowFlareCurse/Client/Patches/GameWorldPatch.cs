@@ -20,18 +20,16 @@ public class GameWorldPatch : ModulePatch
     {
         if (gameWorld is HideoutGameWorld)
         {
-            ModLogger.Debug("Skip attach — HideoutGameWorld.");
             return;
         }
 
         if (gameObject.GetComponent<CurseEventComponent>() != null)
         {
-            ModLogger.Debug("Raid component already present.");
             return;
         }
 
         var component = gameObject.AddComponent<CurseEventComponent>();
         component.Init(gameWorld);
-        ModLogger.Info("Raid event component attached.");
+        YellowFlareCursePlugin.Log.LogInfo("[YellowFlareCurse] Raid event component attached.");
     }
 }

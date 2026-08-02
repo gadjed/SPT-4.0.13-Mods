@@ -1,6 +1,6 @@
 # SAIN StealthEngage
 
-**SPT 4.1.0** fork of [ArchangelWTF/SAIN](https://github.com/ArchangelWTF/SAIN) (Solarint's AI Modifications).
+**SPT 4.0.13** fork of [ArchangelWTF/SAIN](https://github.com/ArchangelWTF/SAIN) (Solarint's AI Modifications).
 
 When a PMC is at peace and hears **nearby gunfire**, it starts a **careful search** (no sprint / no charge) and only fully engages once it has the advantage of still being unseen/unheard.
 

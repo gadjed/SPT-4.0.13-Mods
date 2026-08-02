@@ -102,9 +102,13 @@ if [[ -d "$STAGE/pack/SPT/user/mods/MedRebalance" ]]; then
   merge_tree "$STAGE/pack/SPT/user/mods/MedRebalance" "$STAGE/pack/user/mods/MedRebalance"
 fi
 
-echo "==> Overlay YellowFlareCurse 1.3.0"
-rm -rf "$STAGE/overlay/yfc"
-extract_zip_norm "${ROOT}/mods_files/YellowFlareCurse/YellowFlareCurse-1.3.0.zip" "$STAGE/overlay/yfc"
+echo "==> Overlay YellowFlareCurse 1.0.1 (net9 / SPT 4.0.13 ONLY — never 1.3+/net10)"
+rm -rf \
+  "$STAGE/pack/user/mods/YellowFlareCurse" \
+  "$STAGE/pack/SPT/user/mods/YellowFlareCurse" \
+  "$STAGE/pack/BepInEx/plugins/YellowFlareCurse.Client.dll" \
+  "$STAGE/overlay/yfc"
+extract_zip_norm "${ROOT}/mods_files/YellowFlareCurse/YellowFlareCurse-1.0.1.zip" "$STAGE/overlay/yfc"
 merge_tree "$STAGE/overlay/yfc" "$STAGE/pack"
 
 echo "==> Overlay AutoMedHotkeys 1.0.3"
@@ -165,9 +169,10 @@ SPTQuestingBots          v0.12.1
 Saria-4.x.x              v2.0.1
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
-YellowFlareCurse         v1.3.0
+YellowFlareCurse         v1.0.1
 
 EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continuous), ContinuousHealing / FastSurgery (folded into MedRebalance), SVM (no redistribution; install from upstream via manage-modpack)
+NOTE: YellowFlareCurse 1.1+ / 1.3+ / 1.4+ are SPT 4.1.0 (net10) — do NOT overlay into this pack.
 EOF
 
 cat > "$STAGE/pack/INSTALL.txt" <<'EOF'
@@ -188,7 +193,7 @@ SPT 4.0.13 — Mod Pack
 Клієнтські в BepInEx/plugins/ (+ patchers/).
 QuestingBots Continuous включає continuous population (колишній Scav Population).
 Med Rebalance 1.3.0 (колишній Fast Surgery + Continuous Healing).
-YellowFlareCurse 1.3.0, AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
+YellowFlareCurse 1.0.1 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
 SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1.
 
 Виключено навмисно
@@ -234,6 +239,27 @@ for m in "${REQUIRED[@]}"; do
   fi
 done
 [[ "$missing" -eq 0 ]] || die "server mod validation failed"
+
+echo "==> Reject any net10 / SPT 4.1 server DLLs (this pack is SPT 4.0.13 / net9 only)"
+python3 - "$STAGE/pack" <<'PY' || die "net10 server DLL validation failed"
+import sys
+from pathlib import Path
+root = Path(sys.argv[1])
+bad = []
+for dll in root.rglob("*.dll"):
+    rel = dll.relative_to(root).as_posix()
+    if "user/mods/" not in rel:
+        continue
+    data = dll.read_bytes()
+    if b".NETCoreApp,Version=v10" in data:
+        bad.append(rel)
+if bad:
+    print("ERROR: net10 server DLLs found (SPT 4.1 builds leaked into 4.0.13 pack):", file=sys.stderr)
+    for p in bad:
+        print(f"  {p}", file=sys.stderr)
+    sys.exit(1)
+print("OK: no net10 server mods")
+PY
 
 if find "$STAGE/pack" \( -iname '*FastSurgery*' -o -iname '*ContinuousHealing*' \) | grep -q .; then
   echo "Leftover FastSurgery/ContinuousHealing:" >&2

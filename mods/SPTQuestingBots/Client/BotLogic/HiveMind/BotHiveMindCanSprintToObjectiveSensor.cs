@@ -17,20 +17,20 @@ namespace QuestingBots.BotLogic.HiveMind
 
         public override void Update(Action<BotOwner> additionalAction = null!)
         {
-            base.Update(UpdateFromObjectiveManager);
-        }
+            Action<BotOwner> updateFromObjectiveManager = new Action<BotOwner>((bot) =>
+            {
+                Components.BotObjectiveManager? objectiveManager = bot.GetObjectiveManager();
+                if (objectiveManager != null )
+                {
+                    botState[bot] = objectiveManager.CanSprintToObjective();
+                }
+                else
+                {
+                    botState[bot] = defaultValue;
+                }
+            });
 
-        private void UpdateFromObjectiveManager(BotOwner bot)
-        {
-            Components.BotObjectiveManager? objectiveManager = bot.GetObjectiveManager();
-            if (objectiveManager != null)
-            {
-                botState[bot] = objectiveManager.CanSprintToObjective();
-            }
-            else
-            {
-                botState[bot] = defaultValue;
-            }
+            base.Update(updateFromObjectiveManager);
         }
     }
 }

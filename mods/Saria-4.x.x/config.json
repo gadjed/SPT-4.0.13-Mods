@@ -1,5 +1,5 @@
 {
-    "RandomizeStockCount": false,
-    "RemoveMoneyLlRequirements": false,
+    "RandomizeStockCount": true,
+    "RemoveMoneyLlRequirements": true,
     "RemoveLevelLlRequirements": false
 }

@@ -72,7 +72,7 @@ repack_combo() {
   unzip -l "$OUT/$zipname" | sed -n '1,25p'
 }
 
-# Prefer local Build trees for 4.1.0 when available (same DLL content).
+# Prefer local Build trees when available.
 pack_from_build_server() {
   local name="$1" zipname="$2"
   local src="$ROOT/mods/$name/Build/SPT/user/mods/$name"
@@ -131,14 +131,6 @@ pack_from_build_sain() {
   echo "OK $zipname (from Build)"
   unzip -l "$OUT/$zipname" | sed -n '1,25p'
 }
-
-echo "=== 4.1.0 from Build ==="
-pack_from_build_server MedRebalance "MedRebalance-1.3.0.zip"
-pack_from_build_server FastTaxi "FastTaxi-1.1.0.zip"
-pack_from_build_server InsuranceControl "InsuranceControl-1.1.0.zip"
-pack_from_build_client "QuickSearch-1.1.0.zip"
-pack_from_build_combo "YellowFlareCurse-1.1.0.zip"
-pack_from_build_sain "SAIN-StealthEngage-4.4.4.zip"
 
 echo "=== 4.0.13 from previous release zips ==="
 repack_server "$SRC/old-MedRebalance-1.3.0.zip" MedRebalance "MedRebalance-1.3.0.zip"

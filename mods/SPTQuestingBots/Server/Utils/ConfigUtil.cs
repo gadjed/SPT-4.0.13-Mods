@@ -1,7 +1,7 @@
 ﻿using QuestingBots.Configuration;
 using QuestingBots.Helpers;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Helpers;
 using System.Reflection;
 
 namespace QuestingBots.Utils

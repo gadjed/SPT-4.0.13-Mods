@@ -2,22 +2,22 @@
 using QuestingBots.Routers.Internal;
 using QuestingBots.Utils;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Config;
+using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Utils;
 
 namespace QuestingBots.Routers
 {
-    [Injectable(TypePriority = OnLoadOrder.Routers)]
+    [Injectable]
     internal class USECChanceRouter : AbstractStaticRouter
     {
         private static readonly string[] _routeNames = ["GetUSECChance"];
 
         private PmcConfig _pmcConfig;
 
-        public USECChanceRouter(LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil, PmcConfig pmcConfig) : base(_routeNames, logger, config, jsonUtil)
+        public USECChanceRouter(LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil, ConfigServer configServer) : base(_routeNames, logger, config, jsonUtil)
         {
-            _pmcConfig = pmcConfig;
+            _pmcConfig = configServer.GetConfig<PmcConfig>();
         }
 
         public override ValueTask<string?> HandleRoute(string routeName, RequestData routerData)

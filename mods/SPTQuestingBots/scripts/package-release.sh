@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MOD_NAME="QuestingBotsContinuous"
-MOD_VERSION="0.15.0"
+MOD_VERSION="0.12.1"
 DIST="$ROOT/Dist"
 STAGE="$DIST/stage"
 ZIP_NAME="${MOD_NAME}-${MOD_VERSION}.zip"
@@ -25,23 +25,23 @@ if [[ ! -f "$CLIENT_DLL" ]]; then
 fi
 
 rm -rf "$DIST"
-mkdir -p "$STAGE/SPT/user/mods/${MOD_NAME}"
+mkdir -p "$STAGE/user/mods/${MOD_NAME}"
 mkdir -p "$STAGE/BepInEx/plugins/${MOD_NAME}"
 
-cp "$SERVER_DLL" "$STAGE/SPT/user/mods/${MOD_NAME}/"
-cp "$ROOT/Shared/Config/config.json" "$STAGE/SPT/user/mods/${MOD_NAME}/"
-cp "$ROOT/Shared/Config/eftQuestSettings.json" "$STAGE/SPT/user/mods/${MOD_NAME}/"
-cp "$ROOT/Shared/Config/zoneAndItemQuestPositions.json" "$STAGE/SPT/user/mods/${MOD_NAME}/"
-cp "$ROOT/LICENSE" "$STAGE/SPT/user/mods/${MOD_NAME}/"
-cp "$ROOT/NOTICE" "$STAGE/SPT/user/mods/${MOD_NAME}/"
+cp "$SERVER_DLL" "$STAGE/user/mods/${MOD_NAME}/"
+cp "$ROOT/Shared/Config/config.json" "$STAGE/user/mods/${MOD_NAME}/"
+cp "$ROOT/Shared/Config/eftQuestSettings.json" "$STAGE/user/mods/${MOD_NAME}/"
+cp "$ROOT/Shared/Config/zoneAndItemQuestPositions.json" "$STAGE/user/mods/${MOD_NAME}/"
+cp "$ROOT/LICENSE" "$STAGE/user/mods/${MOD_NAME}/"
+cp "$ROOT/NOTICE" "$STAGE/user/mods/${MOD_NAME}/"
 
 cp "$CLIENT_DLL" "$STAGE/BepInEx/plugins/${MOD_NAME}/"
 cp -R "$ROOT/Shared/Quests" "$STAGE/BepInEx/plugins/${MOD_NAME}/"
 
-# Zip from stage so archive roots are SPT/ and BepInEx/ (Forge SPT 4.x layout)
+# Zip from stage so archive roots are user/ and BepInEx/
 (
   cd "$STAGE"
-  zip -r "$DIST/$ZIP_NAME" SPT BepInEx >/dev/null
+  zip -r "$DIST/$ZIP_NAME" user BepInEx >/dev/null
 )
 
 echo "Created $DIST/$ZIP_NAME"

@@ -2,12 +2,11 @@
 using QuestingBots.Routers.Internal;
 using QuestingBots.Utils;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Utils;
 
 namespace QuestingBots.Routers
 {
-    [Injectable(TypePriority = OnLoadOrder.Routers)]
+    [Injectable]
     internal class ZoneAndItemPositionsRouter : AbstractStaticRouter
     {
         private static readonly string[] _routeNames = ["GetZoneAndItemQuestPositions"];

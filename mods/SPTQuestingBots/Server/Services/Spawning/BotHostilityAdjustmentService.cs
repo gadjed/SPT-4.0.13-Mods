@@ -6,31 +6,25 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Config;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Servers;
+using SPTarkov.Server.Core.Services;
 
 namespace QuestingBots.Services.Spawning
 {
-    [Injectable(TypePriority = OnLoadOrder.PostLoad + QuestingBots_Server.LOAD_ORDER_OFFSET + 1)]
+    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET + 1)]
     public class BotHostilityAdjustmentService : AbstractService
     {
         private LoggingUtil _logger;
         private ConfigUtil _config;
-        private LocationTable _locationTable;
-        private BotTable _botTable;
+        private DatabaseService _databaseService;
         private PmcConfig _pmcConfig;
 
-        public BotHostilityAdjustmentService(
-            LoggingUtil logger,
-            ConfigUtil config,
-            LocationTable locationTable,
-            BotTable botTable,
-            PmcConfig pmcConfig) : base(logger, config)
+        public BotHostilityAdjustmentService(LoggingUtil logger, ConfigUtil config, DatabaseService databaseService, ConfigServer configServer) : base(logger, config)
         {
             _logger = logger;
             _config = config;
-            _locationTable = locationTable;
-            _botTable = botTable;
-            _pmcConfig = pmcConfig;
+            _databaseService = databaseService;
+            _pmcConfig = configServer.GetConfig<PmcConfig>();
         }
 
         protected override void OnLoadIfModIsEnabled()
@@ -52,7 +46,7 @@ namespace QuestingBots.Services.Spawning
         {
             _logger.Info("Adjusting bot hostility chances...");
 
-            foreach (Location location in _locationTable.GetDictionary().Values)
+            foreach (Location location in _databaseService.GetLocations().GetDictionary().Values)
             {
                 AdjustAllBotHostilityChancesForLocation(location);
             }
@@ -193,12 +187,12 @@ namespace QuestingBots.Services.Spawning
 
         private void AdjustScavEnemyBotType(string role)
         {
-            if (!_botTable.Types.ContainsKey(role))
+            if (!_databaseService.GetBots().Types.ContainsKey(role))
             {
                 return;
             }
 
-            BotType? botType = _botTable.Types[role];
+            BotType? botType = _databaseService.GetBots().Types[role];
             if (botType == null)
             {
                 return;

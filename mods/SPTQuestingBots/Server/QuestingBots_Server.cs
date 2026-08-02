@@ -6,7 +6,7 @@ using SPTarkov.Server.Core.DI;
 
 namespace QuestingBots;
 
-[Injectable(TypePriority = OnLoadOrder.Preload + QuestingBots_Server.LOAD_ORDER_OFFSET)]
+[Injectable(TypePriority = OnLoadOrder.PreSptModLoader + QuestingBots_Server.LOAD_ORDER_OFFSET)]
 public class QuestingBots_Server : IOnLoad
 {
     public const int LOAD_ORDER_OFFSET = 1;
@@ -22,7 +22,7 @@ public class QuestingBots_Server : IOnLoad
         _modIntegrityTestingUtil = modIntegrityTestingUtil;
     }
 
-    public Task OnLoadAsync(CancellationToken cancellationToken)
+    public Task OnLoad()
     {
         RunModIntegrityCheck();
 

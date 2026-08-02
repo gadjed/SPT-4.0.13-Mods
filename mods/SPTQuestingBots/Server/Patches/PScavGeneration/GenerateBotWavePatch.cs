@@ -1,13 +1,12 @@
-﻿using HarmonyLib;
+﻿using QuestingBots.Patches.Internal;
 using QuestingBots.Utils;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.Controllers;
-using SPTarkov.Server.Core.Generators.Bot;
-using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Generators;
 using SPTarkov.Server.Core.Models.Eft.Bot;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Spt.Bots;
-using SPTarkov.Server.Core.Services.Bot;
+using SPTarkov.Server.Core.Services;
+using System.Collections;
 using System.Reflection;
 using System.Text.Json;
 
@@ -15,25 +14,35 @@ namespace QuestingBots.Patches.PScavGeneration
 {
     public class GenerateBotWavePatch : AbstractPatch
     {
-        private static LoggingUtil _loggingUtil = null!;
-        private static BotNameService _botNameService = null!;
-        private static BotGenerator _botGenerator = null!;
         private static MethodInfo _setRandomisedGameVersionAndCategoryMethod = null!;
-
-        public GenerateBotWavePatch(LoggingUtil loggingUtil, BotNameService botNameService, BotGenerator botGenerator)
+        public static MethodInfo SetRandomisedGameVersionAndCategoryMethod
         {
-            _loggingUtil = loggingUtil;
-            _botNameService = botNameService;
-            _botGenerator = botGenerator;
+            get
+            {
+                if (_setRandomisedGameVersionAndCategoryMethod == null)
+                {
+                    _setRandomisedGameVersionAndCategoryMethod = GetSetRandomisedGameVersionAndCategoryMethod();
+                }
+
+                return _setRandomisedGameVersionAndCategoryMethod;
+            }
+        }
+
+        private static MethodInfo GetSetRandomisedGameVersionAndCategoryMethod()
+        {
+            string methodName = "SetRandomisedGameVersionAndCategory";
+            MethodInfo? setRandomisedGameVersionAndCategoryMethod = typeof(BotGenerator).GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (setRandomisedGameVersionAndCategoryMethod == null)
+            {
+                throw new InvalidOperationException($"Cannot find method {methodName} in BotGenerator");
+            }
+
+            return setRandomisedGameVersionAndCategoryMethod;
         }
 
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(
-                typeof(BotController),
-                "GenerateBotWave",
-                [typeof(MongoId), typeof(GenerateCondition), typeof(BotGenerationDetails)]
-            )!;
+            return typeof(BotController).GetMethod("GenerateBotWave", BindingFlags.Instance | BindingFlags.NonPublic)!;
         }
 
         [PatchPostfix]
@@ -41,7 +50,8 @@ namespace QuestingBots.Patches.PScavGeneration
         {
             if (!generateRequest.ExtensionData!.TryGetValue("GeneratePScav", out var generatePScavObj))
             {
-                _loggingUtil.Error("GenerateCondition did not contain the required GeneratePScav flag. Falling back to default SPT behavior.");
+                LoggingUtil loggingUtil = ServiceRepository.GetService<LoggingUtil>();
+                loggingUtil.Error("GenerateCondition did not contain the required GeneratePScav flag. Falling back to default SPT behavior.");
 
                 return;
             }
@@ -54,6 +64,8 @@ namespace QuestingBots.Patches.PScavGeneration
 
         private static List<BotBase?> ConvertAllToPScav(IEnumerable<BotBase?> bots, int targetCount)
         {
+            LoggingUtil loggingUtil = ServiceRepository.GetService<LoggingUtil>();
+
             List<BotBase?> UpdatedBots = new List<BotBase?>();
             int convertedBots = 0;
 
@@ -61,7 +73,7 @@ namespace QuestingBots.Patches.PScavGeneration
             {
                 if (bot == null)
                 {
-                    _loggingUtil.Error("A null bot was generated");
+                    loggingUtil.Error("A null bot was generated");
                     continue;
                 }
 
@@ -76,7 +88,7 @@ namespace QuestingBots.Patches.PScavGeneration
 
             if (convertedBots < targetCount)
             {
-                _loggingUtil.Warning($"{targetCount} player Scavs were requested, but only {convertedBots} were created");
+                loggingUtil.Warning($"{targetCount} player Scavs were requested, but only {convertedBots} were created");
             }
 
             return UpdatedBots;
@@ -86,13 +98,17 @@ namespace QuestingBots.Patches.PScavGeneration
         {
             if (bot.Info?.Settings?.Role == null)
             {
-                _loggingUtil.Error("A bot with a null role was generated");
+                LoggingUtil loggingUtil = ServiceRepository.GetService<LoggingUtil>();
+                loggingUtil.Error("A bot with a null role was generated");
 
                 return false;
             }
 
             if (bot.Info.Settings.Role != "assault")
             {
+                //LoggingUtil loggingUtil = ServiceRepository.GetService<LoggingUtil>();
+                //loggingUtil.Warning($"Tried generating a player Scav, but a bot with role {bot.Info.Settings.Role} was returned");
+
                 return false;
             }
 
@@ -101,26 +117,16 @@ namespace QuestingBots.Patches.PScavGeneration
 
         private static void ConvertToPScav(BotBase bot)
         {
-            _botNameService.AddRandomPmcNameToBotMainProfileNicknameProperty(bot);
+            BotNameService botNameService = ServiceRepository.GetService<BotNameService>();
+            botNameService.AddRandomPmcNameToBotMainProfileNicknameProperty(bot);
+
             SetRandomisedGameVersionAndCategory(bot);
         }
 
         private static void SetRandomisedGameVersionAndCategory(BotBase bot)
         {
-            _setRandomisedGameVersionAndCategoryMethod ??= GetSetRandomisedGameVersionAndCategoryMethod();
-            _setRandomisedGameVersionAndCategoryMethod.Invoke(_botGenerator, [bot.Info]);
-        }
-
-        private static MethodInfo GetSetRandomisedGameVersionAndCategoryMethod()
-        {
-            const string methodName = "SetRandomisedGameVersionAndCategory";
-            MethodInfo? method = typeof(BotGenerator).GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (method == null)
-            {
-                throw new InvalidOperationException($"Cannot find method {methodName} in BotGenerator");
-            }
-
-            return method;
+            BotGenerator botGenerator = ServiceRepository.GetService<BotGenerator>();
+            SetRandomisedGameVersionAndCategoryMethod.Invoke(botGenerator, new object?[] { bot.Info });
         }
     }
 }

@@ -5,7 +5,7 @@
 | **Version** | v1.0.0 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/FastTaxi-SPT-mod |
-| **Target** | SPT 4.1.0 |
+| **Target** | SPT 4.0.13 |
 
 ---
 

@@ -6,7 +6,7 @@
 | **Type** | Client / Клієнт |
 | **Source** | https://github.com/Katrin0522/SPT-FastInFleaSell |
 | **Forge** | https://forge.sp-tarkov.com/mod/2207/fast-sell-in-flea |
-| **Target** | SPT 4.0.x (1.2.0). Use **1.3.0** for SPT 4.1. |
+| **Target** | SPT 4.0.13 (1.2.0) |
 
 ---
 
@@ -24,7 +24,7 @@ Quickly list items on the flea market with automatic price fitting from current 
 - **Price Subtract Value** / **Price Subtract Percent %**
 
 ### Notes
-Install: `BepInEx/plugins/Kat.FastSellInFlea.dll`. Client-only (not a server mod). Do **not** use 1.3.0 on SPT 4.0.x.
+Install: `BepInEx/plugins/Kat.FastSellInFlea.dll`. Client-only (not a server mod). Use **1.2.0** for SPT 4.0.13.
 
 ---
 

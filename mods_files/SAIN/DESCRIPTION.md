@@ -5,7 +5,7 @@
 | **Version** | v4.4.4 |
 | **Type** | Client + server / Клієнт + сервер |
 | **Source** | https://github.com/gadjed/SAIN-StealthEngage-SPT-mod |
-| **Target** | SPT 4.1.0 |
+| **Target** | SPT 4.0.13 |
 
 ---
 

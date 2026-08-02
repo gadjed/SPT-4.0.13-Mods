@@ -3,12 +3,14 @@ using EFT;
 using QuestingBots.BotLogic.ExternalMods;
 using QuestingBots.BotLogic.ExternalMods.Functions.Hearing;
 using QuestingBots.BotLogic.HiveMind;
-using QuestingBots.Configuration;
 using QuestingBots.Helpers;
 using QuestingBots.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace QuestingBots.BotLogic.BotMonitor.Monitors
@@ -16,7 +18,6 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
     public class BotHearingMonitor : AbstractBotMonitor
     {
         public bool IsSuspicious { get; private set; } = false;
-        public bool IsPvpHunter { get; private set; } = false;
 
         private bool soundPlayedEventAdded = false;
         private float lastEnemySoundHeardTime = 0;
@@ -26,7 +27,6 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
         private float nextTimeSuspicionAllowed = 0;
         private Stopwatch totalSuspiciousTimer = new Stopwatch();
         private Stopwatch notSuspiciousTimer = Stopwatch.StartNew();
-        private readonly System.Random random = new System.Random();
 
         public bool SuspicionAllowedByTime => Time.time >= nextTimeSuspicionAllowed;
 
@@ -36,14 +36,7 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
         {
             hearingFunction = ExternalModHandler.CreateHearingFunction(BotOwner);
 
-            HearingSensorConfig hearingConfig = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor;
-            IsPvpHunter = random.NextDouble() * 100.0 < hearingConfig.PvpHunterChance;
-            if (IsPvpHunter)
-            {
-                Singleton<LoggingUtil>.Instance.LogDebug(BotOwner.GetText() + " rolled as a PVP hunter");
-            }
-
-            if (!hearingConfig.Enabled)
+            if (!Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.Enabled)
             {
                 return;
             }
@@ -77,9 +70,9 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
             soundPlayedEventAdded = false;
         }
 
-        public bool TrySetIgnoreHearing(float duration, bool value, bool ignoreUnderFire)
+        public bool TrySetIgnoreHearing(float duration, bool value, bool ignoreUnderHire)
         {
-            bool hearingIgnored = hearingFunction.TryIgnoreHearing(value, ignoreUnderFire, duration);
+            bool hearingIgnored = hearingFunction.TryIgnoreHearing(value, ignoreUnderHire, duration);
             if (hearingIgnored && value)
             {
                 nextTimeSuspicionAllowed = Time.time + duration;
@@ -95,12 +88,18 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
         private bool isSuspicious()
         {
             bool wasSuspiciousTooLong = totalSuspiciousTimer.ElapsedMilliseconds / 1000 > maxSuspiciousTime;
+            //if (wasSuspiciousTooLong && totalSuspiciousTimer.IsRunning)
+            //{
+            //    Singleton<LoggingUtil>.Instance.LogInfo(BotOwner.GetText() + " has been suspicious for too long");
+            //}
 
-            if (!wasSuspiciousTooLong && shouldBeSuspicious(suspiciousTime))
+            if (!wasSuspiciousTooLong && BotMonitor.GetMonitor<BotHearingMonitor>().shouldBeSuspicious(suspiciousTime))
             {
                 if (!BotHiveMindMonitor.GetValueForBot(BotHiveMindSensorType.IsSuspicious, BotOwner))
                 {
-                    suspiciousTime = updateSuspiciousTime();
+                    suspiciousTime = BotMonitor.GetMonitor<BotHearingMonitor>().updateSuspiciousTime();
+                    //Singleton<LoggingUtil>.Instance.LogInfo("Bot " + BotOwner.GetText() + " will be suspicious for " + suspiciousTime + " seconds");
+
                     BotMonitor.GetMonitor<BotLootingMonitor>().TryPreventBotFromLooting((float)suspiciousTime);
                 }
 
@@ -115,6 +114,11 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
 
             if (notSuspiciousTimer.ElapsedMilliseconds / 1000 > Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.SuspicionCooldownTime)
             {
+                //if (wasSuspiciousTooLong)
+                //{
+                //    Singleton<LoggingUtil>.Instance.LogInfo(BotOwner.GetText() + " is now allowed to be suspicious");
+                //}
+
                 totalSuspiciousTimer.Reset();
             }
             else
@@ -132,81 +136,67 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
 
         private bool shouldBeSuspicious(double maxTimeSinceDangerSensed)
         {
-            return (Time.time - lastEnemySoundHeardTime) < maxTimeSinceDangerSensed;
+            bool shouldBeSuspicious = (Time.time - lastEnemySoundHeardTime) < maxTimeSinceDangerSensed;
+            return shouldBeSuspicious;
         }
 
         private int updateSuspiciousTime()
         {
-            HearingSensorConfig hearingConfig = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor;
-            MinMaxConfig range = hearingConfig.SuspiciousTime;
-            if (IsPvpHunter && hearingConfig.HunterSuspiciousTime != null)
-            {
-                range = hearingConfig.HunterSuspiciousTime;
-            }
+            System.Random random = new System.Random();
+            int min = (int)Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.SuspiciousTime.Min;
+            int max = (int)Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.SuspiciousTime.Max;
 
-            int min = (int)range.Min;
-            int max = Math.Max(min + 1, (int)range.Max);
             return random.Next(min, max);
         }
 
         private void updateMaxSuspiciousTime()
         {
             string locationId = Singleton<GameWorld>.Instance.GetComponent<Components.LocationData>().CurrentLocation.Id;
-            HearingSensorConfig hearingConfig = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor;
 
-            if (hearingConfig.MaxSuspiciousTime.ContainsKey(locationId))
+            if (Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxSuspiciousTime.ContainsKey(locationId))
             {
-                maxSuspiciousTime = hearingConfig.MaxSuspiciousTime[locationId];
+                maxSuspiciousTime = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxSuspiciousTime[locationId];
             }
-            else if (hearingConfig.MaxSuspiciousTime.ContainsKey("default"))
+            else if (Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxSuspiciousTime.ContainsKey("default"))
             {
-                maxSuspiciousTime = hearingConfig.MaxSuspiciousTime["default"];
+                maxSuspiciousTime = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxSuspiciousTime["default"];
             }
             else
             {
                 Singleton<LoggingUtil>.Instance.LogError("Could not set max suspicious time for " + BotOwner.GetText() + ". Defaulting to 60s.");
             }
-
-            if (IsPvpHunter)
-            {
-                maxSuspiciousTime *= 1.5f;
-            }
         }
 
         private void enemySoundHeard(IPlayer iplayer, Vector3 position, float power, AISoundType type)
         {
+            // Ignore dead or despawned bots
             if ((iplayer == null) || !iplayer.HealthController.IsAlive)
             {
                 return;
             }
 
+            // Ignore noises the bot makes itself
             if (iplayer.ProfileId == BotOwner.ProfileId)
             {
                 return;
             }
 
-            bool isGunfire = type == AISoundType.gun || type == AISoundType.silencedGun;
-            bool isKnownEnemy = BotOwner.EnemiesController.EnemyInfos.Any(e => e.Key.ProfileId == iplayer.ProfileId);
-
-            // Hunters chase distant gunfights even before the shooter is marked as an enemy.
-            // Everyone else only reacts to already-known enemies (original behavior).
-            if (!isKnownEnemy)
-            {
-                if (!(IsPvpHunter && isGunfire) || isFriendly(iplayer))
-                {
-                    return;
-                }
-            }
-
-            float adjustedPower = power * BotOwner.HearingMultiplier();
-            adjustedPower *= (type == AISoundType.step)
-                ? Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.LoudnessMultiplierFootsteps
-                : 1;
-            if (adjustedPower < Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MinCorrectedSoundPower)
+            // Ignore noises that aren't from enemy bots or you
+            if (!BotOwner.EnemiesController.EnemyInfos.Any(e => e.Key.ProfileId == iplayer.ProfileId))
             {
                 return;
             }
 
+            // Adjust the sound power based on the bot's loadout and the type of noise
+            float adjustedPower = power * BotOwner.HearingMultiplier();
+            adjustedPower *= (type == AISoundType.step) ? Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.LoudnessMultiplierFootsteps : 1;
+            if (adjustedPower < Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MinCorrectedSoundPower)
+            {
+                //Singleton<LoggingUtil>.Instance.LogInfo("Power: " + power + ", Adjusted Power: " + adjustedPower);
+                return;
+            }
+
+            // Ignore sounds that the bot cannot hear
             float hearingRange = BotOwner.Settings.Current.CurrentHearingSense * adjustedPower;
             float dist = Vector3.Distance(BotOwner.Position, position);
             if (dist > hearingRange)
@@ -219,25 +209,9 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
                 return;
             }
 
+            //Singleton<LoggingUtil>.Instance.LogDebug("Bot " + BotOwner.GetText() + " heard " + type.ToString() + " " + dist + "m away from " + iplayer.GetText());
+
             lastEnemySoundHeardTime = Time.time;
-        }
-
-        private bool isFriendly(IPlayer iplayer)
-        {
-            if (BotOwner.BotsGroup == null)
-            {
-                return false;
-            }
-
-            foreach (BotOwner member in BotOwner.BotsGroup.GetAllMembers())
-            {
-                if (member != null && member.ProfileId == iplayer.ProfileId)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private bool shouldIgnoreSound(AISoundType soundType, float distance)
@@ -247,28 +221,22 @@ namespace QuestingBots.BotLogic.BotMonitor.Monitors
                 return true;
             }
 
-            HearingSensorConfig hearingConfig = Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor;
-
             switch (soundType)
             {
                 case AISoundType.step:
-                    if (distance < hearingConfig.MaxDistanceFootsteps)
+                    if (distance < Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxDistanceFootsteps)
                     {
                         return false;
                     }
                     break;
                 case AISoundType.gun:
-                    float gunMax = IsPvpHunter ? hearingConfig.MaxDistanceGunfireHunter : hearingConfig.MaxDistanceGunfire;
-                    if (distance < gunMax)
+                    if (distance < Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxDistanceGunfire)
                     {
                         return false;
                     }
                     break;
                 case AISoundType.silencedGun:
-                    float suppressedMax = IsPvpHunter
-                        ? hearingConfig.MaxDistanceGunfireSuppressedHunter
-                        : hearingConfig.MaxDistanceGunfireSuppressed;
-                    if (distance < suppressedMax)
+                    if (distance < Singleton<ConfigUtil>.Instance.CurrentConfig.Questing.BotQuestingRequirements.HearingSensor.MaxDistanceGunfireSuppressed)
                     {
                         return false;
                     }
