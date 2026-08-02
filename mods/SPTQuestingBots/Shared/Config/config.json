@@ -349,11 +349,11 @@
 			"enabled": true,
 			"scav_reinforcements": {
 				"enabled": true,
-				"start_after_seconds": 180,
-				"interval_seconds": 180,
-				"slots_min": 2,
-				"slots_max": 4,
-				"waves_per_interval": 2,
+				"start_after_seconds": 90,
+				"interval_seconds": 120,
+				"slots_min": 3,
+				"slots_max": 6,
+				"waves_per_interval": 3,
 				"difficulty": "normal",
 				"extend_bot_stop": true,
 				"skip_maps": [ "laboratory", "labyrinth", "hideout" ]
