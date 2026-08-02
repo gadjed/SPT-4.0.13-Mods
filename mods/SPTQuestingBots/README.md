@@ -95,7 +95,7 @@ MIT text for Scav Population adaptations: [THIRD_PARTY_MIT_ScavPopulation.txt](T
 
 ## Build from source
 
-Requires **.NET 9** SDK. Client build needs SPT/EFT hollowed references under `Client/References/` (see `Client/References/README.md`).
+Requires **.NET 10** SDK for the server (`net10.0`). Client build needs SPT/EFT hollowed references under `Client/References/` (see `Client/References/README.md`).
 
 ```bash
 dotnet build Server/QuestingBots-Server.csproj -c Release -p:SkipQuestingBotsScripts=true

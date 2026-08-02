@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MOD_NAME="QuestingBotsContinuous"
-MOD_VERSION="0.12.0"
+MOD_VERSION="0.14.0"
 DIST="$ROOT/Dist"
 STAGE="$DIST/stage"
 ZIP_NAME="${MOD_NAME}-${MOD_VERSION}.zip"

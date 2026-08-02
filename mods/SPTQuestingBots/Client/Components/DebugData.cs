@@ -50,6 +50,7 @@ namespace QuestingBots.Components
             QuestingBotsPluginConfig.BotFilter.BoxedValue = "";
 
             gizmos.Add(new PlayerCoordinatesGizmo());
+            gizmos.Add(new BotPopulationOverlayGizmo());
         }
 
         private void updateGuiStyles(object sender, EventArgs e) => gizmos.ForEach(gizmo => gizmo.UpdateGUIStyle());
@@ -58,6 +59,14 @@ namespace QuestingBots.Components
         {
             if (!Singleton<GameWorld>.Instance.GetComponent<BotQuestBuilder>().HaveQuestsBeenBuilt)
             {
+                foreach (AbstractDebugGizmo gizmo in gizmos)
+                {
+                    if (gizmo is BotPopulationOverlayGizmo)
+                    {
+                        gizmo.Update();
+                    }
+                }
+
                 return;
             }
 

@@ -105,9 +105,12 @@ namespace QuestingBots
         public static ConfigEntry<BotPathOverlayType> BotPathOverlayTypes = null!;
         public static ConfigEntry<bool> ShowQuestInfoOverlays = null!;
         public static ConfigEntry<bool> ShowQuestInfoForSpawnSearchQuests = null!;
+        public static ConfigEntry<bool> ShowBotPopulationOverlay = null!;
         public static ConfigEntry<int> QuestOverlayFontSize = null!;
         public static ConfigEntry<int> QuestOverlayMaxDistance = null!;
         public static ConfigEntry<string> BotFilter = null!;
+        public static ConfigEntry<string> RespawnAllBotsButton = null!;
+        public static ConfigEntry<string> RemoveAllCorpsesButton = null!;
         public static ConfigEntry<bool> EnableBenchmarking = null!;
 
         public static ConfigEntry<bool> CreateQuestLocations = null!;
@@ -198,12 +201,28 @@ namespace QuestingBots
                 false, "Show information about every nearby quest objective location");
             ShowQuestInfoForSpawnSearchQuests = Config.Bind("Debug", "Show Quest Info for Spawn-Search Quests",
                 false, new ConfigDescription("Include quest markers and information for spawn-search quests like 'Spawn Point Wander' and 'Boss Hunter' quests", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
+            ShowBotPopulationOverlay = Config.Bind("Debug", "Show Bot Population Overlay",
+                true, "Show the current number of alive PMC bots and total AI bots in the raid");
             QuestOverlayMaxDistance = Config.Bind("Debug", "Max Distance (m) to Show Quest Info",
                 100, new ConfigDescription("Quest markers and info overlays will only be shown if the objective location is within this distance from you", new AcceptableValueRange<int>(10, 300)));
             QuestOverlayFontSize = Config.Bind("Debug", "Font Size for Quest Info",
                 16, new ConfigDescription("Font Size for Quest Overlays", new AcceptableValueRange<int>(12, 36))); 
             BotFilter = Config.Bind("Debug", "Bot Filter",
                 "", new ConfigDescription("Show debug info only for bots listed e.g 2,4", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
+            RespawnAllBotsButton = Config.Bind("Debug", "Respawn All Bots",
+                "", new ConfigDescription("Despawn all living AI bots and queue replacement PMC/PScav groups", null, new ConfigurationManagerAttributes
+                {
+                    Order = 100,
+                    HideDefaultButton = true,
+                    CustomDrawer = DrawRespawnAllBotsButton
+                }));
+            RemoveAllCorpsesButton = Config.Bind("Debug", "Remove All Corpses",
+                "", new ConfigDescription("Destroy all corpse loot objects currently on the map", null, new ConfigurationManagerAttributes
+                {
+                    Order = 99,
+                    HideDefaultButton = true,
+                    CustomDrawer = DrawRemoveAllCorpsesButton
+                }));
 
 #if DEBUG
             EnableBenchmarking = Config.Bind("Debug", "Enable Performance Benchmarking",
@@ -218,6 +237,22 @@ namespace QuestingBots
                 "Custom Quest Location", new ConfigDescription("Name of the next quest location that will be stored", null, new ConfigurationManagerAttributes { Order = 2, IsAdvanced = true }));
             StoreQuestLocationKey = Config.Bind("Custom Quest Locations", "Store New Quest Location",
                 new KeyboardShortcut(KeyCode.KeypadEnter), new ConfigDescription("Store your current location as a quest location", null, new ConfigurationManagerAttributes { Order = 1, IsAdvanced = true }));
+        }
+
+        private static void DrawRespawnAllBotsButton(ConfigEntryBase entry)
+        {
+            if (GUILayout.Button("Respawn All Bots", GUILayout.ExpandWidth(true)))
+            {
+                RaidDebugActions.RespawnAllBots();
+            }
+        }
+
+        private static void DrawRemoveAllCorpsesButton(ConfigEntryBase entry)
+        {
+            if (GUILayout.Button("Remove All Corpses", GUILayout.ExpandWidth(true)))
+            {
+                RaidDebugActions.RemoveAllCorpses();
+            }
         }
 
         private static void indexMapIDs()

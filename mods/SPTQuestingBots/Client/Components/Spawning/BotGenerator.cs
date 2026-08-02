@@ -38,6 +38,7 @@ namespace QuestingBots.Components.Spawning
         private readonly System.Random random = new System.Random();
         private int initialBotGroupCount = 0;
         private bool isGeneratingContinuousGroup = false;
+        private bool suppressSpawnRetryDelay = false;
 
         public static int RemainingBotGenerators { get; private set; } = 0;
         public static int CurrentBotGeneratorProgress { get; private set; } = 0;
@@ -113,10 +114,11 @@ namespace QuestingBots.Components.Spawning
             updateTimer.Restart();
 
             // If the previous attempt to spawn a bot failed, wait a minimum amount of time before trying again
-            if (retrySpawnTimer.ElapsedMilliseconds < RetryTimeSeconds * 1000)
+            if (!suppressSpawnRetryDelay && retrySpawnTimer.ElapsedMilliseconds < RetryTimeSeconds * 1000)
             {
                 return;
             }
+            suppressSpawnRetryDelay = false;
 
             if (CanSpawnBots() && ShouldGenerateContinuousTopUp())
             {
@@ -463,6 +465,70 @@ namespace QuestingBots.Components.Spawning
         public int BotsAllowedToSpawnForGeneratorType()
         {
             return MaxAliveBots - AliveBots().Count();
+        }
+
+        /// <summary>
+        /// Debug helper: queue new bot groups until alive+pending reaches MaxAliveBots, then allow an immediate spawn attempt.
+        /// </summary>
+        public void ForceRefillAliveBots()
+        {
+            if (!HasGeneratedBots)
+            {
+                Singleton<LoggingUtil>.Instance.LogWarning("Cannot force-refill " + BotTypeName + " bots before initial generation finishes.");
+                return;
+            }
+
+            if (isGeneratingContinuousGroup)
+            {
+                Singleton<LoggingUtil>.Instance.LogWarning("Cannot force-refill " + BotTypeName + " bots while a group is already being generated.");
+                return;
+            }
+
+            if (MaxAliveBots <= 0)
+            {
+                return;
+            }
+
+            _ = ForceRefillAliveBotsAsync();
+        }
+
+        private async Task ForceRefillAliveBotsAsync()
+        {
+            isGeneratingContinuousGroup = true;
+            continuousTopUpTimer.Restart();
+
+            try
+            {
+                Singleton<LoggingUtil>.Instance.LogInfo("Force-refilling " + BotTypeName + " bots...");
+
+                int safety = 25;
+                while (AliveBots().Count() + RemainingBotsToSpawn() < MaxAliveBots
+                    && GetNumberOfBotsAllowedToSpawn() > 0
+                    && safety-- > 0)
+                {
+                    Models.BotSpawnInfo group = await GenerateBotGroupTask();
+                    if (group == null || group.GeneratedBotCount <= 0)
+                    {
+                        break;
+                    }
+
+                    BotGroups.Add(group);
+                    GeneratedBotCount += group.GeneratedBotCount;
+                    MaxGeneratedBots = Math.Max(MaxGeneratedBots, GeneratedBotCount);
+                }
+
+                suppressSpawnRetryDelay = true;
+                Singleton<LoggingUtil>.Instance.LogInfo("Force-refilling " + BotTypeName + " bots...queued. Alive=" + AliveBots().Count() + ", Pending=" + RemainingBotsToSpawn());
+            }
+            catch (Exception e)
+            {
+                Singleton<LoggingUtil>.Instance.LogError("Failed to force-refill " + BotTypeName + " bots: " + e.Message);
+                Singleton<LoggingUtil>.Instance.LogError(e.StackTrace);
+            }
+            finally
+            {
+                isGeneratingContinuousGroup = false;
+            }
         }
 
         public int RemainingBotsToSpawn()
