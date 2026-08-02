@@ -13,7 +13,7 @@ public sealed record ModMetadata : AbstractModMetadata, IModWebMetadata
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.13");
     public override List<string>? Incompatibilities { get; init; } = null;
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
-    public override string? Url { get; init; } = "https://github.com/gadjed/SPT-4.0.13-Mods";
+    public override string? Url { get; init; } = "https://github.com/gadjed/ModInventory-SPT-mod";
     public override bool? IsBundleMod { get; init; } = false;
     public override string License { get; init; } = "MIT";
 }
