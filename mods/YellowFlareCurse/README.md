@@ -1,6 +1,6 @@
 # Yellow Flare Curse
 
-**SPT 4.1.0** · **v1.4.0**
+**SPT 4.1.0** · **v1.4.1**
 
 Firing a successful **RSP-30 Yellow** flare starts a once-per-raid curse: scavs and PMC bots are pulled near you, stop fighting each other, hunt you (and your group), **Tagilla** is spawned nearby, then after a delay an airdrop lands near the flare with **forced high-value loot** (when the map supports airdrops).
 
@@ -28,7 +28,7 @@ Firing a successful **RSP-30 Yellow** flare starts a once-per-raid curse: scavs 
 
 ## Install
 
-1. Download `YellowFlareCurse-1.4.0.zip` from [Releases](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases)
+1. Download `YellowFlareCurse-1.4.1.zip` from [Releases](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases)
 2. Extract into your **SPT game root** (folder with `EscapeFromTarkov.exe` / `SPT/`)
 3. Restart the SPT **server** and the **game client**
 
@@ -38,8 +38,9 @@ SPT/user/mods/YellowFlareCurse/config.json
 BepInEx/plugins/YellowFlareCurse.Client.dll
 ```
 
-## Changelog (1.4.0)
+## Changelog (1.4.1)
 
+- Teleport ring defaults increased to **100–150 m** (was 15–40 m)
 - Spawn Tagilla on curse start (near player)
 - Curse works on maps without airdrop points (airdrop skipped)
 - F12: `SpawnTagilla`, `TagillaType` (Factory / Labyrinth), `TagillaSpawnMinRadius` / `TagillaSpawnMaxRadius` (60–75 m)
@@ -75,8 +76,8 @@ Edit `SPT/user/mods/YellowFlareCurse/config.json`:
 | ShowCountdown | true | Banner + countdown (bottom-right) |
 | IncludePlayerGroup | true | Also mark teammates as enemies for cursed bots |
 | TeleportBotsNearPlayer | true | Pull eligible AI near you on curse start |
-| TeleportMinRadius | 15 | Min ring radius (m) |
-| TeleportMaxRadius | 40 | Max ring radius (m) |
+| TeleportMinRadius | 100 | Min ring radius (m) |
+| TeleportMaxRadius | 150 | Max ring radius (m) |
 | AiAlliance | true | AI stop fighting each other during curse |
 | SpawnTagilla | true | Spawn Tagilla on curse start |
 | TagillaType | Factory | `Factory` (`bossTagilla`) or `Labyrinth` (`bossTagillaAgro`) |

@@ -18,7 +18,7 @@ public class YellowFlareCursePlugin : BaseUnityPlugin
 {
     public const string PluginGuid = "gadjed.yellowflarecurse";
     public const string PluginName = "Yellow Flare Curse";
-    public const string PluginVersion = "1.4.0";
+    public const string PluginVersion = "1.4.1";
 
     /// <summary>
     /// Ammo template fired by RSP-30 Yellow (HandleFlareSuccessEvent receives ammo, not the handheld weapon id).
@@ -87,14 +87,14 @@ public class YellowFlareCursePlugin : BaseUnityPlugin
         TeleportMinRadius = Config.Bind(
             "3. Curse",
             "TeleportMinRadius",
-            15f,
-            new ConfigDescription("Minimum teleport ring radius (meters).", new AcceptableValueRange<float>(5f, 80f))
+            100f,
+            new ConfigDescription("Minimum teleport ring radius (meters).", new AcceptableValueRange<float>(5f, 200f))
         );
         TeleportMaxRadius = Config.Bind(
             "3. Curse",
             "TeleportMaxRadius",
-            40f,
-            new ConfigDescription("Maximum teleport ring radius (meters).", new AcceptableValueRange<float>(10f, 120f))
+            150f,
+            new ConfigDescription("Maximum teleport ring radius (meters).", new AcceptableValueRange<float>(10f, 200f))
         );
         AiAlliance = Config.Bind(
             "3. Curse",

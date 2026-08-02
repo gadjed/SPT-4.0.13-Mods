@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1
+
+- Teleport ring defaults increased from 15–40 m to **100–150 m** (F12 range up to 200 m)
+
 ## 1.4.0
 
 - Spawn **Tagilla** on curse start (host/authority): `BossLocationSpawn` near the flare, then NavMesh teleport into a ring around the player
@@ -9,7 +13,7 @@
 
 ## 1.3.0
 
-- On curse start (host/authority): teleport eligible scav/PMC AI into a 15–40 m ring near the player (NavMesh-snapped)
+- On curse start (host/authority): teleport eligible scav/PMC AI into a ring near the player (NavMesh-snapped)
 - During curse: AI ally each other (`RemoveEnemy` + `AddAlly`) and `AddEnemy` AI↔AI is blocked — bots hunt players only
 - F12 toggles: `TeleportBotsNearPlayer`, `TeleportMinRadius`, `TeleportMaxRadius`, `AiAlliance`
 

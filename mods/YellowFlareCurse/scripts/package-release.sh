@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MOD_NAME="YellowFlareCurse"
-MOD_VERSION="1.4.0"
+MOD_VERSION="1.4.1"
 DIST="$ROOT/Dist"
 STAGE="$DIST/stage"
 ZIP_NAME="${MOD_NAME}-${MOD_VERSION}.zip"
