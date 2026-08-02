@@ -15,11 +15,12 @@ Menu:
   5 - Exit
 
 Nested layout: server mods sync to SPT\user\mods.
+Flat layout: server mods sync to user\mods when needed.
 Removes leftover DanW QuestingBots when QuestingBotsContinuous is present.
 Removes FastSurgery / ContinuousHealing leftovers.
 
 Downloads the newest GitHub release that contains SPT-4.0.13-ModPack.zip
-(currently v1.2.5+).
+(currently v1.2.6+).
 
 Repo: https://github.com/gadjed/SPT-4.0.13-Mods
 ModPack releases: https://github.com/gadjed/SPT-4.0.13-Mods/releases

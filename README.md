@@ -83,7 +83,7 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 - Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
 - Nested SPT layout: server mods must live in `SPT/user/mods/` (installer syncs / packs ship that path). Do not leave DanW `QuestingBots` beside Continuous.
-- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); includes **MedRebalance 1.3.0**, **YellowFlareCurse**, **AutoMedHotkeys**, **FastSellInFlea**
+- Historical **SPT 4.0.13**: ModPack **`v1.2.6+`** + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); full server+client loadout with **MedRebalance 1.3.0**, **YellowFlareCurse**, **AutoMedHotkeys**, **FastSellInFlea** (do not use broken `v1.2.5`)
 
 ## Notes
 
