@@ -79,6 +79,45 @@ resolve_spt_root() {
 ensure_dirs() {
   local root="$1"
   mkdir -p "${root}/BepInEx/plugins" "${root}/BepInEx/patchers" "${root}/user/mods"
+  if [[ -f "${root}/SPT/SPT.Server.exe" ]]; then
+    mkdir -p "${root}/SPT/user/mods"
+  fi
+}
+
+sync_nested_server_mods() {
+  local root="$1"
+  if [[ ! -f "${root}/SPT/SPT.Server.exe" ]]; then
+    return 0
+  fi
+  mkdir -p "${root}/SPT/user/mods"
+  if [[ -d "${root}/user/mods" ]] && [[ -n "$(ls -A "${root}/user/mods" 2>/dev/null || true)" ]]; then
+    if command -v rsync >/dev/null 2>&1; then
+      rsync -a --exclude '.DS_Store' "${root}/user/mods/" "${root}/SPT/user/mods/"
+    else
+      cp -R "${root}/user/mods/." "${root}/SPT/user/mods/"
+    fi
+    ok "  синхронізовано user/mods → SPT/user/mods"
+  fi
+}
+
+remove_legacy_questing_conflicts() {
+  local root="$1"
+  local mods_dir
+  for mods_dir in "${root}/SPT/user/mods" "${root}/user/mods"; do
+    [[ -d "$mods_dir" ]] || continue
+    [[ -d "${mods_dir}/QuestingBotsContinuous" ]] || continue
+    local legacy
+    for legacy in QuestingBots ScavPopulation Scav-Population zSolarint-ScavPopulation; do
+      if [[ -e "${mods_dir}/${legacy}" ]]; then
+        rm -rf "${mods_dir}/${legacy}"
+        ok "  видалено конфлікт ${legacy} з ${mods_dir#${root}/}"
+      fi
+    done
+  done
+  if [[ -d "${root}/BepInEx/plugins/QuestingBotsContinuous" && -d "${root}/BepInEx/plugins/QuestingBots" ]]; then
+    rm -rf "${root}/BepInEx/plugins/QuestingBots"
+    ok "  видалено конфліктний BepInEx/plugins/QuestingBots"
+  fi
 }
 
 clear_mods() {
@@ -124,29 +163,41 @@ clear_mods() {
 download_latest() {
   local dest="$1"
   mkdir -p "$(dirname "$dest")"
-  info "Завантаження останнього релізу з GitHub (${REPO})..."
+  info "Завантаження релізу з GitHub (${REPO}, асет ${ASSET_NAME})..."
 
   if command -v gh >/dev/null 2>&1; then
     rm -f "$dest"
-    gh release download -R "$REPO" -p "$ASSET_NAME" -D "$(dirname "$dest")" --clobber
+    local tag=""
+    local t
+    while IFS= read -r t; do
+      if gh release view "$t" -R "$REPO" --json assets -q ".assets[].name" | grep -Fxq "$ASSET_NAME"; then
+        tag="$t"
+        break
+      fi
+    done < <(gh release list -R "$REPO" --limit 40 --json tagName -q '.[].tagName')
+    if [[ -z "$tag" ]]; then
+      err "Не знайдено асет ${ASSET_NAME} у релізах ${REPO}."
+      return 1
+    fi
+    gh release download "$tag" -R "$REPO" -p "$ASSET_NAME" -D "$(dirname "$dest")" --clobber
     if [[ "$(basename "$dest")" != "$ASSET_NAME" ]]; then
       mv -f "$(dirname "$dest")/${ASSET_NAME}" "$dest"
     fi
   else
-    local api_url="https://api.github.com/repos/${REPO}/releases/latest"
+    local api_url="https://api.github.com/repos/${REPO}/releases?per_page=40"
     local zip_url
     zip_url="$(curl -fsSL "$api_url" | python3 -c '
 import json,sys
 data=json.load(sys.stdin)
 name=sys.argv[1]
-for a in data.get("assets", []):
-    if a.get("name")==name:
-        print(a["browser_download_url"]); break
-else:
-    sys.exit(1)
+for release in data:
+    for a in release.get("assets", []):
+        if a.get("name")==name:
+            print(a["browser_download_url"]); raise SystemExit
+sys.exit(1)
 ' "$ASSET_NAME")"
     if [[ -z "${zip_url:-}" ]]; then
-      err "Не знайдено асет ${ASSET_NAME} у latest release."
+      err "Не знайдено асет ${ASSET_NAME} у релізах ${REPO}."
       return 1
     fi
     info "URL: ${zip_url}"
@@ -261,6 +312,9 @@ install_mods() {
     ditto "$src" "$root" 2>/dev/null || cp -R "${src}/." "${root}/"
   fi
 
+  sync_nested_server_mods "$root"
+  remove_legacy_questing_conflicts "$root"
+
   rm -rf "$tmp"
   ok "Встановлення завершено."
   info "SVM не входить у збірку. За потреби оберіть пункт меню «Встановити SVM»."
@@ -302,6 +356,8 @@ install_svm() {
   else
     ditto "$src" "$root" 2>/dev/null || cp -R "${src}/." "${root}/"
   fi
+
+  sync_nested_server_mods "$root"
 
   rm -rf "$tmp"
   ok "SVM встановлено з офіційного релізу ${SVM_REPO}."

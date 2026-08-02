@@ -56,4 +56,5 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
 - Пакт: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — або інсталер вище
+- Nested layout SPT 4.x: серверні моди в `SPT/user/mods/` (інсталер синхронізує; паки вже з цим шляхом). Не лишайте DanW `QuestingBots` поруч із Continuous.
 - Історичний **SPT 4.0.13** ModPack лишається на старіших релізах

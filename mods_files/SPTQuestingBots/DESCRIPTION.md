@@ -24,7 +24,7 @@ Bots pursue quests/objectives; continuous PMC top-up and scav reinforcement wave
 - **F12 actions** — Respawn All Bots, Remove All Corpses
 
 ### Notes
-Install: `user/mods/QuestingBotsContinuous/` + `BepInEx/plugins/QuestingBotsContinuous/`. Needs BigBrain ≥1.4.0 + Waypoints. Do **not** stack with DanW QuestingBots or standalone Scav Population.
+Install: `SPT/user/mods/QuestingBotsContinuous/` (server, next to `SPT.Server.exe`) + `BepInEx/plugins/QuestingBotsContinuous/` (client). Needs BigBrain ≥1.4.0 + Waypoints. Do **not** stack with DanW QuestingBots or standalone Scav Population — leftover DanW `QuestingBots` in `SPT/user/mods` will fail integrity (`QuestingBots-Client.dll` missing) and disable itself.
 
 SPT **4.0.13** build: [v0.12.1](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod/releases/tag/v0.12.1).
 
@@ -45,6 +45,6 @@ SPT **4.0.13** build: [v0.12.1](https://github.com/gadjed/QuestingBots-Continuou
 - **F12** — Respawn All Bots, Remove All Corpses
 
 ### Примітки
-Встановлення: `user/mods/QuestingBotsContinuous/` + `BepInEx/plugins/QuestingBotsContinuous/`. Потрібні BigBrain ≥1.4.0 + Waypoints. Не ставити разом із DanW QuestingBots або окремим Scav Population.
+Встановлення: `SPT/user/mods/QuestingBotsContinuous/` (сервер, поруч із `SPT.Server.exe`) + `BepInEx/plugins/QuestingBotsContinuous/` (клієнт). Потрібні BigBrain ≥1.4.0 + Waypoints. Не ставити разом із DanW QuestingBots або окремим Scav Population — залишок DanW у `SPT/user/mods` падає на integrity (`QuestingBots-Client.dll` відсутній) і вимикається.
 
 Збірка для SPT **4.0.13**: [v0.12.1](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod/releases/tag/v0.12.1).

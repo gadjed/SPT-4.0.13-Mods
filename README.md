@@ -74,6 +74,7 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**
 - Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
+- Nested SPT layout: server mods must live in `SPT/user/mods/` (installer syncs / packs ship that path). Do not leave DanW `QuestingBots` beside Continuous.
 - Historical **SPT 4.0.13** ModPack remains available on older releases
 
 ## Notes

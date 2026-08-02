@@ -1,8 +1,8 @@
-# Yellow Flare Curse
+﻿# Yellow Flare Curse
 
 | | |
 |---|---|
-| **Version** | v1.0.0 |
+| **Version** | v1.0.1 |
 | **Type** | Client + server / Клієнт + сервер |
 | **Source** | https://github.com/gadjed/Yellow-flare-curse-SPT-mod |
 | **Target** | SPT 4.1.0 |
@@ -34,3 +34,4 @@ Install: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Clien
 
 ### Примітки
 Встановлення: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`. Потрібні карти з точками аірдропу. SAIN опційно для жорсткіших боїв із cursed.
+

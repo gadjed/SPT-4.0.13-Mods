@@ -80,6 +80,68 @@ function Ensure-SptDirs {
     New-Item -ItemType Directory -Force -Path (Join-Path $Root "BepInEx\plugins") | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $Root "BepInEx\patchers") | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $Root "user\mods") | Out-Null
+    if (Test-Path -LiteralPath (Join-Path $Root "SPT\SPT.Server.exe")) {
+        New-Item -ItemType Directory -Force -Path (Join-Path $Root "SPT\user\mods") | Out-Null
+    }
+}
+
+function Get-ServerModRoots {
+    param([string]$Root)
+    $roots = @()
+    $nested = Join-Path $Root "SPT\user\mods"
+    $flat = Join-Path $Root "user\mods"
+    if (Test-Path -LiteralPath (Join-Path $Root "SPT\SPT.Server.exe")) {
+        $roots += $nested
+    }
+    if (Test-Path -LiteralPath $flat) {
+        $roots += $flat
+    }
+    elseif (-not $roots) {
+        $roots += $flat
+    }
+    return $roots
+}
+
+function Sync-NestedServerMods {
+    param([string]$Root)
+    $nestedServer = Join-Path $Root "SPT\SPT.Server.exe"
+    if (-not (Test-Path -LiteralPath $nestedServer)) { return }
+
+    $rootMods = Join-Path $Root "user\mods"
+    $nestedMods = Join-Path $Root "SPT\user\mods"
+    New-Item -ItemType Directory -Force -Path $nestedMods | Out-Null
+
+    # Prefer pack layout SPT\user\mods; also mirror root user\mods for older zips.
+    if (Test-Path -LiteralPath $rootMods) {
+        $items = Get-ChildItem -LiteralPath $rootMods -Force -ErrorAction SilentlyContinue
+        if ($items) {
+            Copy-Item -Path (Join-Path $rootMods "*") -Destination $nestedMods -Recurse -Force
+            Write-Ok "  синхронізовано user\mods → SPT\user\mods"
+        }
+    }
+}
+
+function Remove-LegacyQuestingConflicts {
+    param([string]$Root)
+    foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
+        if (-not (Test-Path -LiteralPath $modsDir)) { continue }
+        $continuous = Join-Path $modsDir "QuestingBotsContinuous"
+        if (-not (Test-Path -LiteralPath $continuous)) { continue }
+
+        foreach ($legacy in @("QuestingBots", "ScavPopulation", "Scav-Population", "zSolarint-ScavPopulation")) {
+            $path = Join-Path $modsDir $legacy
+            if (Test-Path -LiteralPath $path) {
+                Remove-Item -LiteralPath $path -Recurse -Force
+                Write-Ok "  видалено конфлікт $legacy з $($modsDir.Substring($Root.Length).TrimStart('\','/'))"
+            }
+        }
+    }
+
+    $legacyClient = Join-Path $Root "BepInEx\plugins\QuestingBots"
+    if ((Test-Path -LiteralPath (Join-Path $Root "BepInEx\plugins\QuestingBotsContinuous")) -and (Test-Path -LiteralPath $legacyClient)) {
+        Remove-Item -LiteralPath $legacyClient -Recurse -Force
+        Write-Ok "  видалено конфліктний BepInEx\plugins\QuestingBots"
+    }
 }
 
 function Clear-Mods {
@@ -127,19 +189,35 @@ function Get-LatestModPack {
 
     if (Get-Command gh -ErrorAction SilentlyContinue) {
         if (Test-Path -LiteralPath $Dest) { Remove-Item -LiteralPath $Dest -Force }
-        & gh release download -R $Repo -p $AssetName -D $destDir --clobber
+        # Find any release that contains this asset (4.0.13 pack is not always on "latest").
+        $tag = $null
+        $listJson = & gh release list -R $Repo --limit 40 --json tagName,isLatest
+        $tags = ($listJson | ConvertFrom-Json).tagName
+        foreach ($t in $tags) {
+            $assetsJson = & gh release view $t -R $Repo --json assets
+            $names = @(($assetsJson | ConvertFrom-Json).assets | ForEach-Object { $_.name })
+            if ($names -contains $AssetName) { $tag = $t; break }
+        }
+        if (-not $tag) {
+            throw "Не знайдено асет $AssetName у релізах $Repo."
+        }
+        & gh release download $tag -R $Repo -p $AssetName -D $destDir --clobber
         $downloaded = Join-Path $destDir $AssetName
         if ($downloaded -ne $Dest -and (Test-Path -LiteralPath $downloaded)) {
             Move-Item -LiteralPath $downloaded -Destination $Dest -Force
         }
     }
     else {
-        $api = "https://api.github.com/repos/$Repo/releases/latest"
+        $api = "https://api.github.com/repos/$Repo/releases?per_page=40"
         $headers = @{ "User-Agent" = "SPT-ModPack-Manager"; "Accept" = "application/vnd.github+json" }
-        $release = Invoke-RestMethod -Uri $api -Headers $headers
-        $asset = $release.assets | Where-Object { $_.name -eq $AssetName } | Select-Object -First 1
+        $releases = Invoke-RestMethod -Uri $api -Headers $headers
+        $asset = $null
+        foreach ($release in $releases) {
+            $asset = $release.assets | Where-Object { $_.name -eq $AssetName } | Select-Object -First 1
+            if ($asset) { break }
+        }
         if (-not $asset) {
-            throw "Не знайдено асет $AssetName у latest release."
+            throw "Не знайдено асет $AssetName у релізах $Repo."
         }
         Write-Info "URL: $($asset.browser_download_url)"
         Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $Dest -UseBasicParsing
@@ -234,6 +312,8 @@ function Install-Mods {
 
         Write-Info "Копіювання в $Root..."
         Copy-Item -Path (Join-Path $src "*") -Destination $Root -Recurse -Force
+        Sync-NestedServerMods -Root $Root
+        Remove-LegacyQuestingConflicts -Root $Root
         Write-Ok "Встановлення завершено."
         Write-Info "SVM не входить у збірку. За потреби оберіть пункт меню «Встановити SVM»."
     }
@@ -273,6 +353,7 @@ function Install-SvmFromZip {
 
         Write-Info "Копіювання SVM у $Root..."
         Copy-Item -Path (Join-Path $src "*") -Destination $Root -Recurse -Force
+        Sync-NestedServerMods -Root $Root
         Write-Ok "SVM встановлено з офіційного релізу $SvmRepo."
         Write-Warn "Відкрийте Greed.exe у корені SPT, оберіть пресет і Save/Apply."
         Write-Warn "Ліцензія SVM (PUSL): лише personal use; не поширюйте архів/мод далі."

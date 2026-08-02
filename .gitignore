@@ -5,6 +5,11 @@
 *.suo
 .DS_Store
 
+# Local game refs for client builds (junctions / hardlinks to SPT install)
+/BepInEx/
+/EscapeFromTarkov_Data/
+/EscapeFromTarkov.exe
+
 # Build outputs
 **/bin/
 **/obj/

@@ -1,8 +1,8 @@
-# Insurance Control (Insurance Refund)
+﻿# Insurance Control (Insurance Refund)
 
 | | |
 |---|---|
-| **Version** | v1.0.0 |
+| **Version** | v1.0.1 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/Insurance-refund-SPT-mod |
 | **Target** | SPT 4.1.0 |
@@ -25,6 +25,7 @@ Controls insurance return timing, lost chance, and whether magazines/containers 
 - **TraderReturnHours** — per-trader hour ranges
 
 ### Notes
+Fixed PatchManager init (`AddPatch` + `EnablePatches`) that crashed SPT 4.0.13 when content return patches were enabled.
 Install: `user/mods/InsuranceControl/`. Avoid stacking with other insurance-return mods.
 
 ---
@@ -46,3 +47,4 @@ Install: `user/mods/InsuranceControl/`. Avoid stacking with other insurance-retu
 
 ### Примітки
 Встановлення: `user/mods/InsuranceControl/`. Не ставте разом з іншими модами повернення страховки.
+
