@@ -1,48 +1,54 @@
 ﻿using System.Reflection;
 using InsuranceControl.Patches;
-using Spectre.Console;
-using SPTarkov.Common.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Helpers.Items;
-using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Enums;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Servers;
+using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Utils.Cloners;
 using Path = System.IO.Path;
 
 namespace InsuranceControl;
 
-public record ModMetadata : IModMetadata
+public record ModMetadata : AbstractModMetadata
 {
-    public string ModGuid { get; init; } = "gadjed.insurancerefund";
-    public string Name { get; init; } = "Insurance Refund";
-    public string Author { get; init; } = "gadjed";
-    public List<string>? Contributors { get; init; } = null;
-    public SemanticVersioning.Version Version { get; init; } = new("1.1.1");
-    public SemanticVersioning.Range SptVersion { get; init; } = new("~4.1.0");
-    public bool HasPrepatcher { get; init; } = false;
-    public List<string>? Incompatibilities { get; init; } = null;
-    public Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
-    public string? Url { get; init; } = "https://github.com/gadjed/Insurance-refund-SPT-mod";
-    public string License { get; init; } = "MIT";
+    public override string ModGuid { get; init; } = "gadjed.insurancerefund";
+    public override string Name { get; init; } = "Insurance Refund";
+    public override string Author { get; init; } = "gadjed";
+    public override List<string>? Contributors { get; init; } = null;
+    public override SemanticVersioning.Version Version { get; init; } = new("1.0.2");
+    public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
+    public override List<string>? Incompatibilities { get; init; } = null;
+    public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
+    public override string? Url { get; init; } = "https://github.com/gadjed/Insurance-refund-SPT-mod";
+    public override bool? IsBundleMod { get; init; } = false;
+    public override string? License { get; init; } = "MIT";
 }
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class InsuranceControlMod(
     ISptLogger<InsuranceControlMod> logger,
     ModHelper modHelper,
-    InsuranceConfig insuranceConfig,
-    TradersTable tradersTable,
+    ConfigServer configServer,
+    DatabaseService databaseService,
     ItemHelper itemHelper,
+    ProfileHelper profileHelper,
+    ICloner cloner,
     PatchManager patchManager
 ) : IOnLoad
 {
     public static ModConfig Config { get; private set; } = new();
     public static ItemHelper ItemHelper { get; private set; } = null!;
+    public static ProfileHelper ProfileHelper { get; private set; } = null!;
+    public static ICloner Cloner { get; private set; } = null!;
+    public static ISptLogger<InsuranceControlMod>? Logger { get; private set; }
 
     private static readonly Dictionary<string, MongoId> TraderIds = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -52,9 +58,12 @@ public class InsuranceControlMod(
         [Traders.THERAPIST.ToString()] = Traders.THERAPIST,
     };
 
-    public Task OnLoadAsync(CancellationToken cancellationToken)
+    public Task OnLoad()
     {
         ItemHelper = itemHelper;
+        ProfileHelper = profileHelper;
+        Cloner = cloner;
+        Logger = logger;
 
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         var configPath = Path.Combine(pathToMod, "config.json");
@@ -62,13 +71,18 @@ public class InsuranceControlMod(
             ? modHelper.GetJsonDataFromFile<ModConfig>(pathToMod, "config.json")
             : new ModConfig();
 
-        ApplyInsuranceConfig(insuranceConfig);
-        ApplyTraderReturnHours(tradersTable);
+        ApplyInsuranceConfig(configServer.GetConfig<InsuranceConfig>());
+        ApplyTraderReturnHours();
         EnableContentPatches();
 
+        var effectiveReturn = Config.DebugReturnSeconds > 0
+            ? Config.DebugReturnSeconds
+            : Config.ReturnTimeOverrideSeconds;
+
         logger.Success(
-            $"[InsuranceControl] Loaded. ReturnTimeOverride={Config.ReturnTimeOverrideSeconds}s, "
-                + $"MagsWithAmmo={Config.ReturnMagazinesWithAmmo}, "
+            $"[InsuranceControl] Loaded v1.0.2. Return={effectiveReturn}s"
+                + (Config.DebugReturnSeconds > 0 ? " (DEBUG)" : "")
+                + $", MagsWithAmmo={Config.ReturnMagazinesWithAmmo}, "
                 + $"ContainersWithContents={Config.ReturnContainersWithContents}."
         );
 
@@ -77,11 +91,24 @@ public class InsuranceControlMod(
 
     private void ApplyInsuranceConfig(InsuranceConfig insurance)
     {
-        insurance.ReturnTimeOverrideSeconds = Math.Max(0, Config.ReturnTimeOverrideSeconds);
+        var debugReturn = Config.DebugReturnSeconds > 0;
+        var returnSeconds = debugReturn ? Config.DebugReturnSeconds : Config.ReturnTimeOverrideSeconds;
+        insurance.ReturnTimeOverrideSeconds = Math.Max(0, returnSeconds);
         insurance.StorageTimeOverrideSeconds = Math.Max(0, Config.StorageTimeOverrideSeconds);
         insurance.SimulateItemsBeingTaken = Config.SimulateItemsBeingTaken;
 
-        if (Config.RunIntervalSeconds > 0)
+        if (debugReturn)
+        {
+            // Poll often enough that a 60s debug return is not delayed by the interval.
+            var poll = Config.RunIntervalSeconds > 0 ? Config.RunIntervalSeconds : 60;
+            insurance.RunIntervalSeconds = Math.Min(poll, Math.Max(5, Config.DebugReturnSeconds / 3));
+            logger.LogWithColor(
+                $"[InsuranceControl] DEBUG fast return enabled: {Config.DebugReturnSeconds}s "
+                    + $"(poll every {insurance.RunIntervalSeconds}s).",
+                LogTextColor.Yellow
+            );
+        }
+        else if (Config.RunIntervalSeconds > 0)
         {
             insurance.RunIntervalSeconds = Config.RunIntervalSeconds;
         }
@@ -100,19 +127,23 @@ public class InsuranceControlMod(
 
             logger.LogWithColor(
                 $"[InsuranceControl] {key}: lost chance {clampedLost}% (return chance {returnChance}%)",
-                Color.Cyan
+                LogTextColor.Cyan
             );
         }
     }
 
-    private void ApplyTraderReturnHours(TradersTable tradersTable)
+    private void ApplyTraderReturnHours()
     {
-        if (Config.ReturnTimeOverrideSeconds > 0)
+        if (Config.DebugReturnSeconds > 0 || Config.ReturnTimeOverrideSeconds > 0)
         {
-            logger.LogWithColor(
-                $"[InsuranceControl] Using ReturnTimeOverrideSeconds={Config.ReturnTimeOverrideSeconds}; TraderReturnHours ignored.",
-                Color.Cyan
-            );
+            if (Config.DebugReturnSeconds <= 0)
+            {
+                logger.LogWithColor(
+                    $"[InsuranceControl] Using ReturnTimeOverrideSeconds={Config.ReturnTimeOverrideSeconds}; TraderReturnHours ignored.",
+                    LogTextColor.Cyan
+                );
+            }
+
             return;
         }
 
@@ -124,7 +155,7 @@ public class InsuranceControlMod(
                 continue;
             }
 
-            var trader = tradersTable.GetTrader(traderId);
+            var trader = databaseService.GetTrader(traderId);
             if (trader?.Base?.Insurance is null)
             {
                 logger.Warning($"[InsuranceControl] Trader insurance settings missing: {key}");
@@ -138,22 +169,27 @@ public class InsuranceControlMod(
 
             logger.LogWithColor(
                 $"[InsuranceControl] {key}: return window {min}-{max}h",
-                Color.Cyan
+                LogTextColor.Cyan
             );
         }
     }
 
     private void EnableContentPatches()
     {
-        if (!Config.ReturnMagazinesWithAmmo && !Config.ReturnContainersWithContents)
+        var needEnrichment = Config.ReturnMagazinesWithAmmo || Config.ReturnContainersWithContents;
+        if (!needEnrichment)
         {
             return;
         }
 
         patchManager.PatcherName = "InsuranceControl";
+        patchManager.AddPatch(new SnapshotRaidInventoryPatch());
         patchManager.AddPatch(new EnrichLostInsuredItemsPatch());
         patchManager.EnablePatches();
-        logger.LogWithColor("[InsuranceControl] Content enrichment patch enabled.", Color.Cyan);
+        logger.LogWithColor(
+            "[InsuranceControl] Content enrichment + pre-raid snapshot patches enabled.",
+            LogTextColor.Cyan
+        );
     }
 
     private static bool TryResolveTraderId(string key, out MongoId traderId)

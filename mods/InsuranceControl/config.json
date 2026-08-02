@@ -1,4 +1,5 @@
 {
+  "DebugReturnSeconds": 60,
   "ReturnTimeOverrideSeconds": 3600,
   "RunIntervalSeconds": 60,
   "StorageTimeOverrideSeconds": 0,

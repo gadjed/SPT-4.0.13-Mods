@@ -3,8 +3,16 @@ namespace InsuranceControl;
 public class ModConfig
 {
     /// <summary>
+    /// If &gt; 0, forces insurance return after this many seconds (debug).
+    /// Overrides <see cref="ReturnTimeOverrideSeconds"/> and shortens the poll interval.
+    /// Set to 0 to disable. Example: 60 = return in ~1 minute.
+    /// </summary>
+    public double DebugReturnSeconds { get; set; } = 0;
+
+    /// <summary>
     /// If &gt; 0, overrides trader min/max return hours with this fixed delay (seconds).
     /// Set to 0 to use <see cref="TraderReturnHours"/> instead.
+    /// Ignored when <see cref="DebugReturnSeconds"/> is &gt; 0.
     /// </summary>
     public double ReturnTimeOverrideSeconds { get; set; } = 3600;
 
@@ -46,7 +54,7 @@ public class ModConfig
     };
 
     /// <summary>
-    /// Used only when <see cref="ReturnTimeOverrideSeconds"/> is 0.
+    /// Used only when <see cref="ReturnTimeOverrideSeconds"/> is 0 (and debug is off).
     /// </summary>
     public Dictionary<string, TraderReturnHours> TraderReturnHours { get; set; } = new()
     {
