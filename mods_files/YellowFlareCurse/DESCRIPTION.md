@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | v1.0.1 |
-| **Type** | Server (+ client plugin if present) / Сервер (+ клієнтський плагін) |
+| **Version** | v1.4.4 |
+| **Type** | Server + client plugin / Сервер + клієнтський плагін |
 | **Source** | https://github.com/gadjed/Yellow-flare-curse-SPT-mod |
 | **Target** | SPT 4.0.13 |
 
@@ -12,17 +12,17 @@
 ## English
 
 ### Description
-Using an RSP-30 Yellow (once per raid) starts the curse event and forced high-value airdrop loot on the server side.
+Successful **RSP-30 Yellow** (once per raid) curses scavs/PMCs (teleport ring + hunt + Tagilla), then drops a forced high-value airdrop after a delay.
 
 ### Notes
-**SPT 4.0.13 only.** Install: `user/mods/YellowFlareCurse/` (+ optional `BepInEx/plugins/YellowFlareCurse.Client.dll`).
+**SPT 4.0.13 only (net9).** Install: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`.
 
 ---
 
 ## Українська
 
 ### Опис
-Успішне використання RSP-30 Yellow (раз за рейд) запускає подію прокляття та форсований цінний лут аірдропу на сервері.
+Успішне **RSP-30 Yellow** (раз за рейд) проклинає scav/PMC (кільце телепорту + полювання + Tagilla), потім форсований цінний аірдроп після затримки.
 
 ### Примітки
-**Лише SPT 4.0.13.** Встановлення: `user/mods/YellowFlareCurse/` (+ опційно `BepInEx/plugins/YellowFlareCurse.Client.dll`).
+**Лише SPT 4.0.13 (net9).** Встановлення: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`.

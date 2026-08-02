@@ -437,7 +437,7 @@ function Assert-Net9ServerModsOnly {
     if ($bad.Count -gt 0) {
         Write-Err "Відхилено: у пакеті є серверні DLL під .NET 10 (SPT 4.1), а цей інсталер лише для SPT 4.0.13:"
         $bad | ForEach-Object { Write-Err "  $_" }
-        throw "ModPack містить net10 серверні моди. Потрібен SPT-4.0.13-ModPack з YellowFlareCurse 1.0.x (net9)."
+        throw "ModPack містить net10 серверні моди. Потрібен SPT-4.0.13-ModPack з net9 серверними DLL (YellowFlareCurse 1.4.4+)."
     }
 }
 

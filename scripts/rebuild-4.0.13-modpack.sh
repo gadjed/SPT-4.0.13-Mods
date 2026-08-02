@@ -102,13 +102,13 @@ if [[ -d "$STAGE/pack/SPT/user/mods/MedRebalance" ]]; then
   merge_tree "$STAGE/pack/SPT/user/mods/MedRebalance" "$STAGE/pack/user/mods/MedRebalance"
 fi
 
-echo "==> Overlay YellowFlareCurse 1.0.1 (net9 / SPT 4.0.13 ONLY — never 1.3+/net10)"
+echo "==> Overlay YellowFlareCurse 1.4.4 (net9 / SPT 4.0.13)"
 rm -rf \
   "$STAGE/pack/user/mods/YellowFlareCurse" \
   "$STAGE/pack/SPT/user/mods/YellowFlareCurse" \
   "$STAGE/pack/BepInEx/plugins/YellowFlareCurse.Client.dll" \
   "$STAGE/overlay/yfc"
-extract_zip_norm "${ROOT}/mods_files/YellowFlareCurse/YellowFlareCurse-1.0.1.zip" "$STAGE/overlay/yfc"
+extract_zip_norm "${ROOT}/mods_files/YellowFlareCurse/YellowFlareCurse-1.4.4.zip" "$STAGE/overlay/yfc"
 merge_tree "$STAGE/overlay/yfc" "$STAGE/pack"
 
 echo "==> Overlay AutoMedHotkeys 1.0.3"
@@ -169,10 +169,9 @@ SPTQuestingBots          v0.12.1
 Saria-4.x.x              v2.0.1
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
-YellowFlareCurse         v1.0.1
+YellowFlareCurse         v1.4.4
 
 EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continuous), ContinuousHealing / FastSurgery (folded into MedRebalance), SVM (no redistribution; install from upstream via manage-modpack)
-NOTE: YellowFlareCurse 1.1+ / 1.3+ / 1.4+ are SPT 4.1.0 (net10) — do NOT overlay into this pack.
 EOF
 
 cat > "$STAGE/pack/INSTALL.txt" <<'EOF'
@@ -193,7 +192,7 @@ SPT 4.0.13 — Mod Pack
 Клієнтські в BepInEx/plugins/ (+ patchers/).
 QuestingBots Continuous включає continuous population (колишній Scav Population).
 Med Rebalance 1.3.0 (колишній Fast Surgery + Continuous Healing).
-YellowFlareCurse 1.0.1 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
+YellowFlareCurse 1.4.4 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
 SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1.
 
 Виключено навмисно

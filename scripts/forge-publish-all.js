@@ -162,15 +162,15 @@ async (page) => {
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:
-        "SPT 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
+        "SPT 4.0.13 — yellow flare curse: teleport hunt pack, Tagilla, high-value airdrop.",
       category: "Overhauls",
       source: "https://github.com/gadjed/Yellow-flare-curse-SPT-mod",
       profileSafe: true,
       description: [
-        "Using an RSP-30 Yellow (once per raid) curses nearby scavs/PMCs, then triggers a high-value airdrop after a delay.",
+        "Successful **RSP-30 Yellow** (once per raid) teleports scavs/PMCs into a hunt ring, spawns Tagilla, allies AI against you, then drops a forced high-value airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.1](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.1) (`YellowFlareCurse-1.0.1.zip`)",
+        "- **SPT 4.0.13** — [v1.4.4](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.4) (`YellowFlareCurse-1.4.4.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -181,7 +181,7 @@ async (page) => {
         "",
         "Server config: `user/mods/YellowFlareCurse/config.json`. Client settings in F12.",
         "",
-        "Needs maps with airdrop points. SAIN optional for harder cursed fights.",
+        "Maps without airdrop points still run the hunt/Tagilla (airdrop skipped). SAIN optional.",
         "",
         "## Full mod pack + auto installer",
         "Included in my SPT loadout assembly with an automatic install/update manager:",
@@ -193,15 +193,15 @@ async (page) => {
       ].join("\n"),
       versions: [
         {
-          version: "1.0.1",
+          version: "1.4.4",
           spt: "~4.0.13",
           download:
-            "https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/download/v1.0.1/YellowFlareCurse-1.0.1.zip",
+            "https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/download/v1.4.4/YellowFlareCurse-1.4.4.zip",
           virusTotal: vt(
-            "44975c635008dc15a81d3669d2dd350b42ac4d285154cf01953e9bc34c0803fe"
+            "fbd060d6a7c0f7cdd6fcac00b3b32a41a9722bd211fda783738ae3cf40149b31"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `YellowFlareCurse-1.0.1.zip`.",
+            "SPT **4.0.13** release.\n\n- Stronger SAIN hunt after teleport\n- Tagilla aggro retry until Active\n- Teleport ring no longer dumps bots onto the player\n\nArchive: `YellowFlareCurse-1.4.4.zip`.",
         },
       ],
     },

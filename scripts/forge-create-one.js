@@ -146,7 +146,7 @@ async (page) => {
         "Using an RSP-30 Yellow (once per raid) curses nearby scavs/PMCs, then triggers a high-value airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.0.0) (`YellowFlareCurse-1.0.0.zip`)",
+        "- **SPT 4.0.13** — [v1.4.4](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.4) (`YellowFlareCurse-1.4.4.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
