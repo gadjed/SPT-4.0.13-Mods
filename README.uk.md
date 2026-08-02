@@ -70,7 +70,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.6+`) — повний server+client loadout (див. MANIFEST у zip)
+- **ModPack 4.0.13** (`v1.2.8+`) — повний server+client loadout (див. MANIFEST у zip), включно з **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
