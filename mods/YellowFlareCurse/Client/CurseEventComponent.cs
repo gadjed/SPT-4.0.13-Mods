@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Comfort.Common;
 using EFT;
 using EFT.Airdrop;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class CurseEventComponent : MonoBehaviour
     private const float CurseRefreshInterval = 5f;
     private const float NavMeshSampleRadius = 8f;
     private const float GoldenAngleDegrees = 137.5f;
+    private const float TagillaWaitTimeoutSeconds = 60f;
 
     public static CurseEventComponent? Instance { get; private set; }
 
@@ -22,8 +24,10 @@ public class CurseEventComponent : MonoBehaviour
     private bool _eventUsed;
     private bool _eventActive;
     private bool _airdropSpawned;
+    private bool _hasAirdropSupport;
     private bool _overlayVisible;
     private bool _teleportStarted;
+    private bool _tagillaSpawnRequested;
     private float _airdropAtTime;
     private float _announceUntil;
     private float _overlayHideAt;
@@ -47,8 +51,10 @@ public class CurseEventComponent : MonoBehaviour
         _eventActive = false;
         AllianceActive = false;
         _airdropSpawned = false;
+        _hasAirdropSupport = false;
         _overlayVisible = false;
         _teleportStarted = false;
+        _tagillaSpawnRequested = false;
         _announceUntil = 0f;
         _overlayHideAt = 0f;
         _nextCurseRefresh = 0f;
@@ -62,6 +68,7 @@ public class CurseEventComponent : MonoBehaviour
             $"Raid component ready. Location={location}, AirdropPoints={airdropPoints}, "
                 + $"Enabled={YellowFlareCursePlugin.Enabled.Value}, "
                 + $"Delay={YellowFlareCursePlugin.AirdropDelaySeconds.Value:0}s, "
+                + $"SpawnTagilla={YellowFlareCursePlugin.SpawnTagilla.Value}, "
                 + $"Authority={FikaHost.IsAuthority()}."
         );
     }
@@ -109,30 +116,56 @@ public class CurseEventComponent : MonoBehaviour
         }
 
         var pointCount = CountAirdropPoints();
-        if (pointCount <= 0)
+        _hasAirdropSupport = pointCount > 0;
+        if (!_hasAirdropSupport)
         {
-            ModLogger.Warning("No AirdropPoints on this map — event not started.");
-            return;
+            ModLogger.Warning(
+                "No AirdropPoints on this map — curse will run without airdrop (Tagilla/hunt still active)."
+            );
         }
 
         _eventUsed = true;
         _eventActive = true;
         AllianceActive = YellowFlareCursePlugin.AiAlliance.Value;
-        _airdropSpawned = false;
+        _airdropSpawned = !_hasAirdropSupport;
         _overlayVisible = true;
         _teleportStarted = false;
+        _tagillaSpawnRequested = false;
         _flarePosition = flarePosition;
         var delay = YellowFlareCursePlugin.AirdropDelaySeconds.Value;
         _airdropAtTime = Time.time + delay;
         _announceUntil = Time.time + 8f;
-        _overlayHideAt = 0f;
+        _overlayHideAt = _hasAirdropSupport ? 0f : Time.time + 8f;
         _nextCurseRefresh = Time.time + CurseRefreshInterval;
 
         var minutes = Mathf.FloorToInt(delay / 60f);
         var seconds = Mathf.FloorToInt(delay % 60f);
+        var tagillaHint = YellowFlareCursePlugin.SpawnTagilla.Value
+            ? (YellowFlareCursePlugin.TagillaType.Value == TagillaVariant.Labyrinth
+                ? " · Labyrinth Tagilla inbound"
+                : " · Tagilla inbound")
+            : string.Empty;
         _announceTitle = "YELLOW FLARE CURSE";
-        _announceSubtitle = $"Scavs & PMCs are hunting you  ·  Airdrop in {minutes:00}:{seconds:00}";
-        _countdownText = $"AIRDROP  {minutes:00}:{seconds:00}";
+        if (_hasAirdropSupport)
+        {
+            _announceSubtitle =
+                $"Scavs & PMCs are hunting you{tagillaHint}  ·  Airdrop in {minutes:00}:{seconds:00}";
+            _countdownText = $"AIRDROP  {minutes:00}:{seconds:00}";
+        }
+        else
+        {
+            _announceSubtitle = $"Scavs & PMCs are hunting you{tagillaHint}  ·  No airdrop on this map";
+            _countdownText = YellowFlareCursePlugin.SpawnTagilla.Value ? "TAGILLA  INBOUND" : "CURSE  ACTIVE";
+        }
+
+        if (YellowFlareCursePlugin.SpawnTagilla.Value && FikaHost.IsAuthority())
+        {
+            TrySpawnTagilla(flarePosition);
+        }
+        else if (YellowFlareCursePlugin.SpawnTagilla.Value)
+        {
+            ModLogger.Info("Tagilla spawn skipped — not Fika host/authority.");
+        }
 
         if (
             YellowFlareCursePlugin.TeleportBotsNearPlayer.Value
@@ -154,8 +187,9 @@ public class CurseEventComponent : MonoBehaviour
         }
 
         ModLogger.Info(
-            $"CURSE STARTED at {flarePosition}. AirdropPoints={pointCount}. "
-                + $"Airdrop in {delay:0}s (container={YellowFlareCursePlugin.CurseContainerId}). "
+            $"CURSE STARTED at {flarePosition}. AirdropPoints={pointCount}, "
+                + $"Airdrop={(_hasAirdropSupport ? $"in {delay:0}s" : "skipped")}. "
+                + $"Tagilla={YellowFlareCursePlugin.SpawnTagilla.Value}, "
                 + $"Teleport={YellowFlareCursePlugin.TeleportBotsNearPlayer.Value}, "
                 + $"Alliance={AllianceActive}, Authority={FikaHost.IsAuthority()}."
         );
@@ -282,6 +316,11 @@ public class CurseEventComponent : MonoBehaviour
         }
 
         if (_airdropSpawned)
+        {
+            return;
+        }
+
+        if (!_hasAirdropSupport)
         {
             return;
         }
@@ -542,7 +581,7 @@ public class CurseEventComponent : MonoBehaviour
                 continue;
             }
 
-            if (!IsEligibleRole(botOwner))
+            if (!IsEligibleRole(botOwner) && !IsTagilla(botOwner))
             {
                 skippedRole++;
                 continue;
@@ -687,6 +726,242 @@ public class CurseEventComponent : MonoBehaviour
             or WildSpawnType.pmcBot
             or WildSpawnType.pmcUSEC
             or WildSpawnType.pmcBEAR;
+    }
+
+    private static bool IsTagilla(BotOwner bot)
+    {
+        var role = bot.Profile.Info.Settings.Role;
+        return role is WildSpawnType.bossTagilla
+            or WildSpawnType.bossTagillaAgro
+            or WildSpawnType.followerTagilla
+            or WildSpawnType.tagillaHelperAgro;
+    }
+
+    private static (WildSpawnType Role, string BossName, string EscortType) GetSelectedTagillaSpawn()
+    {
+        return YellowFlareCursePlugin.TagillaType.Value == TagillaVariant.Labyrinth
+            ? (WildSpawnType.bossTagillaAgro, "bossTagillaAgro", "tagillaHelperAgro")
+            : (WildSpawnType.bossTagilla, "bossTagilla", "followerTagilla");
+    }
+
+    private void TrySpawnTagilla(Vector3 near)
+    {
+        if (_tagillaSpawnRequested)
+        {
+            return;
+        }
+
+        _tagillaSpawnRequested = true;
+        var (role, bossName, escortType) = GetSelectedTagillaSpawn();
+
+        try
+        {
+            var botGame = Singleton<IBotGame>.Instance;
+            var botsController = botGame?.BotsController;
+            if (botsController == null)
+            {
+                ModLogger.Error("Tagilla spawn failed — BotsController is null.");
+                return;
+            }
+
+            var wave = new BossLocationSpawn
+            {
+                BossName = bossName,
+                BossChance = 100f,
+                BossZone = string.Empty,
+                BossPlayer = false,
+                BossDifficult = "hard",
+                BossEscortDifficult = "normal",
+                BossEscortType = escortType,
+                BossEscortAmount = "0",
+                Time = -1f,
+                Delay = 0f,
+                TriggerId = string.Empty,
+                TriggerName = string.Empty,
+                IgnoreMaxBots = true,
+                ForceSpawn = true,
+                PerfectPos = near,
+                Supports = null,
+            };
+            wave.Init();
+            wave.PerfectPos = near;
+            wave.ShallSpawn = true;
+            wave.ForceSpawn = true;
+            wave.IgnoreMaxBots = true;
+
+            botsController.ActivateBotsByWave(wave);
+            ModLogger.Info(
+                $"Requested Tagilla boss wave ({YellowFlareCursePlugin.TagillaType.Value}/{bossName}/{role}) near {near}."
+            );
+            StartCoroutine(PlaceTagillaWhenReady(near));
+        }
+        catch (System.Exception ex)
+        {
+            ModLogger.Error($"Tagilla BossLocationSpawn failed, trying BotWave fallback: {ex}");
+            TrySpawnTagillaWaveFallback();
+        }
+    }
+
+    private void TrySpawnTagillaWaveFallback()
+    {
+        try
+        {
+            var botGame = Singleton<IBotGame>.Instance;
+            var spawner = botGame?.BotsController?.BotSpawner;
+            if (spawner == null)
+            {
+                ModLogger.Error("Tagilla fallback failed — BotSpawner is null.");
+                return;
+            }
+
+            var (role, _, _) = GetSelectedTagillaSpawn();
+            var wave = new BotWaveDataClass
+            {
+                BotsCount = 1,
+                Side = EPlayerSide.Savage,
+                SpawnAreaName = string.Empty,
+                Time = 0f,
+                WildSpawnType = role,
+                IsPlayers = false,
+                Difficulty = BotDifficulty.hard,
+                ChanceGroup = 100f,
+                WithCheckMinMax = false,
+            };
+
+            _ = spawner.ActivateBotsByWave(wave);
+            ModLogger.Info(
+                $"Requested Tagilla via BotWaveDataClass fallback ({YellowFlareCursePlugin.TagillaType.Value}/{role})."
+            );
+            StartCoroutine(PlaceTagillaWhenReady(_flarePosition));
+        }
+        catch (System.Exception ex)
+        {
+            ModLogger.Error($"Tagilla BotWave fallback failed: {ex}");
+        }
+    }
+
+    private IEnumerator PlaceTagillaWhenReady(Vector3 near)
+    {
+        var deadline = Time.time + TagillaWaitTimeoutSeconds;
+        while (Time.time < deadline)
+        {
+            var tagilla = FindAliveTagillaPlayer();
+            if (tagilla != null)
+            {
+                PlaceAndAggroTagilla(tagilla, near);
+                yield break;
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        ModLogger.Warning(
+            $"Tagilla did not appear within {TagillaWaitTimeoutSeconds:0}s after spawn request."
+        );
+    }
+
+    private void PlaceAndAggroTagilla(Player tagilla, Vector3 near)
+    {
+        var minR = Mathf.Min(
+            YellowFlareCursePlugin.TagillaSpawnMinRadius.Value,
+            YellowFlareCursePlugin.TagillaSpawnMaxRadius.Value
+        );
+        var maxR = Mathf.Max(
+            YellowFlareCursePlugin.TagillaSpawnMinRadius.Value,
+            YellowFlareCursePlugin.TagillaSpawnMaxRadius.Value
+        );
+        var radius = UnityEngine.Random.Range(minR, maxR);
+        var angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
+        var candidate = near + new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+
+        if (!TryFindNavMesh(candidate, out var navPos) && !TryFindNavMesh(near, out navPos))
+        {
+            ModLogger.Warning($"Could not NavMesh-snap Tagilla near {near}; leaving spawn position.");
+        }
+        else
+        {
+            try
+            {
+                tagilla.Teleport(navPos, onServerToo: true);
+                tagilla.AIData?.BotOwner?.Mover?.Teleport(navPos);
+                ModLogger.Info($"Tagilla teleported to {navPos} (r≈{radius:0}m from flare/player).");
+            }
+            catch (System.Exception ex)
+            {
+                ModLogger.Warning($"Tagilla teleport failed: {ex.Message}");
+            }
+        }
+
+        var botOwner = tagilla.AIData?.BotOwner;
+        if (botOwner == null || botOwner.BotState != EBotState.Active)
+        {
+            ModLogger.Warning("Tagilla present but BotOwner not active yet — curse refresh will aggro him.");
+            return;
+        }
+
+        AggroBotOnCurseTargets(botOwner);
+        ModLogger.Info($"Tagilla cursed/aggroed ({botOwner.Profile?.Nickname}).");
+    }
+
+    private void AggroBotOnCurseTargets(BotOwner botOwner)
+    {
+        if (_gameWorld == null)
+        {
+            return;
+        }
+
+        var targets = CollectCurseTargets(_gameWorld);
+        var group = botOwner.BotsGroup;
+        if (group == null || targets.Count == 0)
+        {
+            return;
+        }
+
+        QuestingBotsCurseBridge.StopQuesting(botOwner);
+
+        foreach (var target in targets)
+        {
+            try
+            {
+                group.AddEnemy(target, EBotEnemyCause.addPlayer);
+                group.ReportAboutEnemy(target, EEnemyPartVisibleType.Visible, botOwner);
+                group.CalcGoalForBot(botOwner);
+                SainCurseBridge.NotifySeen(botOwner, target);
+            }
+            catch (System.Exception ex)
+            {
+                ModLogger.Debug($"Tagilla aggro failed: {ex.Message}");
+            }
+        }
+    }
+
+    private Player? FindAliveTagillaPlayer()
+    {
+        if (_gameWorld == null)
+        {
+            return null;
+        }
+
+        foreach (var botPlayer in _gameWorld.AllAlivePlayersList)
+        {
+            if (botPlayer == null || !botPlayer.IsAI || !botPlayer.HealthController.IsAlive)
+            {
+                continue;
+            }
+
+            var botOwner = botPlayer.AIData?.BotOwner;
+            if (botOwner == null)
+            {
+                continue;
+            }
+
+            if (IsTagilla(botOwner))
+            {
+                return botPlayer;
+            }
+        }
+
+        return null;
     }
 
     private static int CountAirdropPoints()

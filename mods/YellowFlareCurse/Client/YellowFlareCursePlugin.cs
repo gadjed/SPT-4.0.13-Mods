@@ -4,12 +4,21 @@ using YellowFlareCurse.Client.Patches;
 
 namespace YellowFlareCurse.Client;
 
+public enum TagillaVariant
+{
+    /// <summary>Factory Tagilla (<c>bossTagilla</c>).</summary>
+    Factory = 0,
+
+    /// <summary>Labyrinth / Shadow of Tagilla (<c>bossTagillaAgro</c>).</summary>
+    Labyrinth = 1,
+}
+
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 public class YellowFlareCursePlugin : BaseUnityPlugin
 {
     public const string PluginGuid = "gadjed.yellowflarecurse";
     public const string PluginName = "Yellow Flare Curse";
-    public const string PluginVersion = "1.3.0";
+    public const string PluginVersion = "1.4.0";
 
     /// <summary>
     /// Ammo template fired by RSP-30 Yellow (HandleFlareSuccessEvent receives ammo, not the handheld weapon id).
@@ -32,6 +41,10 @@ public class YellowFlareCursePlugin : BaseUnityPlugin
     public static ConfigEntry<float> TeleportMinRadius { get; private set; } = null!;
     public static ConfigEntry<float> TeleportMaxRadius { get; private set; } = null!;
     public static ConfigEntry<bool> AiAlliance { get; private set; } = null!;
+    public static ConfigEntry<bool> SpawnTagilla { get; private set; } = null!;
+    public static ConfigEntry<TagillaVariant> TagillaType { get; private set; } = null!;
+    public static ConfigEntry<float> TagillaSpawnMinRadius { get; private set; } = null!;
+    public static ConfigEntry<float> TagillaSpawnMaxRadius { get; private set; } = null!;
 
     private void Awake()
     {
@@ -88,6 +101,36 @@ public class YellowFlareCursePlugin : BaseUnityPlugin
             "AiAlliance",
             true,
             "During the curse, make eligible AI allied with each other so they only hunt players."
+        );
+        SpawnTagilla = Config.Bind(
+            "3. Curse",
+            "SpawnTagilla",
+            true,
+            "On curse start (host/authority), spawn Tagilla and pull him near the player."
+        );
+        TagillaType = Config.Bind(
+            "3. Curse",
+            "TagillaType",
+            TagillaVariant.Factory,
+            "Which Tagilla to spawn: Factory (bossTagilla) or Labyrinth / Shadow of Tagilla (bossTagillaAgro)."
+        );
+        TagillaSpawnMinRadius = Config.Bind(
+            "3. Curse",
+            "TagillaSpawnMinRadius",
+            60f,
+            new ConfigDescription(
+                "Minimum NavMesh ring radius (meters) when placing Tagilla near the player.",
+                new AcceptableValueRange<float>(10f, 150f)
+            )
+        );
+        TagillaSpawnMaxRadius = Config.Bind(
+            "3. Curse",
+            "TagillaSpawnMaxRadius",
+            75f,
+            new ConfigDescription(
+                "Maximum NavMesh ring radius (meters) when placing Tagilla near the player.",
+                new AcceptableValueRange<float>(10f, 150f)
+            )
         );
 
         new GameWorldPatch().Enable();

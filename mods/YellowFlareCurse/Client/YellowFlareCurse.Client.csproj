@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <Authors>gadjed</Authors>
   </PropertyGroup>
 
@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <MakeDir Directories="$(ProjectDir)../Build/SPT/BepInEx/plugins" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)../Build/SPT/BepInEx/plugins" />
+    <MakeDir Directories="$(ProjectDir)../Build/BepInEx/plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)../Build/BepInEx/plugins" />
   </Target>
 </Project>

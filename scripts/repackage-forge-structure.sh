@@ -104,8 +104,11 @@ pack_from_build_combo() {
   mkdir -p "$stage/SPT/user/mods/YellowFlareCurse" "$stage/BepInEx/plugins"
   cp -R "$ROOT/mods/YellowFlareCurse/Build/SPT/user/mods/YellowFlareCurse/." \
     "$stage/SPT/user/mods/YellowFlareCurse/"
-  cp "$ROOT/mods/YellowFlareCurse/Build/SPT/BepInEx/plugins/YellowFlareCurse.Client.dll" \
-    "$stage/BepInEx/plugins/"
+  local client_dll="$ROOT/mods/YellowFlareCurse/Build/BepInEx/plugins/YellowFlareCurse.Client.dll"
+  if [[ ! -f "$client_dll" ]]; then
+    client_dll="$ROOT/mods/YellowFlareCurse/Build/SPT/BepInEx/plugins/YellowFlareCurse.Client.dll"
+  fi
+  cp "$client_dll" "$stage/BepInEx/plugins/"
   (cd "$stage" && zip -r -X -q "$OUT/$zipname" SPT BepInEx)
   echo "OK $zipname (from Build)"
   unzip -l "$OUT/$zipname" | sed -n '1,25p'

@@ -1,10 +1,16 @@
 # Changelog
 
+## 1.4.0
+
+- Spawn **Tagilla** on curse start (host/authority): `BossLocationSpawn` near the flare, then NavMesh teleport into a ring around the player
+- Tagilla is aggroed onto the player/group (curse refresh includes him)
+- Maps **without airdrop points** still start the curse (hunt + Tagilla); airdrop is skipped instead of blocking the event
+- F12: `SpawnTagilla`, `TagillaType` (Factory / Labyrinth), `TagillaSpawnMinRadius` / `TagillaSpawnMaxRadius` (60–75 m)
+
 ## 1.3.0
 
 - On curse start (host/authority): teleport eligible scav/PMC AI into a 15–40 m ring near the player (NavMesh-snapped)
 - During curse: AI ally each other (`RemoveEnemy` + `AddAlly`) and `AddEnemy` AI↔AI is blocked — bots hunt players only
-- No boss spawns (Tagilla/Killa) in this release
 - F12 toggles: `TeleportBotsNearPlayer`, `TeleportMinRadius`, `TeleportMaxRadius`, `AiAlliance`
 
 ## 1.2.2
