@@ -100,7 +100,7 @@ public class LootingBots : BaseUnityPlugin
         DetectCorpseNeedsSight = Config.Bind(
             "Loot Finder",
             "Enable corpse line of sight check",
-            BotType.None,
+            SettingsDefaults,
             new ConfigDescription(
                 "When scanning for loot, corpses will be ignored if they are not visible for the selected bot types. Takes effect next raid",
                 null,
@@ -110,7 +110,7 @@ public class LootingBots : BaseUnityPlugin
         DetectCorpseDistance = Config.Bind(
             "Loot Finder",
             "Detect corpse distance",
-            80f,
+            25f,
             new ConfigDescription(
                 "Distance (in meters) a bot is able to detect a corpse",
                 null,
@@ -141,9 +141,9 @@ public class LootingBots : BaseUnityPlugin
         DetectContainerDistance = Config.Bind(
             "Loot Finder",
             "Detect container distance",
-            80f,
+            70f,
             new ConfigDescription(
-                "Distance (in meters) a bot is able to detect a container",
+                "Distance (in meters) a bot is able to detect a container. Longer range lets bots path to loot spots; containers are the primary loot destinations.",
                 null,
                 new ConfigurationManagerAttributes { Order = 5 }
             )
@@ -162,7 +162,7 @@ public class LootingBots : BaseUnityPlugin
         DetectItemNeedsSight = Config.Bind(
             "Loot Finder",
             "Enable item line of sight check",
-            BotType.None,
+            SettingsDefaults,
             new ConfigDescription(
                 "When scanning for loot, loose items will be ignored if they are not visible for the selected bot types. Takes effect next raid",
                 null,
@@ -172,9 +172,9 @@ public class LootingBots : BaseUnityPlugin
         DetectItemDistance = Config.Bind(
             "Loot Finder",
             "Detect item distance",
-            80f,
+            18f,
             new ConfigDescription(
-                "Distance (in meters) a bot is able to detect an item",
+                "Distance (in meters) a bot is able to detect an item. Keep short (player-like vision); prefer containers for longer-range looting.",
                 null,
                 new ConfigurationManagerAttributes { Order = 2 }
             )
@@ -225,7 +225,7 @@ public class LootingBots : BaseUnityPlugin
         InitialStartTimer = Config.Bind(
             "Loot Finder (Timing)",
             "Delay after spawn",
-            6f,
+            12f,
             new ConfigDescription(
                 "Amount of seconds a bot will wait to start their first loot scan after spawning into raid.",
                 null,
@@ -235,7 +235,7 @@ public class LootingBots : BaseUnityPlugin
         LootScanInterval = Config.Bind(
             "Loot Finder (Timing)",
             "Loot scan interval",
-            15f,
+            25f,
             new ConfigDescription(
                 "The amount of seconds the bot will wait until triggering another loot scan",
                 null,

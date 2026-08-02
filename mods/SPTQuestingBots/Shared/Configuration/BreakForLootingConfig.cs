@@ -26,7 +26,7 @@ namespace QuestingBots.Configuration
         public float MaxTimeToStartLooting { get; set; } = 2;
 
         [DataMember(Name = "max_loot_scan_time", IsRequired = true)]
-        public float MaxLootScanTime { get; set; } = 4;
+        public float MaxLootScanTime { get; set; } = 15;
 
         [DataMember(Name = "max_distance_from_boss", IsRequired = true)]
         public float MaxDistanceFromBoss { get; set; } = 75;
