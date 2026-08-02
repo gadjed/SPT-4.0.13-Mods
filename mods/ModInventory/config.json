@@ -1,0 +1,11 @@
+{
+  "scanRoots": [
+    "BepInEx/plugins",
+    "BepInEx/patchers",
+    "SPT/user/mods",
+    "user/mods"
+  ],
+  "excludeModFolders": [
+    "ModInventory"
+  ]
+}

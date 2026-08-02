@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>ModInventory</RootNamespace>
+    <AssemblyName>ModInventory</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SPTarkov.Common" Version="4.0.13" />
+    <PackageReference Include="SPTarkov.DI" Version="4.0.13" />
+    <PackageReference Include="SPTarkov.Server.Core" Version="4.0.13" />
+    <PackageReference Include="SPTarkov.Server.Web" Version="4.0.13" />
+    <PackageReference Include="SemanticVersioning" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MakeDir Directories="$(ProjectDir)Build/SPT/user/mods/ModInventory" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)Build/SPT/user/mods/ModInventory" />
+    <Copy SourceFiles="$(ProjectDir)config.json" DestinationFolder="$(ProjectDir)Build/SPT/user/mods/ModInventory" />
+  </Target>
+</Project>
