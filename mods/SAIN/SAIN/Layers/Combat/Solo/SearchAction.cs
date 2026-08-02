@@ -50,7 +50,10 @@ internal class SearchAction(BotOwner bot) : BotAction(bot, "Search"), IBotAction
                 Bot.Mover.DogFight.DogFightMove(true, _searchTarget);
                 return;
             }
-            bool isBeingStealthy = _searchTarget.Hearing.EnemyHeardFromPeace;
+            bool isBeingStealthy = Search.SearchDecider.ShallBeStealthyDuringSearch(_searchTarget)
+                || _searchTarget.Hearing.EnemyHeardFromPeace
+                    && Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot)
+                        == EHeardFromPeaceBehavior.StealthEngage;
             if (isBeingStealthy)
             {
                 _sprintEnabled = false;
@@ -73,7 +76,10 @@ internal class SearchAction(BotOwner bot) : BotAction(bot, "Search"), IBotAction
         }
         if (_searchTarget != null)
         {
-            bool isBeingStealthy = _searchTarget.Hearing.EnemyHeardFromPeace;
+            bool isBeingStealthy = Search.SearchDecider.ShallBeStealthyDuringSearch(_searchTarget)
+                || _searchTarget.Hearing.EnemyHeardFromPeace
+                    && Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot)
+                        == EHeardFromPeaceBehavior.StealthEngage;
             if (isBeingStealthy)
             {
                 _sprintEnabled = false;

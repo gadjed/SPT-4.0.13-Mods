@@ -10,11 +10,11 @@ namespace SAIN;
 public static class AssemblyInfoClass
 {
     public const string Title = SAINName;
-    public const string Description = "Full Revamp of Escape from Tarkov's AI System.";
+    public const string Description = "Full Revamp of Escape from Tarkov's AI System. StealthEngage fork: PMCs carefully approach nearby gunfire heard from peace.";
     public const string Configuration = SPTVersion;
     public const string Company = "";
     public const string Product = SAINName;
-    public const string Copyright = "Copyright © 2025 Solarint";
+    public const string Copyright = "Copyright © 2025 Solarint; StealthEngage fork by gadjed";
     public const string Trademark = "";
     public const string Culture = "";
 
@@ -24,10 +24,10 @@ public static class AssemblyInfoClass
 
     public const string SAINGUID = "me.sol.sain";
     public const string SAINName = "SAIN";
-    public const string SAINVersion = "4.4.3";
-    public const string SAINPresetVersion = "4.4.0";
+    public const string SAINVersion = "4.4.4";
+    public const string SAINPresetVersion = "4.4.4";
 
-    public const string SPTVersion = "4.0.0";
+    public const string SPTVersion = "4.1.0";
 
     public const string RealismModKey = "RealismMod";
 

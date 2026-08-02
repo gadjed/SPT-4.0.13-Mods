@@ -12,7 +12,9 @@ public class PersonalitySearchSettings : SAINSettingsBase<PersonalitySearchSetti
     public bool WillSearchFromAudio = true;
 
     [Name("Heard From Peace Behavior")]
-    [Description("When a bot hears an enemy, and was previously at peace, so had no enemy and was in patrol, what is their reaction?")]
+    [Description(
+        "When a bot hears an enemy, and was previously at peace, so had no enemy and was in patrol, what is their reaction? StealthEngage = immediately search carefully without sprinting/charging (SAIN-StealthEngage fork default for PMCs)."
+    )]
     public EHeardFromPeaceBehavior HeardFromPeaceBehavior = EHeardFromPeaceBehavior.Freeze;
 
     [Description("Will this personality type hear and chase after distant gunshots if they aren't fired at them?")]

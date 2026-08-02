@@ -37,6 +37,7 @@ public struct SearchReasonsStruct
     {
         None,
         HeardFromPeaceSearchNow,
+        HeardFromPeaceStealthEngage,
         BeingStealthy,
         NewSearch_Looting,
         NewSearch_PowerLevel,

@@ -202,7 +202,7 @@ public class EnemyDecisionClass : BotBase
 
     private bool shallFreezeAndWait(Enemy enemy, out string reason)
     {
-        if (Bot.Info.PersonalitySettings.Search.HeardFromPeaceBehavior != EHeardFromPeaceBehavior.Freeze)
+        if (Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot) != EHeardFromPeaceBehavior.Freeze)
         {
             reason = "wontFreeze";
             return false;
@@ -279,7 +279,7 @@ public class EnemyDecisionClass : BotBase
         }
         if (
             enemy.Hearing.EnemyHeardFromPeace
-            && Bot.Info.PersonalitySettings.Search.HeardFromPeaceBehavior == EHeardFromPeaceBehavior.Charge
+            && Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot) == EHeardFromPeaceBehavior.Charge
         )
         {
             reason = "heardFromPeaceCharge";

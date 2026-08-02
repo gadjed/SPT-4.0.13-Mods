@@ -62,23 +62,48 @@ public class MindSettings : SAINSettingsBase<MindSettings>, ISAINSettings
 
     [Name("Bots can use Stealth Search")]
     [Description(
-        "If a bot thinks he was not heard, and isn't currently fighting an enemy, they can decide to be stealthy while they seek out an enemy, if they are inside a building."
+        "If a bot thinks he was not heard, and isn't currently fighting an enemy, they can decide to be stealthy while they seek out an enemy, if they are inside a building. StealthEngage fork also uses this for careful PMC approaches to nearby gunfire."
     )]
     [Category("Personality")]
     public bool SneakyBots = true;
 
     [Name("Only Sneaky Personalities can be Stealthy")]
     [Description(
-        "Only allow sneaky personality types (rat, snapping turtle) to be stealthy while searching for an enemy, ignored if Stealth Search is disabled above"
+        "Only allow sneaky personality types (rat, snapping turtle) to be stealthy while searching for an enemy, ignored if Stealth Search is disabled above. StealthEngage for PMCs bypasses this restriction."
     )]
     [Category("Personality")]
-    public bool OnlySneakyPersonalitiesSneaky = true;
+    public bool OnlySneakyPersonalitiesSneaky = false;
 
     [Description("The distance from a bot's search destination that they will begin to be stealthy, if enabled.")]
     [Category("Personality")]
     [Advanced]
     [MinMax(5f, 200f, 10f)]
-    public float MaximumDistanceToBeSneaky = 80f;
+    public float MaximumDistanceToBeSneaky = 100f;
+
+    [Name("Stealth Engage: Use Map-Relative Distance")]
+    [Description(
+        "If enabled, PMC stealth-engage max distance is Map Size Fraction × the map's longer axis from a built-in table (Customs ≈ 940 m → 70% ≈ 658 m). If disabled, Absolute Max Distance is used instead."
+    )]
+    [Category("Stealth Engage")]
+    public bool StealthEngageUseMapRelativeDistance = true;
+
+    [Name("Stealth Engage: Map Size Fraction")]
+    [Description("Fraction of the map's longer horizontal axis used as max engage distance when map-relative mode is on. 0.7 ≈ hear/react across most of Customs.")]
+    [Category("Stealth Engage")]
+    [MinMax(0.1f, 1.5f, 100f)]
+    public float StealthEngageMapSizeFraction = 0.7f;
+
+    [Name("Stealth Engage: Absolute Max Distance")]
+    [Description("Used when map-relative mode is off, and as a fallback if map size cannot be measured. Also clamps the map-relative result.")]
+    [Category("Stealth Engage")]
+    [MinMax(50f, 2000f, 1f)]
+    public float StealthEngageAbsoluteMaxDistance = 700f;
+
+    [Name("Stealth Engage: Absolute Min Distance")]
+    [Description("Floor for the computed engage distance (keeps Factory/Labs usable).")]
+    [Category("Stealth Engage")]
+    [MinMax(25f, 500f, 1f)]
+    public float StealthEngageAbsoluteMinDistance = 120f;
 
     [Name("Bot Suppression")]
     [Description("Toggles whether bots get suppressed or not. If disabled, all options below will do nothing.")]

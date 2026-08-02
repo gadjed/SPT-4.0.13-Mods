@@ -141,6 +141,36 @@ remove_legacy_med_conflicts() {
   done
 }
 
+remove_legacy_sain_conflicts() {
+  local root="$1"
+  # Only clean aliases when a proper SAIN plugin folder is present (StealthEngage drop-in).
+  if [[ ! -d "${root}/BepInEx/plugins/SAIN" ]]; then
+    return 0
+  fi
+
+  local mods_dir
+  for mods_dir in "${root}/SPT/user/mods" "${root}/user/mods"; do
+    [[ -d "$mods_dir" ]] || continue
+    local legacy
+    for legacy in SAIN SAIN-ServerMod SAINServerMod Solarint-SAIN SAIN-StealthEngage; do
+      if [[ -e "${mods_dir}/${legacy}" ]]; then
+        rm -rf "${mods_dir}/${legacy}"
+        ok "  видалено конфліктний ${legacy} з ${mods_dir#${root}/}"
+      fi
+    done
+  done
+
+  local plugins="${root}/BepInEx/plugins"
+  [[ -d "$plugins" ]] || return 0
+  local legacy
+  for legacy in SAIN.dll SAIN-StealthEngage SAIN-StealthEngage.dll Solarint-SAIN; do
+    if [[ -e "${plugins}/${legacy}" ]]; then
+      rm -rf "${plugins}/${legacy}"
+      ok "  видалено конфліктний BepInEx/plugins/${legacy}"
+    fi
+  done
+}
+
 clear_mods() {
   local root="$1"
   info "Очищення модів у: ${root}"
@@ -337,6 +367,7 @@ install_mods() {
   sync_nested_server_mods "$root"
   remove_legacy_questing_conflicts "$root"
   remove_legacy_med_conflicts "$root"
+  remove_legacy_sain_conflicts "$root"
 
   rm -rf "$tmp"
   ok "Встановлення завершено."

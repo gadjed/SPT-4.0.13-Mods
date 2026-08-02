@@ -16,6 +16,8 @@ Menu:
 
 Nested layout: server mods sync to SPT\user\mods.
 Removes leftover DanW QuestingBots when QuestingBotsContinuous is present.
+Removes FastSurgery / ContinuousHealing leftovers.
+Removes alternate SAIN folder names when BepInEx\plugins\SAIN is present (StealthEngage).
 
 Downloads the newest GitHub release that contains SPT-4.1.0-ModPack.zip
 (currently v1.0.3+).

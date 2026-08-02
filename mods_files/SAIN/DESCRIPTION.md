@@ -1,36 +1,36 @@
-# SAIN
+# SAIN StealthEngage
 
 | | |
 |---|---|
-| **Version** | v4.4.3 |
+| **Version** | v4.4.4 |
 | **Type** | Client + server / Клієнт + сервер |
-| **Source** | https://github.com/ArchangelWTF/SAIN |
-| **Target** | SPT 4.0.13 |
+| **Source** | https://github.com/gadjed/SAIN-StealthEngage-SPT-mod |
+| **Target** | SPT 4.1.0 |
 
 ---
 
 ## English
 
 ### Description
-Full combat AI overhaul: cover, vision, personalities, suppression, F6 GUI and presets.
+Fork of SAIN: when a PMC is at peace and hears nearby gunfire, it approaches carefully (no sprint/charge) and engages once it still has the unseen/unheard advantage. Map-relative engage distance (default 70% of longer map axis; Customs ≈ 660 m).
 
 ### Settings
-**Client:** F6 in-raid / menu GUI — large preset and behavior surface.
-**Server:** `user/mods/Solarint-SAIN-ServerMod/` (+ nickname personality data).
+**Client:** F6 → Mind → Stealth Engage (map-relative fraction, min/max clamp). Full SAIN preset GUI otherwise.
+**Server:** `SPT/user/mods/Solarint-SAIN-ServerMod/` (+ nickname personality data).
 
 ### Notes
-Install: `BepInEx/plugins/SAIN/` + server mod. Requires **BigBrain** and **Waypoints** (Waypoints not in this pack’s mods_files).
+Install: extract into SPT game root → `BepInEx/plugins/SAIN/` + `SPT/user/mods/Solarint-SAIN-ServerMod/`. Requires **BigBrain** ≥ 1.4.0 and **Waypoints**. **Replace** stock SAIN — do not run both (same GUID).
 
 ---
 
 ## Українська
 
 ### Опис
-Повна заміна бойового ШІ: укриття, зір, особистості, суппресія, GUI на F6 і пресети.
+Форк SAIN: ЧВК у мирі чує постріл поруч → обережний підхід (без спринту/charge) і вступ у бій з переваги «не бачать / не чують». Дальність — від розміру мапи (типово 70% довшої осі; Таможня ≈ 660 м).
 
 ### Налаштування
-**Клієнт:** GUI на F6 — велика кількість пресетів і параметрів поведінки.
-**Сервер:** `user/mods/Solarint-SAIN-ServerMod/` (+ дані nickname personalities).
+**Клієнт:** F6 → Mind → Stealth Engage. Решта — стандартний GUI SAIN.
+**Сервер:** `SPT/user/mods/Solarint-SAIN-ServerMod/`.
 
 ### Примітки
-Встановлення: `BepInEx/plugins/SAIN/` + серверний мод. Потрібні **BigBrain** і **Waypoints** (Waypoints немає в mods_files цього пака).
+Встановлення в корінь SPT. Потрібні **BigBrain** і **Waypoints**. Замінює стоковий SAIN (не ставити обидва).

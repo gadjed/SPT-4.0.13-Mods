@@ -371,3 +371,5 @@ ServerMod/dist
 
 # Build files
 Build/
+# Release packaging output
+Dist/

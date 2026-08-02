@@ -11,6 +11,10 @@ public class EnemyHearing(EnemyData enemyData) : EnemyBase(enemyData, enemyData.
 {
     public bool Heard { get; private set; }
     public bool EnemyHeardFromPeace { get; set; }
+    /// <summary>
+    /// True when the first awareness of this enemy while at peace came from gunfire (not footsteps/etc.).
+    /// </summary>
+    public bool EnemyGunshotHeardFromPeace { get; set; }
     public float TimeSinceHeard
     {
         get { return Heard ? Time.time - _timeLastHeard : float.MaxValue; }
@@ -32,12 +36,14 @@ public class EnemyHearing(EnemyData enemyData) : EnemyBase(enemyData, enemyData.
         if (Enemy.Seen && EnemyHeardFromPeace)
         {
             EnemyHeardFromPeace = false;
+            EnemyGunshotHeardFromPeace = false;
         }
     }
 
     private void resetHeardFromPeace(Enemy enemy)
     {
         EnemyHeardFromPeace = false;
+        EnemyGunshotHeardFromPeace = false;
     }
 
     public override void Dispose()
@@ -55,6 +61,7 @@ public class EnemyHearing(EnemyData enemyData) : EnemyBase(enemyData, enemyData.
             LastHeardPosition = null;
             _timeLastHeard = 0f;
             EnemyHeardFromPeace = false;
+            EnemyGunshotHeardFromPeace = false;
         }
     }
 
@@ -80,6 +87,10 @@ public class EnemyHearing(EnemyData enemyData) : EnemyBase(enemyData, enemyData.
         if (!Bot.HasEnemy)
         {
             EnemyHeardFromPeace = true;
+            if (wasGunfire)
+            {
+                EnemyGunshotHeardFromPeace = true;
+            }
         }
 
         if (place != null)

@@ -111,12 +111,31 @@ pack_from_build_combo() {
   unzip -l "$OUT/$zipname" | sed -n '1,25p'
 }
 
+pack_from_build_sain() {
+  local zipname="$1"
+  local stage="$OUT/build-sain"
+  local src_client="$ROOT/mods/SAIN/Build/BepInEx/plugins/SAIN"
+  local src_server="$ROOT/mods/SAIN/Build/SPT/user/mods/Solarint-SAIN-ServerMod"
+  rm -rf "$stage"
+  mkdir -p "$stage/BepInEx/plugins/SAIN" "$stage/SPT/user/mods/Solarint-SAIN-ServerMod"
+  cp -R "$src_client/." "$stage/BepInEx/plugins/SAIN/"
+  cp -R "$src_server/." "$stage/SPT/user/mods/Solarint-SAIN-ServerMod/"
+  if [[ -f "$ROOT/mods/SAIN/LICENSE" ]]; then
+    cp "$ROOT/mods/SAIN/LICENSE" "$ROOT/mods/SAIN/NOTICE" "$ROOT/mods/SAIN/README.md" \
+      "$stage/SPT/user/mods/Solarint-SAIN-ServerMod/" 2>/dev/null || true
+  fi
+  (cd "$stage" && zip -r -X -q "$OUT/$zipname" BepInEx SPT)
+  echo "OK $zipname (from Build)"
+  unzip -l "$OUT/$zipname" | sed -n '1,25p'
+}
+
 echo "=== 4.1.0 from Build ==="
 pack_from_build_server MedRebalance "MedRebalance-1.3.0.zip"
 pack_from_build_server FastTaxi "FastTaxi-1.1.0.zip"
 pack_from_build_server InsuranceControl "InsuranceControl-1.1.0.zip"
 pack_from_build_client "QuickSearch-1.1.0.zip"
 pack_from_build_combo "YellowFlareCurse-1.1.0.zip"
+pack_from_build_sain "SAIN-StealthEngage-4.4.4.zip"
 
 echo "=== 4.0.13 from previous release zips ==="
 repack_server "$SRC/old-MedRebalance-1.3.0.zip" MedRebalance "MedRebalance-1.3.0.zip"

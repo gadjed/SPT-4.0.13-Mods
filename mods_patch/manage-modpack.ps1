@@ -174,6 +174,34 @@ function Remove-LegacyMedConflicts {
     }
 }
 
+function Remove-LegacySainConflicts {
+    param([string]$Root)
+    # StealthEngage is a drop-in for BepInEx\plugins\SAIN + Solarint-SAIN-ServerMod.
+    # Strip alternate install names that would double-load beside the fork.
+    $sainPlugin = Join-Path $Root "BepInEx\plugins\SAIN"
+    if (-not (Test-Path -LiteralPath $sainPlugin)) { return }
+
+    foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
+        if (-not (Test-Path -LiteralPath $modsDir)) { continue }
+        foreach ($legacy in @("SAIN", "SAIN-ServerMod", "SAINServerMod", "Solarint-SAIN", "SAIN-StealthEngage")) {
+            $path = Join-Path $modsDir $legacy
+            if (Test-Path -LiteralPath $path) {
+                Remove-Item -LiteralPath $path -Recurse -Force
+                Write-Ok "  видалено конфліктний $legacy з $($modsDir.Substring($Root.Length).TrimStart('\','/'))"
+            }
+        }
+    }
+
+    $plugins = Join-Path $Root "BepInEx\plugins"
+    foreach ($legacy in @("SAIN.dll", "SAIN-StealthEngage", "SAIN-StealthEngage.dll", "Solarint-SAIN")) {
+        $path = Join-Path $plugins $legacy
+        if (Test-Path -LiteralPath $path) {
+            Remove-Item -LiteralPath $path -Recurse -Force
+            Write-Ok "  видалено конфліктний BepInEx\plugins\$legacy"
+        }
+    }
+}
+
 function Clear-Mods {
     param([string]$Root)
     Write-Info "Очищення модів у: $Root"
@@ -355,6 +383,7 @@ function Install-Mods {
         Sync-NestedServerMods -Root $Root
         Remove-LegacyQuestingConflicts -Root $Root
         Remove-LegacyMedConflicts -Root $Root
+        Remove-LegacySainConflicts -Root $Root
         Write-Ok "Встановлення завершено."
         Write-Info "SVM не входить у збірку. За потреби оберіть пункт меню «Встановити SVM»."
     }

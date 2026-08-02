@@ -95,10 +95,13 @@ public static class PersonalityDefaultsClass
         behavior.Search.WillSearchFromAudio = true;
         behavior.Search.WillChaseDistantGunshots = true;
         behavior.Search.SearchBaseTime = 6;
-        behavior.Search.SprintWhileSearchChance = 75;
+        behavior.Search.SprintWhileSearchChance = 25;
         behavior.Search.SearchWaitMultiplier = 3f;
-        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.SearchNow;
-        behavior.Search.SlowAtCorners = false;
+        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.StealthEngage;
+        behavior.Search.SlowAtCorners = true;
+        behavior.Search.Sneaky = true;
+        behavior.Search.SneakyPose = 0.7f;
+        behavior.Search.SneakySpeed = 0.4f;
 
         behavior.Rush.CanRushEnemyReloadHeal = true;
         behavior.Rush.CanJumpCorners = true;
@@ -228,12 +231,12 @@ public static class PersonalityDefaultsClass
         behavior.Search.WillSearchFromAudio = true;
         behavior.Search.WillChaseDistantGunshots = false;
         behavior.Search.SearchBaseTime = 90f;
-        behavior.Search.SprintWhileSearchChance = 40f;
+        behavior.Search.SprintWhileSearchChance = 10f;
         behavior.Search.Sneaky = true;
         behavior.Search.SneakyPose = 1f;
         behavior.Search.SneakySpeed = 0.33f;
         behavior.Search.SearchWaitMultiplier = 3f;
-        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.Freeze;
+        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.StealthEngage;
 
         behavior.Rush.CanRushEnemyReloadHeal = true;
         behavior.Rush.CanJumpCorners = true;
@@ -293,14 +296,15 @@ public static class PersonalityDefaultsClass
         behavior.Search.WillSearchForEnemy = true;
         behavior.Search.WillSearchFromAudio = true;
         behavior.Search.WillChaseDistantGunshots = true;
+        behavior.Search.AudioStraightDistanceToIgnore = 80f;
         behavior.Search.SearchBaseTime = 16f;
-        behavior.Search.SprintWhileSearchChance = 60f;
-        behavior.Search.Sneaky = false;
-        behavior.Search.SneakyPose = 0f;
-        behavior.Search.SneakySpeed = 0f;
+        behavior.Search.SprintWhileSearchChance = 15f;
+        behavior.Search.Sneaky = true;
+        behavior.Search.SneakyPose = 0.7f;
+        behavior.Search.SneakySpeed = 0.4f;
         behavior.Search.SearchWaitMultiplier = 1f;
-        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.Freeze;
-        behavior.Search.SlowAtCorners = false;
+        behavior.Search.HeardFromPeaceBehavior = EHeardFromPeaceBehavior.StealthEngage;
+        behavior.Search.SlowAtCorners = true;
 
         behavior.Rush.CanRushEnemyReloadHeal = true;
         behavior.Rush.CanJumpCorners = false;

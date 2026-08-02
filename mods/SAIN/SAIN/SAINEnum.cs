@@ -44,6 +44,11 @@ public enum EHeardFromPeaceBehavior
     Freeze,
     SearchNow,
     Charge,
+    /// <summary>
+    /// StealthEngage fork: immediately search for the heard enemy without sprinting/charging,
+    /// approaching carefully while the bot believes it has not been detected.
+    /// </summary>
+    StealthEngage,
 }
 
 public enum EWeaponClass

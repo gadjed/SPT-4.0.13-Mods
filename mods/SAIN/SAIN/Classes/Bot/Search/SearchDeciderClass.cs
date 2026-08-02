@@ -91,9 +91,17 @@ public class SearchDeciderClass : BotSubClass<SAINSearchClass>
 
     private bool shallSearch(Enemy enemy, out EWantToSearchReason reason)
     {
+        if (Helpers.StealthEngageHelpers.WantsImmediateStealthSearch(Bot, enemy))
+        {
+            reason = Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot)
+                == EHeardFromPeaceBehavior.StealthEngage
+                ? EWantToSearchReason.HeardFromPeaceStealthEngage
+                : EWantToSearchReason.HeardFromPeaceSearchNow;
+            return true;
+        }
         if (
             enemy.Hearing.EnemyHeardFromPeace
-            && Bot.Info.PersonalitySettings.Search.HeardFromPeaceBehavior == EHeardFromPeaceBehavior.SearchNow
+            && Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot) == EHeardFromPeaceBehavior.SearchNow
         )
         {
             reason = EWantToSearchReason.HeardFromPeaceSearchNow;
@@ -119,6 +127,12 @@ public class SearchDeciderClass : BotSubClass<SAINSearchClass>
 
     public bool ShallBeStealthyDuringSearch(Enemy enemy)
     {
+        // Fork: PMCs carefully approach gunfire heard from peace.
+        if (Helpers.StealthEngageHelpers.ShallBeStealthyApproaching(Bot, enemy))
+        {
+            return true;
+        }
+
         if (!SAINPlugin.LoadedPreset.GlobalSettings.Mind.SneakyBots)
         {
             return false;
@@ -131,7 +145,10 @@ public class SearchDeciderClass : BotSubClass<SAINSearchClass>
         {
             return false;
         }
-        if (Bot.Info.PersonalitySettings.Search.HeardFromPeaceBehavior == EHeardFromPeaceBehavior.SearchNow)
+
+        EHeardFromPeaceBehavior peaceBehavior = Helpers.StealthEngageHelpers.GetEffectiveHeardFromPeaceBehavior(Bot);
+        // SearchNow is aggressive; StealthEngage is handled above.
+        if (peaceBehavior == EHeardFromPeaceBehavior.SearchNow)
         {
             return false;
         }
