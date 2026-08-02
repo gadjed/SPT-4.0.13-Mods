@@ -38,7 +38,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 | Тека | Опис | Джерело |
 |------|------|---------|
-| `FastSurgery` | Швидша хірургія / шини | [gadjed/FastSurgery-SPT-mod](https://github.com/gadjed/FastSurgery-SPT-mod) |
+| `MedRebalance` | Ребаланс медицини (швидка хірургія + continuous / scratch heal; **SPT 4.0.13**) | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `FastTaxi` | Коротший час очікування таксі / авто | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
 | `InsuranceControl` | Контроль повернення страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
@@ -50,6 +50,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 | Тека | Опис | Джерело |
 |------|------|---------|
+| `MedRebalance` | v1.3.0 server+client: ребаланс медицини — швидка хірургія, continuous limbs, scratch heal, cancel on damage | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `AutoMedHotkeys` | Автоприв’язка медів до слотів 4/5/6 (схрон + рейд) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
 
 ### Сторонні (сорси збережені; у паку 4.1.0 поки немає)
@@ -72,7 +73,6 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
 | `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
 | `SPT-BigBrain` | BigBrain (SAIN / bot deps) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
-| `ContinuousHealing` | Continuous Healing | [Lacyway/ContinuousHealing](https://github.com/Lacyway/ContinuousHealing) |
 
 ## Примітки щодо збірки
 
@@ -81,5 +81,5 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
 - Пакт: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — або інсталер вище
 - Nested layout SPT 4.x: серверні моди в `SPT/user/mods/` (інсталер синхронізує; паки вже з цим шляхом). Не лишайте DanW `QuestingBots` поруч із Continuous.
-- Історичний **SPT 4.0.13**: ModPack `v1.2.x` + стабільний інсталер [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); включає **YellowFlareCurse 1.3.0**, **AutoMedHotkeys 1.0.3**, **FastSellInFlea 1.2.0**
+- Історичний **SPT 4.0.13**: ModPack `v1.2.x` + стабільний інсталер [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); включає **MedRebalance 1.3.0**, **YellowFlareCurse**, **AutoMedHotkeys**, **FastSellInFlea**
 

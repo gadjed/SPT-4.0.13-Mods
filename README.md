@@ -38,7 +38,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 | Folder | Notes | Source |
 |--------|--------|--------|
-| `FastSurgery` | Faster surgery / splint use times | [gadjed/FastSurgery-SPT-mod](https://github.com/gadjed/FastSurgery-SPT-mod) |
+| `MedRebalance` | Medicine rebalance (surgery speed + continuous / scratch heal; **SPT 4.0.13**) | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `FastTaxi` | Shorter car/taxi extract wait | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
 | `InsuranceControl` | Insurance refund control | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `QuickSearch` | Faster container search (client) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
@@ -50,6 +50,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 | Folder | Notes | Source |
 |--------|--------|--------|
+| `MedRebalance` | v1.3.0 server+client: medicine rebalance — fast surgery, continuous limbs, scratch heal, cancel on damage | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `AutoMedHotkeys` | Auto-bind meds to slots 4/5/6 (stash + raid) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
 
 ### Third-party (sources kept; not in 4.1.0 pack yet)
@@ -72,7 +73,6 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 | `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
 | `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
 | `SPT-BigBrain` | BigBrain (SAIN / bot deps) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
-| `ContinuousHealing` | Continuous Healing | [Lacyway/ContinuousHealing](https://github.com/Lacyway/ContinuousHealing) |
 
 ## Loadout notes
 
@@ -82,7 +82,7 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 - Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
 - Nested SPT layout: server mods must live in `SPT/user/mods/` (installer syncs / packs ship that path). Do not leave DanW `QuestingBots` beside Continuous.
-- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); includes **YellowFlareCurse 1.3.0**, **AutoMedHotkeys 1.0.3**, **FastSellInFlea 1.2.0**
+- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); includes **MedRebalance 1.3.0**, **YellowFlareCurse**, **AutoMedHotkeys**, **FastSellInFlea**
 
 ## Notes
 

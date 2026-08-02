@@ -18,7 +18,7 @@ Nested layout: server mods sync to SPT\user\mods.
 Removes leftover DanW QuestingBots when QuestingBotsContinuous is present.
 
 Downloads the newest GitHub release that contains SPT-4.0.13-ModPack.zip
-(currently v1.2.4+).
+(currently v1.2.5+).
 
 Repo: https://github.com/gadjed/SPT-4.0.13-Mods
 ModPack releases: https://github.com/gadjed/SPT-4.0.13-Mods/releases

@@ -120,6 +120,27 @@ remove_legacy_questing_conflicts() {
   fi
 }
 
+remove_legacy_med_conflicts() {
+  local root="$1"
+  local mods_dir
+  for mods_dir in "${root}/SPT/user/mods" "${root}/user/mods"; do
+    [[ -d "$mods_dir" ]] || continue
+    if [[ -e "${mods_dir}/FastSurgery" ]]; then
+      rm -rf "${mods_dir}/FastSurgery"
+      ok "  видалено застарілий FastSurgery з ${mods_dir#${root}/}"
+    fi
+  done
+  local plugins="${root}/BepInEx/plugins"
+  [[ -d "$plugins" ]] || return 0
+  local legacy
+  for legacy in ContinuousHealing ContinuousHealing.dll FastSurgery.Client.dll FastSurgery.dll; do
+    if [[ -e "${plugins}/${legacy}" ]]; then
+      rm -rf "${plugins}/${legacy}"
+      ok "  видалено застарілий BepInEx/plugins/${legacy}"
+    fi
+  done
+}
+
 clear_mods() {
   local root="$1"
   info "Очищення модів у: ${root}"
@@ -315,6 +336,7 @@ install_mods() {
 
   sync_nested_server_mods "$root"
   remove_legacy_questing_conflicts "$root"
+  remove_legacy_med_conflicts "$root"
 
   rm -rf "$tmp"
   ok "Встановлення завершено."

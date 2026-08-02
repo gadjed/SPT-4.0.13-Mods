@@ -144,6 +144,36 @@ function Remove-LegacyQuestingConflicts {
     }
 }
 
+function Remove-LegacyMedConflicts {
+    param([string]$Root)
+    # Fast Surgery / Continuous Healing were folded into Med Rebalance (4.0.13).
+    # Also strip leftovers when the 4.1 pack no longer ships FastSurgery.
+    foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
+        if (-not (Test-Path -LiteralPath $modsDir)) { continue }
+        foreach ($legacy in @("FastSurgery")) {
+            $path = Join-Path $modsDir $legacy
+            if (Test-Path -LiteralPath $path) {
+                Remove-Item -LiteralPath $path -Recurse -Force
+                Write-Ok "  видалено застарілий $legacy з $($modsDir.Substring($Root.Length).TrimStart('\','/'))"
+            }
+        }
+    }
+
+    $plugins = Join-Path $Root "BepInEx\plugins"
+    foreach ($legacy in @(
+            "ContinuousHealing",
+            "ContinuousHealing.dll",
+            "FastSurgery.Client.dll",
+            "FastSurgery.dll"
+        )) {
+        $path = Join-Path $plugins $legacy
+        if (Test-Path -LiteralPath $path) {
+            Remove-Item -LiteralPath $path -Recurse -Force
+            Write-Ok "  видалено застарілий BepInEx\plugins\$legacy"
+        }
+    }
+}
+
 function Clear-Mods {
     param([string]$Root)
     Write-Info "Очищення модів у: $Root"
@@ -324,6 +354,7 @@ function Install-Mods {
         Copy-Item -Path (Join-Path $src "*") -Destination $Root -Recurse -Force
         Sync-NestedServerMods -Root $Root
         Remove-LegacyQuestingConflicts -Root $Root
+        Remove-LegacyMedConflicts -Root $Root
         Write-Ok "Встановлення завершено."
         Write-Info "SVM не входить у збірку. За потреби оберіть пункт меню «Встановити SVM»."
     }
