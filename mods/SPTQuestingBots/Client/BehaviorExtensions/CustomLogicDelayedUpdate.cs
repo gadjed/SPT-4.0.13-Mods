@@ -19,9 +19,11 @@ namespace QuestingBots.BehaviorExtensions
 {
     public abstract class CustomLogicDelayedUpdate : CustomLogic
     {
+        protected const int DefaultUpdateInterval = 100;
+
         protected Components.BotObjectiveManager ObjectiveManager { get; private set; }
         protected BotNodeAbstractClass baseAction { get; private set; } = null!;
-        protected static int updateInterval { get; private set; } = 100;
+        protected int updateInterval { get; private set; } = DefaultUpdateInterval;
 
         private Stopwatch updateTimer = Stopwatch.StartNew();
         private Stopwatch actionElapsedTime = new Stopwatch();

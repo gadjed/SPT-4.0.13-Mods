@@ -30,7 +30,9 @@ namespace QuestingBots.BehaviorExtensions
 
     internal abstract class CustomLayerDelayedUpdate : CustomLayer
     {
-        protected static int updateInterval { get; private set; } = 100;
+        protected const int DefaultUpdateInterval = 100;
+
+        protected int updateInterval { get; private set; } = DefaultUpdateInterval;
         protected bool previousState { get; private set; } = false;
         
         private BotActionType nextAction = BotActionType.Undefined;
