@@ -46,9 +46,33 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `SPTQuestingBots` | QuestingBots Continuous (з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
 | `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 
+### Власні / підтримуються тут (лише SPT 4.0.13)
+
+| Тека | Опис | Джерело |
+|------|------|---------|
+| `AutoMedHotkeys` | Автоприв’язка медів до слотів 4/5/6 (схрон + рейд) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
+
 ### Сторонні (сорси збережені; у паку 4.1.0 поки немає)
 
 Повний колишній loadout під 4.0.13 (Fika, SAIN, UIFixes, BigBrain, …) лишається в `mods/` / `mods_files/` як референс. У ModPack для **SPT 4.1.0** вони **не** входять, доки upstream не випустить порти під 4.1.
+
+| Тека | Мод | Джерело |
+|------|-----|---------|
+| `FastSellInFlea` | Fast Sell In Flea (клієнт; 1.2.0 = SPT 4.0) | [Katrin0522/SPT-FastInFleaSell](https://github.com/Katrin0522/SPT-FastInFleaSell) |
+| `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
+| `GildedKeyStorage` | Gilded Key Storage | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
+| `LiveFleaPrices` | Live Flea Prices | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
+| `Fika-Server` | Fika server | [project-fika/Fika-Server-CSharp](https://github.com/project-fika/Fika-Server-CSharp) |
+| `Fika-Plugin` | Fika client | [project-fika/Fika-Plugin](https://github.com/project-fika/Fika-Plugin) |
+| `MoreBotsAPI` | MoreBotsAPI | [TacticalToaster/MoreBotsAPI](https://github.com/TacticalToaster/MoreBotsAPI) |
+| `MoreCheckmarks` | MoreCheckmarks (+ backend) | [TommySoucy/MoreCheckmarks](https://github.com/TommySoucy/MoreCheckmarks) |
+| `DynamicMaps` | Dynamic Maps | [acidphantasm/SPT-DynamicMaps](https://github.com/acidphantasm/SPT-DynamicMaps) |
+| `LootingBots` | Looting Bots | [Skwizzy/SPT-LootingBots](https://github.com/Skwizzy/SPT-LootingBots) |
+| `SAIN` | SAIN | [ArchangelWTF/SAIN](https://github.com/ArchangelWTF/SAIN) |
+| `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
+| `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
+| `SPT-BigBrain` | BigBrain (SAIN / bot deps) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
+| `ContinuousHealing` | Continuous Healing | [Lacyway/ContinuousHealing](https://github.com/Lacyway/ContinuousHealing) |
 
 ## Примітки щодо збірки
 
@@ -57,5 +81,5 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
 - Пакт: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — або інсталер вище
 - Nested layout SPT 4.x: серверні моди в `SPT/user/mods/` (інсталер синхронізує; паки вже з цим шляхом). Не лишайте DanW `QuestingBots` поруч із Continuous.
-- Історичний **SPT 4.0.13**: ModPack `v1.2.x` + стабільний інсталер [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`)
+- Історичний **SPT 4.0.13**: ModPack `v1.2.x` + стабільний інсталер [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); включає **YellowFlareCurse 1.3.0**, **AutoMedHotkeys 1.0.3**, **FastSellInFlea 1.2.0**
 

@@ -46,12 +46,19 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `SPTQuestingBots` | QuestingBots Continuous (includes former Scav Population; replaces DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
 | `YellowFlareCurse` | Yellow flare curse | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 
+### Own / maintained here (SPT 4.0.13 only)
+
+| Folder | Notes | Source |
+|--------|--------|--------|
+| `AutoMedHotkeys` | Auto-bind meds to slots 4/5/6 (stash + raid) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
+
 ### Third-party (sources kept; not in 4.1.0 pack yet)
 
 The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains under `mods/` / `mods_files/` for reference. Those mods are **not** bundled in the SPT 4.1.0 ModPack until upstream publishes 4.1-compatible releases.
 
 | Folder | Mod | Source |
 |--------|-----|--------|
+| `FastSellInFlea` | Fast Sell In Flea (client; 1.2.0 = SPT 4.0) | [Katrin0522/SPT-FastInFleaSell](https://github.com/Katrin0522/SPT-FastInFleaSell) |
 | `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
 | `GildedKeyStorage` | Gilded Key Storage | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
 | `LiveFleaPrices` | Live Flea Prices | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
@@ -75,10 +82,11 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 - Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
 - Nested SPT layout: server mods must live in `SPT/user/mods/` (installer syncs / packs ship that path). Do not leave DanW `QuestingBots` beside Continuous.
-- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`)
+- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`); includes **YellowFlareCurse 1.3.0**, **AutoMedHotkeys 1.0.3**, **FastSellInFlea 1.2.0**
 
 ## Notes
 
 - Prefer the installer / ModPack release for installs; use this tree for reading and patching source.
 - Original upstream URLs are listed above (nested per-mod git history is not kept in the monorepo).
+
 
