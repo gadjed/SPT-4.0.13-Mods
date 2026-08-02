@@ -124,9 +124,10 @@ clear_mods() {
   local root="$1"
   info "Очищення модів у: ${root}"
 
+  # Never delete SPT's own BepInEx modules (spt-core.dll lives here).
   if [[ -d "${root}/BepInEx/plugins" ]]; then
-    find "${root}/BepInEx/plugins" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-    ok "  очищено BepInEx/plugins/"
+    find "${root}/BepInEx/plugins" -mindepth 1 -maxdepth 1 ! -name 'spt' -exec rm -rf {} +
+    ok "  очищено BepInEx/plugins/ (збережено: spt)"
   fi
   if [[ -d "${root}/BepInEx/patchers" ]]; then
     find "${root}/BepInEx/patchers" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
@@ -369,7 +370,7 @@ do_clean() {
   local root
   root="$(resolve_spt_root)" || return 1
   printf '\n'
-  warn "Буде видалено ВСІ моди з BepInEx/plugins, BepInEx/patchers, user/mods"
+  warn "Буде видалено моди з BepInEx/plugins (крім spt/), BepInEx/patchers, user/mods"
   warn "та службові файли пакета (INSTALL/MANIFEST, Greed.exe якщо був)."
   info "SPT: ${root}"
   confirm "Очистити моди?" || { warn "Скасовано."; return 0; }

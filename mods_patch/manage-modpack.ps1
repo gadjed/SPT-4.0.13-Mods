@@ -148,8 +148,18 @@ function Clear-Mods {
     param([string]$Root)
     Write-Info "Очищення модів у: $Root"
 
+    # Never delete SPT's own BepInEx modules (spt-core.dll lives here).
+    $preservePluginNames = @("spt")
+
+    $pluginsDir = Join-Path $Root "BepInEx\plugins"
+    if (Test-Path -LiteralPath $pluginsDir) {
+        Get-ChildItem -LiteralPath $pluginsDir -Force | Where-Object {
+            $preservePluginNames -notcontains $_.Name
+        } | Remove-Item -Recurse -Force
+        Write-Ok "  очищено BepInEx\plugins (збережено: $($preservePluginNames -join ', '))"
+    }
+
     $targets = @(
-        (Join-Path $Root "BepInEx\plugins"),
         (Join-Path $Root "BepInEx\patchers"),
         (Join-Path $Root "user\mods"),
         (Join-Path $Root "SPT\user\mods")
@@ -368,7 +378,7 @@ function Install-SvmFromZip {
 function Invoke-Clean {
     $root = Resolve-SptRootPath
     Write-Host ""
-    Write-Warn "Буде видалено ВСІ моди з BepInEx\plugins, BepInEx\patchers, user\mods"
+    Write-Warn "Буде видалено моди з BepInEx\plugins (крім spt\), BepInEx\patchers, user\mods"
     Write-Warn "та службові файли пакета (INSTALL/MANIFEST, Greed.exe якщо був)."
     Write-Info "SPT: $root"
     if (-not (Confirm-Yes "Очистити моди?")) {
