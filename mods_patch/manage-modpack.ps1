@@ -1,4 +1,4 @@
-# SPT 4.1.0 Mod Pack Manager
+﻿# SPT 4.1.0 Mod Pack Manager
 # Керування встановленням / оновленням / очищенням модів збірки.
 # Запуск: powershell -ExecutionPolicy Bypass -File .\manage-modpack.ps1 [шлях_до_SPT]
 [CmdletBinding()]
@@ -303,7 +303,7 @@ function Install-Mods {
         $src = $tmp
         if ($entries.Count -eq 1 -and $entries[0].PSIsContainer) {
             $name = $entries[0].Name
-            if ($name -eq "SPT-4.1.0-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user"))) {
+            if ($name -eq "SPT-4.1.0-ModPack" -or (Test-Path (Join-Path $entries[0].FullName "BepInEx")) -or (Test-Path (Join-Path $entries[0].FullName "user")) -or (Test-Path (Join-Path $entries[0].FullName "SPT"))) {
                 if ($name -ne "BepInEx") {
                     $src = $entries[0].FullName
                 }

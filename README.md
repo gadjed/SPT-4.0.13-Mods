@@ -1,4 +1,4 @@
-# SPT Mods
+﻿# SPT Mods
 
 Monorepo with source trees, release archives, and an installable mod pack for SPT **4.1.0**.
 
@@ -75,9 +75,10 @@ The previous 4.0.13 full loadout (Fika, SAIN, UIFixes, BigBrain, …) remains un
 - Install pack: `mods_patch/SPT-4.1.0-ModPack.zip` (GitHub Releases) — or use the installer above
 - Manager scripts: `mods_patch/manage-modpack.cmd` + `.ps1` (+ `.sh`)
 - Nested SPT layout: server mods must live in `SPT/user/mods/` (installer syncs / packs ship that path). Do not leave DanW `QuestingBots` beside Continuous.
-- Historical **SPT 4.0.13** ModPack remains available on older releases
+- Historical **SPT 4.0.13**: ModPack releases `v1.2.x` + stable installer tag [`mods_pack_installer_4.0.13`](https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13) (`SPT-4.0.13-ModsPack-Installer.zip`)
 
 ## Notes
 
 - Prefer the installer / ModPack release for installs; use this tree for reading and patching source.
 - Original upstream URLs are listed above (nested per-mod git history is not kept in the monorepo).
+
