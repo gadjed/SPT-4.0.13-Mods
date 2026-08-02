@@ -42,6 +42,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `AutoMedHotkeys` | Автоприв’язка медів до слотів 4/5/6 (схрон + рейд) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
 | `FastTaxi` | Коротший час очікування таксі / авто | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
 | `InsuranceControl` | Контроль повернення страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
+| `ModInventory` | API інвентаря модів хоста для delta-sync клієнтів | [gadjed/ModInventory-SPT-mod](https://github.com/gadjed/ModInventory-SPT-mod) |
 | `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
 | `Saria-4.x.x` | Торговець Saria 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
 | `SPTQuestingBots` | QuestingBots Continuous (з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
