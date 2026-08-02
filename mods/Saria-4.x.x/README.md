@@ -22,7 +22,7 @@ Developed and tested against **SPT 4.1.0**.
 
 - Full assort rewrite focused on progressive PvE usefulness (early survival → late-game crown)
 - Prices standardized in **roubles**
-- Default config: money LL requirements removed (`RemoveMoneyLlRequirements: true`)
+- Default config: all options off (vanilla loyalty requirements, fixed stock)
 - See [ASSORT.md](ASSORT.md) for the full item/price list
 
 ## Install
@@ -53,8 +53,8 @@ Edit `user/mods/Saria/config.json`:
 
 ```json
 {
-  "RandomizeStockCount": true,
-  "RemoveMoneyLlRequirements": true,
+  "RandomizeStockCount": false,
+  "RemoveMoneyLlRequirements": false,
   "RemoveLevelLlRequirements": false
 }
 ```
