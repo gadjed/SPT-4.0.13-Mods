@@ -121,6 +121,14 @@ rm -rf "$STAGE/overlay/ins"
 extract_zip_norm "${ROOT}/mods_files/InsuranceControl/InsuranceControl-1.0.1.zip" "$STAGE/overlay/ins"
 merge_tree "$STAGE/overlay/ins" "$STAGE/pack"
 
+echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
+rm -rf \
+  "$STAGE/pack/user/mods/ModInventory" \
+  "$STAGE/pack/SPT/user/mods/ModInventory" \
+  "$STAGE/overlay/modinv"
+extract_zip_norm "${ROOT}/mods_files/ModInventory/ModInventory-0.1.0.zip" "$STAGE/overlay/modinv"
+merge_tree "$STAGE/overlay/modinv" "$STAGE/pack"
+
 echo "==> Overlay SAIN StealthEngage 4.4.4"
 rm -rf \
   "$STAGE/pack/BepInEx/plugins/SAIN" \
@@ -159,6 +167,7 @@ InsuranceControl         v1.0.1
 LiveFleaPrices           2.0.1
 LootingBots              v1.7.0-spt-4.0
 MedRebalance             v1.3.0
+ModInventory             v0.1.0
 MoreBotsAPI              2.0.1
 MoreCheckmarks           v2.2.0
 QuickSearch              v1.0.0
@@ -193,7 +202,8 @@ SPT 4.0.13 — Mod Pack
 QuestingBots Continuous включає continuous population (колишній Scav Population).
 Med Rebalance 1.3.0 (колишній Fast Surgery + Continuous Healing).
 YellowFlareCurse 1.4.4 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
-SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1.
+SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
+ModInventory 0.1.0 (host API for later client delta-sync).
 
 Виключено навмисно
 ------------------
@@ -207,6 +217,8 @@ SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Price
 Примітки
 --------
 - Fika: клієнт 2.3.9 + сервер 2.3.5 з GitHub releases.
+- ModInventory потрібен на хості з першого встановлення; далі клієнти можуть
+  оновлювати лише змінені файли через /modinventory/api/*.
 - Автоінсталер при оновленні прибирає старі FastSurgery / ContinuousHealing.
 EOF
 
@@ -219,6 +231,7 @@ REQUIRED=(
   MedRebalance
   InsuranceControl
   FastTaxi
+  ModInventory
   Saria
   DrakiaXYZ-GildedKeyStorage
   DrakiaXYZ-LiveFleaPrices
