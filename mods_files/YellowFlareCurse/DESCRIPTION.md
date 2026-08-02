@@ -35,3 +35,4 @@ Install: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Clien
 ### Примітки
 Встановлення: `user/mods/YellowFlareCurse/` + `BepInEx/plugins/YellowFlareCurse.Client.dll`. Потрібні карти з точками аірдропу. SAIN опційно для жорсткіших боїв із cursed.
 
+

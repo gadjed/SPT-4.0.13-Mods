@@ -77,7 +77,8 @@ namespace QuestingBots.Services.Spawning
             _botConfig.ChanceAssaultScavHasPlayerScavName = 0;
 
             _patchManager.PatcherName = ModInfo.MODNAME;
-            _patchManager.EnablePatch(new GenerateBotWavePatch(_logger, _botNameService, _botGenerator));
+            _patchManager.AddPatch(new GenerateBotWavePatch(_logger, _botNameService, _botGenerator));
+            _patchManager.EnablePatches();
         }
 
         private bool ShouldDisablePlayerScavConversionChance()

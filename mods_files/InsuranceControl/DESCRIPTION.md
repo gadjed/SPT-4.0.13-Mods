@@ -48,3 +48,4 @@ Install: `user/mods/InsuranceControl/`. Avoid stacking with other insurance-retu
 ### Примітки
 Встановлення: `user/mods/InsuranceControl/`. Не ставте разом з іншими модами повернення страховки.
 
+

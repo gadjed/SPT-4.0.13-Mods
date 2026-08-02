@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | v0.14.0 |
+| **Version** | v0.14.1 |
 | **Type** | Client + server / Клієнт + сервер |
 | **Source** | https://github.com/gadjed/QuestingBots-Continuous-SPT-mod |
 | **Target** | SPT 4.1.0 |
@@ -48,4 +48,5 @@ SPT **4.0.13** build: [v0.12.1](https://github.com/gadjed/QuestingBots-Continuou
 Встановлення: `SPT/user/mods/QuestingBotsContinuous/` (сервер, поруч із `SPT.Server.exe`) + `BepInEx/plugins/QuestingBotsContinuous/` (клієнт). Потрібні BigBrain ≥1.4.0 + Waypoints 1.8.2+ (Waypoints входить у ModPack 4.0.13 з v1.2.3). Не ставити разом із DanW QuestingBots або окремим Scav Population — залишок DanW у `SPT/user/mods` падає на integrity (`QuestingBots-Client.dll` відсутній) і вимикається.
 
 Збірка для SPT **4.0.13**: [v0.12.1](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod/releases/tag/v0.12.1).
+
 

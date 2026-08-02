@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using InsuranceControl.Patches;
 using Spectre.Console;
 using SPTarkov.Common.Models.Logging;
@@ -22,7 +22,7 @@ public record ModMetadata : IModMetadata
     public string Name { get; init; } = "Insurance Refund";
     public string Author { get; init; } = "gadjed";
     public List<string>? Contributors { get; init; } = null;
-    public SemanticVersioning.Version Version { get; init; } = new("1.1.0");
+    public SemanticVersioning.Version Version { get; init; } = new("1.1.1");
     public SemanticVersioning.Range SptVersion { get; init; } = new("~4.1.0");
     public bool HasPrepatcher { get; init; } = false;
     public List<string>? Incompatibilities { get; init; } = null;
@@ -151,7 +151,8 @@ public class InsuranceControlMod(
         }
 
         patchManager.PatcherName = "InsuranceControl";
-        patchManager.EnablePatch(new EnrichLostInsuredItemsPatch());
+        patchManager.AddPatch(new EnrichLostInsuredItemsPatch());
+        patchManager.EnablePatches();
         logger.LogWithColor("[InsuranceControl] Content enrichment patch enabled.", Color.Cyan);
     }
 
