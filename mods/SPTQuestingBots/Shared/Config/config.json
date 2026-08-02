@@ -103,45 +103,52 @@
 			"max_overweight_percentage": 100,
 			"search_time_after_combat": {
 				"prioritized_sain" : {
-					"min": 5,
-					"max": 20
+					"min": 15,
+					"max": 40
 				},
 				"prioritized_questing" : {
-					"min": 20,
-					"max": 45
+					"min": 25,
+					"max": 55
 				}
 			},
 			"hearing_sensor": {
 				"enabled": true,
 				"min_corrected_sound_power": 17,
 				"max_distance_footsteps": 20,
-				"max_distance_gunfire": 50,
-				"max_distance_gunfire_suppressed": 50,
+				"max_distance_gunfire": 100,
+				"max_distance_gunfire_suppressed": 65,
+				"pvp_hunter_chance": 40,
+				"max_distance_gunfire_hunter": 220,
+				"max_distance_gunfire_suppressed_hunter": 110,
 				"loudness_multiplier_footsteps": 1,
 				"loudness_multiplier_headset": 1.3,
 				"loudness_multiplier_helmet_low_deaf": 0.8,
 				"loudness_multiplier_helmet_high_deaf": 0.6,
 				"suspicious_time": {
-					"min": 5,
-					"max": 20
+					"min": 8,
+					"max": 25
+				},
+				"hunter_suspicious_time": {
+					"min": 20,
+					"max": 50
 				},
 				"max_suspicious_time": {
-					"default": 60,
-					"factory4_day": 30,
-					"factory4_night": 45,
-					"bigmap": 120,
-					"woods": 120,
-					"shoreline": 120,
-					"lighthouse": 120,
-					"rezervbase": 120,
-					"interchange": 120,
-					"laboratory": 60,
+					"default": 90,
+					"factory4_day": 45,
+					"factory4_night": 60,
+					"bigmap": 150,
+					"woods": 150,
+					"shoreline": 150,
+					"lighthouse": 150,
+					"rezervbase": 150,
+					"interchange": 150,
+					"laboratory": 75,
 					"labyrinth": 120,
-					"tarkovstreets": 120,
+					"tarkovstreets": 150,
 					"sandbox": 120,
 					"sandbox_high": 120
 				},
-				"suspicion_cooldown_time": 7
+				"suspicion_cooldown_time": 5
 			},
 			"break_for_looting": {
 				"enabled": true,
