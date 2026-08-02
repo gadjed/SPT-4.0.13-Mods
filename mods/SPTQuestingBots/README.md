@@ -2,7 +2,7 @@
 
 **SPT 4.1.0 Compatible**
 
-Fork of [DanW's Questing Bots](https://github.com/dwesterwick/SPTQuestingBots) with **continuous map population** (PMC top-up + scav reinforcement waves) merged from [Scav Population](https://github.com/gadjed/Scav-population-SPT-mod).
+Fork of [DanW's Questing Bots](https://github.com/dwesterwick/SPTQuestingBots) with **continuous scav population** merged from [Scav Population](https://github.com/gadjed/Scav-population-SPT-mod).
 
 All original Questing Bots questing / AI objective logic is preserved. PMC squads default to **2–4 bots** more often than solos.
 
@@ -30,10 +30,10 @@ All original Questing Bots questing / AI objective logic is preserved. PMC squad
 5. Restart SPT server and game client
 
 ```text
-user/mods/QuestingBotsContinuous/QuestingBotsContinuous-Server.dll
-user/mods/QuestingBotsContinuous/config.json
-user/mods/QuestingBotsContinuous/eftQuestSettings.json
-user/mods/QuestingBotsContinuous/zoneAndItemQuestPositions.json
+SPT/user/mods/QuestingBotsContinuous/QuestingBotsContinuous-Server.dll
+SPT/user/mods/QuestingBotsContinuous/config.json
+SPT/user/mods/QuestingBotsContinuous/eftQuestSettings.json
+SPT/user/mods/QuestingBotsContinuous/zoneAndItemQuestPositions.json
 BepInEx/plugins/QuestingBotsContinuous/QuestingBotsContinuous-Client.dll
 BepInEx/plugins/QuestingBotsContinuous/Quests/...
 ```
@@ -42,19 +42,15 @@ BepInEx/plugins/QuestingBotsContinuous/Quests/...
 
 | Feature | Where |
 |--------|--------|
-| Continuous PMC top-up when alive count &lt; `max_alive_bots` | Client spawn generator |
 | Timed scav reinforcement waves across the full raid | Server |
 | PMC group weights biased to 2–4 man squads | `config.json` |
 | Squad size no longer shrunk mid-PMC-raid by ET factor | Client |
 
-Config block (defaults enabled):
+Config block:
 
 ```json
 "continuous_population": {
   "enabled": true,
-  "pmc_topup_enabled": true,
-  "pmc_topup_interval_seconds": 45,
-  "pmc_topup_start_after_seconds": 180,
   "scav_reinforcements": {
     "enabled": true,
     "start_after_seconds": 180,

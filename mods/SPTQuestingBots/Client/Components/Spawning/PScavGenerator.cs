@@ -56,7 +56,7 @@ namespace QuestingBots.Components.Spawning
                 return true;
             }
 
-            // Wait for the initial PMC wave to finish; continuous PMC top-ups must not block PScavs forever.
+            // Wait for the initial PMC wave to finish before PScavs start joining.
             if (!pmcGenerator.HasCompletedInitialPool)
             {
                 return false;

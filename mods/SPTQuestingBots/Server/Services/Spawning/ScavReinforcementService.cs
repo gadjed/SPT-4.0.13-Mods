@@ -196,6 +196,8 @@ namespace QuestingBots.Services.Spawning
             {
                 string zone = zones[_randomUtil.GetInt(0, zones.Count - 1)];
                 int slots = _randomUtil.GetInt(config.SlotsMin, config.SlotsMax);
+                // Stagger waves within a pulse so host spawn cost is not a single-frame spike
+                int waveTime = time + (i * 25);
 
                 location.Waves.Add(
                     new Wave
@@ -209,12 +211,12 @@ namespace QuestingBots.Services.Spawning
                         Number = waveNumber++,
                         SlotsMin = Math.Max(0, slots - 1),
                         SlotsMax = slots,
-                        TimeMin = time,
-                        TimeMax = time + 90,
+                        TimeMin = waveTime,
+                        TimeMax = waveTime + 60,
                         ChanceGroup = 100,
                         SpawnMode = new HashSet<string> { "regular", "pve" },
                         OpenZones = zone,
-                        SptId = $"questingbots-scav-{location.Id}-{time}-{i}"
+                        SptId = $"questingbots-scav-{location.Id}-{waveTime}-{i}"
                     }
                 );
                 added++;

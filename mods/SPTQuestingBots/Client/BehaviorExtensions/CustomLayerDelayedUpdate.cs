@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DrakiaXYZ.BigBrain.Brains;
 using EFT;
+using UnityEngine;
 
 namespace QuestingBots.BehaviorExtensions
 {
@@ -38,9 +39,10 @@ namespace QuestingBots.BehaviorExtensions
         private BotActionType nextAction = BotActionType.Undefined;
         private BotActionType previousAction = BotActionType.Undefined;
         private string actionReason = "???";
-        private Stopwatch updateTimer = Stopwatch.StartNew();
         private Stopwatch pauseLayerTimer = Stopwatch.StartNew();
         private float pauseLayerTime = 0;
+        private float nextLayerUpdateTime;
+        private bool layerPhaseInitialized;
         
         public CustomLayerDelayedUpdate(BotOwner _botOwner, int _priority) : base(_botOwner, _priority)
         {
@@ -90,7 +92,13 @@ namespace QuestingBots.BehaviorExtensions
 
         protected bool canUpdate()
         {
-            if (updateTimer.ElapsedMilliseconds < updateInterval)
+            if (!layerPhaseInitialized)
+            {
+                layerPhaseInitialized = true;
+                nextLayerUpdateTime = Time.realtimeSinceStartup + UnityEngine.Random.Range(0f, updateInterval / 1000f);
+            }
+
+            if (Time.realtimeSinceStartup < nextLayerUpdateTime)
             {
                 return false;
             }
@@ -100,7 +108,7 @@ namespace QuestingBots.BehaviorExtensions
                 return false;
             }
 
-            updateTimer.Restart();
+            nextLayerUpdateTime = Time.realtimeSinceStartup + updateInterval / 1000f;
             return true;
         }
 

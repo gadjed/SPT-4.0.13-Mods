@@ -29,39 +29,7 @@ namespace QuestingBots.Components.Spawning
         protected override void Refresh() { }
 
         protected override bool CanSpawnBots() => true;
-        protected override int GetNumberOfBotsAllowedToSpawn()
-        {
-            int botsAllowedToSpawn = BotsAllowedToSpawnForGeneratorType();
-
-            // After the initial PMC wave, share max_alive_bots with PScavs so continuous top-ups do not starve them.
-            if (HasCompletedInitialPool
-                && Singleton<GameWorld>.Instance.TryGetComponent(out PScavGenerator pScavGenerator)
-                && pScavGenerator != null)
-            {
-                botsAllowedToSpawn -= pScavGenerator.AliveBots().Count();
-                botsAllowedToSpawn -= pScavGenerator.RemainingBotsToSpawn();
-            }
-
-            return botsAllowedToSpawn;
-        }
-
-        protected override bool IsContinuousTopUpEnabled()
-        {
-            Configuration.ContinuousPopulationConfig continuous = Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.ContinuousPopulation;
-            return continuous.Enabled
-                && continuous.PmcTopUpEnabled
-                && Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.Enabled
-                && Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.PMCs.Enabled;
-        }
-
-        protected override float GetContinuousTopUpIntervalSeconds() =>
-            Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.ContinuousPopulation.PmcTopUpIntervalSeconds;
-
-        protected override float GetContinuousTopUpStartAfterSeconds() =>
-            Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.ContinuousPopulation.PmcTopUpStartAfterSeconds;
-
-        protected override float GetContinuousTopUpMinRaidTimeRemaining() =>
-            Singleton<ConfigUtil>.Instance.CurrentConfig.BotSpawns.PMCs.MinRaidTimeRemaining;
+        protected override int GetNumberOfBotsAllowedToSpawn() => BotsAllowedToSpawnForGeneratorType();
 
         protected override int GetMaxGeneratedBots()
         {
@@ -90,7 +58,7 @@ namespace QuestingBots.Components.Spawning
 
         protected override async Task<Models.BotSpawnInfo> GenerateBotGroupTask()
         {
-            // Only shrink PMC squads for late scav-run joins; mid-raid PMC top-ups should keep squad sizes.
+            // Only shrink PMC squads for late scav-run joins; keep full squad sizes on PMC raids.
             double groupSizeFactor = 1.0;
             if (RaidHelpers.IsScavRun)
             {

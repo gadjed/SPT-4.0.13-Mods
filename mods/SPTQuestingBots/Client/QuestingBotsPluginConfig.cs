@@ -202,7 +202,7 @@ namespace QuestingBots
             ShowQuestInfoForSpawnSearchQuests = Config.Bind("Debug", "Show Quest Info for Spawn-Search Quests",
                 false, new ConfigDescription("Include quest markers and information for spawn-search quests like 'Spawn Point Wander' and 'Boss Hunter' quests", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             ShowBotPopulationOverlay = Config.Bind("Debug", "Show Bot Population Overlay",
-                true, "Show the current number of alive PMC bots and total AI bots in the raid");
+                false, "Show the current number of alive PMC bots and total AI bots in the raid");
             QuestOverlayMaxDistance = Config.Bind("Debug", "Max Distance (m) to Show Quest Info",
                 100, new ConfigDescription("Quest markers and info overlays will only be shown if the objective location is within this distance from you", new AcceptableValueRange<int>(10, 300)));
             QuestOverlayFontSize = Config.Bind("Debug", "Font Size for Quest Info",
@@ -210,7 +210,7 @@ namespace QuestingBots
             BotFilter = Config.Bind("Debug", "Bot Filter",
                 "", new ConfigDescription("Show debug info only for bots listed e.g 2,4", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             RespawnAllBotsButton = Config.Bind("Debug", "Respawn All Bots",
-                "", new ConfigDescription("Despawn all living AI bots and queue replacement PMC/PScav groups", null, new ConfigurationManagerAttributes
+                "", new ConfigDescription("Despawn all living AI bots and queue replacement PScav groups", null, new ConfigurationManagerAttributes
                 {
                     Order = 100,
                     HideDefaultButton = true,

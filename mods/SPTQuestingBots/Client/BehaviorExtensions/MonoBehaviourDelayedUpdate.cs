@@ -12,16 +12,24 @@ namespace QuestingBots.BehaviorExtensions
     {
         public int UpdateInterval { get; set; } = 100;
 
-        private Stopwatch updateTimer = Stopwatch.StartNew();
+        private float nextUpdateTime;
+        private bool phaseInitialized;
 
         protected bool canUpdate()
         {
-            if (updateTimer.ElapsedMilliseconds < UpdateInterval)
+            if (!phaseInitialized)
+            {
+                phaseInitialized = true;
+                // Stagger bots/monitors so they do not lockstep on the same frames
+                nextUpdateTime = Time.realtimeSinceStartup + UnityEngine.Random.Range(0f, UpdateInterval / 1000f);
+            }
+
+            if (Time.realtimeSinceStartup < nextUpdateTime)
             {
                 return false;
             }
 
-            updateTimer.Restart();
+            nextUpdateTime = Time.realtimeSinceStartup + UpdateInterval / 1000f;
             return true;
         }
     }

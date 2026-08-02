@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -42,7 +41,7 @@ namespace QuestingBots.BotLogic.HiveMind
 
         public BotHiveMindMonitor()
         {
-            UpdateInterval = 200;
+            UpdateInterval = 300;
 
             sensors.Add(BotHiveMindSensorType.InCombat, new BotHiveMindIsInCombatSensor());
             sensors.Add(BotHiveMindSensorType.IsSuspicious, new BotHiveMindIsSuspiciousSensor());
@@ -169,21 +168,39 @@ namespace QuestingBots.BotLogic.HiveMind
             return botBosses.ContainsKey(bot) ? botBosses[bot] : null!;
         }
 
-        public static ReadOnlyCollection<BotOwner> GetFollowers(BotOwner bot)
+        private static readonly IReadOnlyList<BotOwner> emptyFollowers = Array.Empty<BotOwner>();
+
+        public static IReadOnlyList<BotOwner> GetFollowers(BotOwner bot)
         {
-            return botFollowers.ContainsKey(bot) ? new ReadOnlyCollection<BotOwner>(botFollowers[bot]) : new ReadOnlyCollection<BotOwner>(new BotOwner[0]);
+            if (botFollowers.TryGetValue(bot, out List<BotOwner> followers))
+            {
+                return followers;
+            }
+
+            return emptyFollowers;
         }
 
-        public static ReadOnlyCollection<BotOwner> GetAllGroupMembers(BotOwner bot)
+        public static IReadOnlyList<BotOwner> GetAllGroupMembers(BotOwner bot)
         {
             BotOwner boss = GetBoss(bot) ?? bot;
+            IReadOnlyList<BotOwner> followers = GetFollowers(boss);
 
-            BotOwner[] allGroupMembers = GetFollowers(boss)
-                .AddItem(boss)
-                .Where(b => b.Id != bot.Id)
-                .ToArray();
+            List<BotOwner> allGroupMembers = new List<BotOwner>(followers.Count);
+            for (int i = 0; i < followers.Count; i++)
+            {
+                BotOwner follower = followers[i];
+                if (follower.Id != bot.Id)
+                {
+                    allGroupMembers.Add(follower);
+                }
+            }
 
-            return new ReadOnlyCollection<BotOwner>(allGroupMembers);
+            if (boss.Id != bot.Id)
+            {
+                allGroupMembers.Add(boss);
+            }
+
+            return allGroupMembers;
         }
 
         public static string GetActiveBrainLayerOfBoss(BotOwner bot)
@@ -254,9 +271,11 @@ namespace QuestingBots.BotLogic.HiveMind
 
             Singleton<LoggingUtil>.Instance.LogInfo("Separating " + bot.GetText() + " from its group...");
 
+            List<BotOwner> keys = new List<BotOwner>(64);
+
             // Clear stored information about the bot's boss (if applicable)
-            copyKeysToScratch(botBosses, keysScratch);
-            foreach (BotOwner follower in keysScratch)
+            copyKeysToScratch(botBosses, keys);
+            foreach (BotOwner follower in keys)
             {
                 if (botBosses[follower] == bot)
                 {
@@ -270,8 +289,8 @@ namespace QuestingBots.BotLogic.HiveMind
             }
 
             // Clear stored information about the bot's followers (if applicable)
-            copyKeysToScratch(botFollowers, keysScratch);
-            foreach (BotOwner boss in keysScratch)
+            copyKeysToScratch(botFollowers, keys);
+            foreach (BotOwner boss in keys)
             {
                 if (boss == bot)
                 {

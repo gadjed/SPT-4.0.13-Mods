@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Comfort.Common;
 using EFT;
 using QuestingBots.Components;
+using QuestingBots.Controllers;
 using QuestingBots.Helpers;
 using QuestingBots.Utils;
 using UnityEngine;
@@ -72,20 +73,23 @@ namespace QuestingBots.Models.Pathing
             {
                 if (Status == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
                 {
-                    Vector3? navMeshPosition = Singleton<GameWorld>.Instance.GetComponent<Components.LocationData>().FindNearestNavMeshPosition(bot.Position, 2);
-                    if (!navMeshPosition.HasValue)
+                    // Do not teleport stuck/off-mesh bots. Redirect them toward a human player instead.
+                    BotObjectiveManager? objectiveManager = bot.GetObjectiveManager();
+                    if (objectiveManager != null && !objectiveManager.HasTemporaryObjectiveOverride)
                     {
-                        Singleton<LoggingUtil>.Instance.LogError("Cannot find NavMesh position for " + bot.GetText());
+                        objectiveManager.TryRedirectNearHumanPlayer();
                     }
                     else
                     {
-                        float distance = Vector3.Distance(bot.Position, navMeshPosition.Value);
-                        Singleton<LoggingUtil>.Instance.LogError(bot.GetText() + " has an invalid path and is " + distance + "m from the NavMesh");
-
-                        if (distance > 0.05)
+                        Vector3? navMeshPosition = Singleton<GameWorld>.Instance.GetComponent<Components.LocationData>().FindNearestNavMeshPosition(bot.Position, 2);
+                        if (navMeshPosition.HasValue)
                         {
-                            Singleton<LoggingUtil>.Instance.LogError("Teleporting " + bot.GetText() + " to nearest NavMesh position...");
-                            bot.GetPlayer.Teleport(navMeshPosition.Value);
+                            float distance = Vector3.Distance(bot.Position, navMeshPosition.Value);
+                            Singleton<LoggingUtil>.Instance.LogWarning(bot.GetText() + " has an invalid path and is " + distance + "m from the NavMesh (teleport disabled)");
+                        }
+                        else
+                        {
+                            Singleton<LoggingUtil>.Instance.LogError("Cannot find NavMesh position for " + bot.GetText());
                         }
                     }
 

@@ -25,6 +25,7 @@ namespace QuestingBots.BotLogic.BotMonitor
         {
             botOwner = _botOwner;
             objectiveManager = botOwner.GetOrAddObjectiveManager();
+            UpdateInterval = 150;
 
             addSensors();
         }

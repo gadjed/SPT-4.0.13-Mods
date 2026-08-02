@@ -34,10 +34,9 @@ namespace QuestingBots.Components.Spawning
         protected readonly List<Models.BotSpawnInfo> BotGroups = new List<Models.BotSpawnInfo>();
         private readonly Stopwatch retrySpawnTimer = Stopwatch.StartNew();
         private readonly Stopwatch updateTimer = Stopwatch.StartNew();
-        private readonly Stopwatch continuousTopUpTimer = Stopwatch.StartNew();
         private readonly System.Random random = new System.Random();
         private int initialBotGroupCount = 0;
-        private bool isGeneratingContinuousGroup = false;
+        private bool isGeneratingExtraGroup = false;
         private bool suppressSpawnRetryDelay = false;
 
         public static int RemainingBotGenerators { get; private set; } = 0;
@@ -57,7 +56,7 @@ namespace QuestingBots.Components.Spawning
             && (MaxGeneratedBots == 0
                 || (initialBotGroupCount > 0 && BotGroups.Take(initialBotGroupCount).All(g => g.HaveAllBotsSpawned)));
         public IReadOnlyCollection<Models.BotSpawnInfo> GetBotGroups() => BotGroups.ToArray();
-        public int MaxBotsToGenerate => isGeneratingContinuousGroup
+        public int MaxBotsToGenerate => isGeneratingExtraGroup
             ? Math.Max(0, BotsAllowedToSpawnForGeneratorType())
             : Math.Min(MaxAliveBots, Math.Max(0, MaxGeneratedBots - GeneratedBotCount));
         public int GeneratorProgress => MaxGeneratedBots <= 0 ? 100 : 100 * GeneratedBotCount / MaxGeneratedBots;
@@ -106,8 +105,12 @@ namespace QuestingBots.Components.Spawning
                 PendingSpawnPoints.Clear();
             }
 
-            // Reduce the performance impact
-            if (updateTimer.ElapsedMilliseconds < 50)
+            // Reduce the performance impact. Poll less often when idle; stay responsive while spawning.
+            bool busy = IsSpawningBots
+                || isGeneratingExtraGroup
+                || BotGroups.Exists(g => !g.HaveAllBotsSpawned);
+            int pollMs = busy ? 50 : 250;
+            if (updateTimer.ElapsedMilliseconds < pollMs)
             {
                 return;
             }
@@ -120,92 +123,12 @@ namespace QuestingBots.Components.Spawning
             }
             suppressSpawnRetryDelay = false;
 
-            if (CanSpawnBots() && ShouldGenerateContinuousTopUp())
-            {
-                StartContinuousTopUpGeneration();
-                return;
-            }
-
-            if (!CanSpawnBots() || !AllowedToSpawnBots())
+            if (!CanSpawnBots() || !AllowedToSpawnBots() || RemainingGroupsToSpawnCount <= 0)
             {
                 return;
             }
 
             StartCoroutine(spawnBotGroups(BotGroups.ToArray()));
-        }
-
-        protected virtual bool IsContinuousTopUpEnabled() => false;
-        protected virtual float GetContinuousTopUpIntervalSeconds() => 45f;
-        protected virtual float GetContinuousTopUpStartAfterSeconds() => 180f;
-        protected virtual float GetContinuousTopUpMinRaidTimeRemaining() => 180f;
-
-        private bool ShouldGenerateContinuousTopUp()
-        {
-            if (!IsContinuousTopUpEnabled() || !HasGeneratedBots || isGeneratingContinuousGroup || IsSpawningBots)
-            {
-                return false;
-            }
-
-            if (!HasCompletedInitialPool)
-            {
-                return false;
-            }
-
-            if (BotGroups.Any(g => !g.HaveAllBotsSpawned))
-            {
-                return false;
-            }
-
-            if (GetNumberOfBotsAllowedToSpawn() <= 0)
-            {
-                return false;
-            }
-
-            if (RaidHelpers.GetSecondsSinceSpawning() < GetContinuousTopUpStartAfterSeconds())
-            {
-                return false;
-            }
-
-            if (RaidHelpers.GetRemainingRaidTimeSeconds() < GetContinuousTopUpMinRaidTimeRemaining())
-            {
-                return false;
-            }
-
-            if (continuousTopUpTimer.ElapsedMilliseconds < GetContinuousTopUpIntervalSeconds() * 1000)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void StartContinuousTopUpGeneration()
-        {
-            isGeneratingContinuousGroup = true;
-            continuousTopUpTimer.Restart();
-            _ = GenerateContinuousTopUpGroupAsync();
-        }
-
-        private async Task GenerateContinuousTopUpGroupAsync()
-        {
-            try
-            {
-                Singleton<LoggingUtil>.Instance.LogInfo("Generating continuous " + BotTypeName + " top-up group...");
-                Models.BotSpawnInfo group = await GenerateBotGroupTask();
-                BotGroups.Add(group);
-                GeneratedBotCount += group.GeneratedBotCount;
-                MaxGeneratedBots = Math.Max(MaxGeneratedBots, GeneratedBotCount);
-                Singleton<LoggingUtil>.Instance.LogInfo("Generated continuous " + BotTypeName + " top-up group (" + group.GeneratedBotCount + " bots).");
-            }
-            catch (Exception e)
-            {
-                Singleton<LoggingUtil>.Instance.LogError("Failed to generate continuous " + BotTypeName + " top-up group: " + e.Message);
-                Singleton<LoggingUtil>.Instance.LogError(e.StackTrace);
-            }
-            finally
-            {
-                isGeneratingContinuousGroup = false;
-            }
         }
 
         public static void Clear()
@@ -478,7 +401,7 @@ namespace QuestingBots.Components.Spawning
                 return;
             }
 
-            if (isGeneratingContinuousGroup)
+            if (isGeneratingExtraGroup)
             {
                 Singleton<LoggingUtil>.Instance.LogWarning("Cannot force-refill " + BotTypeName + " bots while a group is already being generated.");
                 return;
@@ -494,8 +417,7 @@ namespace QuestingBots.Components.Spawning
 
         private async Task ForceRefillAliveBotsAsync()
         {
-            isGeneratingContinuousGroup = true;
-            continuousTopUpTimer.Restart();
+            isGeneratingExtraGroup = true;
 
             try
             {
@@ -527,7 +449,7 @@ namespace QuestingBots.Components.Spawning
             }
             finally
             {
-                isGeneratingContinuousGroup = false;
+                isGeneratingExtraGroup = false;
             }
         }
 

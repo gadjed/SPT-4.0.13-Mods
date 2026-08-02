@@ -1,7 +1,7 @@
 {
 	"enabled": true,
 	"debug": {
-		"enabled": true,
+		"enabled": false,
 		"always_spawn_pmcs": false,
 		"always_spawn_pscavs": false,
 		"show_zone_outlines": false,
@@ -347,9 +347,6 @@
 		},
 		"continuous_population": {
 			"enabled": true,
-			"pmc_topup_enabled": true,
-			"pmc_topup_interval_seconds": 45,
-			"pmc_topup_start_after_seconds": 180,
 			"scav_reinforcements": {
 				"enabled": true,
 				"start_after_seconds": 180,

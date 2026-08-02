@@ -25,10 +25,11 @@ namespace QuestingBots.BehaviorExtensions
         protected BotNodeAbstractClass baseAction { get; private set; } = null!;
         protected int updateInterval { get; private set; } = DefaultUpdateInterval;
 
-        private Stopwatch updateTimer = Stopwatch.StartNew();
         private Stopwatch actionElapsedTime = new Stopwatch();
         private Stopwatch sprintDelayTimer = Stopwatch.StartNew();
         private float sprintDelayTime = 0;
+        private float nextLogicUpdateTime;
+        private bool logicPhaseInitialized;
 
         // Find by CreateNode(BotLogicDecision type, BotOwner bot) -> case BotLogicDecision.simplePatrol -> private gclass object
         private GClass395 baseSteeringLogic = new GClass395();
@@ -312,12 +313,18 @@ namespace QuestingBots.BehaviorExtensions
 
         protected bool canUpdate()
         {
-            if (updateTimer.ElapsedMilliseconds < updateInterval)
+            if (!logicPhaseInitialized)
+            {
+                logicPhaseInitialized = true;
+                nextLogicUpdateTime = Time.realtimeSinceStartup + UnityEngine.Random.Range(0f, updateInterval / 1000f);
+            }
+
+            if (Time.realtimeSinceStartup < nextLogicUpdateTime)
             {
                 return false;
             }
 
-            updateTimer.Restart();
+            nextLogicUpdateTime = Time.realtimeSinceStartup + updateInterval / 1000f;
             return true;
         }
     }

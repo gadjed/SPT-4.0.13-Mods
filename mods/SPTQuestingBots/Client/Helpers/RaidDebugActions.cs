@@ -24,11 +24,6 @@ namespace QuestingBots.Helpers
             Singleton<LoggingUtil>.Instance.LogInfo("Respawn All Bots: despawned " + despawned + " AI bot(s).");
 
             GameWorld gameWorld = Singleton<GameWorld>.Instance;
-            if (gameWorld.TryGetComponent(out PMCGenerator pmcGenerator) && pmcGenerator != null)
-            {
-                pmcGenerator.ForceRefillAliveBots();
-            }
-
             if (gameWorld.TryGetComponent(out PScavGenerator pScavGenerator) && pScavGenerator != null)
             {
                 pScavGenerator.ForceRefillAliveBots();

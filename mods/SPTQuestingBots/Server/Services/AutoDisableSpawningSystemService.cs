@@ -60,7 +60,7 @@ namespace QuestingBots.Services
             {
                 if (mod.ModMetadata.ModGuid == SCAV_POPULATION_GUID)
                 {
-                    _logger.Warning("Scav Population detected. Questing Bots now includes continuous population (PMC top-up + scav reinforcements). Uninstall Scav Population to avoid stacking spawns.");
+                    _logger.Warning("Scav Population detected. Questing Bots already includes scav reinforcements. Uninstall Scav Population to avoid stacking spawns.");
                     return;
                 }
             }
