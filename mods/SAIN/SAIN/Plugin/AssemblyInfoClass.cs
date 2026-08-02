@@ -27,7 +27,7 @@ public static class AssemblyInfoClass
     public const string SAINVersion = "4.4.4";
     public const string SAINPresetVersion = "4.4.4";
 
-    public const string SPTVersion = "4.1.0";
+    public const string SPTVersion = "4.0.13";
 
     public const string RealismModKey = "RealismMod";
 

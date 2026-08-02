@@ -1,0 +1,65 @@
+---
+description: The Forge content guidelines for packaging and publishing SPT mods
+alwaysApply: true
+---
+
+# The Forge — Content Guidelines
+
+Official source (always prefer current text over this summary):
+
+- [Content Guidelines](https://forge.sp-tarkov.com/content-guidelines)
+- [File structure](https://forge.sp-tarkov.com/content-guidelines#file-structure)
+
+When packaging, releasing, documenting install paths, or publishing/updating mods on The Forge, follow these rules.
+
+## File structure (critical)
+
+Archives must be **installation-ready**: extract into the SPT **game root** with no extra wrapping folder and no manual path fixes.
+
+Use `.zip` or `.7z` only. No password protection. Include everything needed to run.
+
+### SPT 4.x layout in the archive root
+
+Server mod:
+
+```text
+SPT/user/mods/<ModFolder>/
+  <Mod>.dll
+  config.json   # if used
+```
+
+Client mod (BepInEx):
+
+```text
+BepInEx/plugins/<Plugin>.dll
+# or BepInEx/plugins/<PluginFolder>/...
+```
+
+Client + server combo: both trees at archive root (`SPT/...` and `BepInEx/...`).
+
+### Wrong (do not ship)
+
+```text
+user/mods/<ModFolder>/          # missing SPT/ prefix on SPT 4
+SPT/BepInEx/plugins/...         # BepInEx must not be nested under SPT/
+MyMod-1.0.0/SPT/user/mods/...   # extra top-level wrapper folder
+```
+
+Local `Build/` output should match the archive layout. Zip from that layout (`SPT`, `BepInEx`, or both) — do not zip only the inner `user/` tree.
+
+Install docs must describe the same paths (`SPT/user/mods/...`, `BepInEx/plugins/...`).
+
+## Publishing checklist (Forge)
+
+- SemVer; client/server versions must match; SPT constraint (`~4.0.13`, `~4.0.0`, etc.) must match testing
+- Source link required for client/server binaries; VirusTotal link per release archive
+- Descriptions: step-by-step install + basic config/usage; declare dependencies on the version
+- Client `[BepInPlugin]`: GUID matches Forge + server; name `Username-ModName`; SemVer matches
+- Server C# (4.0+): `ModGuid` / `Version` / `SptVersion` consistent with Forge and client
+- **No mod packs / compilations** on Forge; do not redistribute others’ mods or assets without permission
+- Link only your own mod source/releases — not a pack repo or installer that bundles third-party work
+- Direct download links only (e.g. GitHub Releases `.zip`/`.7z`)
+- No watermark changes; no obfuscation; no unauthorized network/telemetry
+- AI: do not ship substantially AI-written mods; if any LLM assistance was used, set “Contains AI Content”
+
+Target platform for new work: **SPT 4.0.13** (see `spt-version.mdc`).

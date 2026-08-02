@@ -1,0 +1,16 @@
+---
+description: Target SPT 4.0.13 as the current development baseline
+alwaysApply: true
+---
+
+# SPT Version Target
+
+This workspace targets **SPT 4.0.13**.
+
+## Rules
+
+- Develop, build, document, and test mods against **SPT 4.0.13**
+- Prefer SPT 4.0.13 APIs, docs, and patterns; do not migrate to or assume SPT 4.1.x
+- When searching docs or examples, prefer sources for **4.0.13 / 4.0.x**
+- Version strings in README, mod metadata, and release notes should state **SPT 4.0.13** compatibility
+- Do not introduce SPT 4.1.0 / net10 as the target platform; reject accidental 4.1 builds in the 4.0.13 pack

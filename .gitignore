@@ -1,5 +1,4 @@
-# Cursor / IDE
-.cursor/
+# IDE
 .vs/
 *.user
 *.suo
@@ -20,6 +19,12 @@
 
 # Large local caches if any
 **/*.log
+
+# Scratch clones / one-off upstream diffs (not source of truth)
+.tmp/
+
+# Local VirusTotal upload staging
+scripts/vt-uploads/
 
 # Unpacked install pack (track only the zip)
 mods_patch/SPT-*-ModPack/

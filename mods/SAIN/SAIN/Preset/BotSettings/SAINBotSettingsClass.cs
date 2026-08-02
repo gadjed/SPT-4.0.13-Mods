@@ -12,7 +12,7 @@ namespace SAIN.Preset.BotSettings;
 
 public class SAINBotSettingsClass : BasePreset
 {
-    // Todo: convert to property in SPT 4.1, can't be done at the moment due to More Bots API
+    // Todo: convert to property when More Bots API allows (blocked for now)
     public static Dictionary<WildSpawnType, float> DefaultDifficultyModifier = new()
     {
         { WildSpawnType.assault, 0.3f },
@@ -61,10 +61,10 @@ public class SAINBotSettingsClass : BasePreset
         { WildSpawnType.gifter, 1f },
     };
 
-    // Todo: convert to property in SPT 4.1, can't be done at the moment due to More Bots API
+    // Todo: convert to property when More Bots API allows (blocked for now)
     public Dictionary<WildSpawnType, SAINSettingsGroupClass> SAINSettings = [];
 
-    // Todo: convert to property in SPT 4.1, can't be done at the moment due to More Bots API
+    // Todo: convert to property when More Bots API allows (blocked for now)
     public Dictionary<WildSpawnType, EFTBotSettings> EFTSettings = [];
 
     public SAINBotSettingsClass(SAINPresetClass preset)
@@ -315,7 +315,7 @@ public class SAINBotSettingsClass : BasePreset
         return SAINSettings[WildSpawnType.pmcUSEC].Settings[BotDifficulty.normal];
     }
 
-    // Todo: convert to BotsSettingsComponents in SPT 4.1, can't be done at the moment due to More Bots API
+    // Todo: convert to BotsSettingsComponents when More Bots API allows (blocked for now)
     public object GetEFTSettings(WildSpawnType type, BotDifficulty difficulty)
     {
         LoadEFTSettings();

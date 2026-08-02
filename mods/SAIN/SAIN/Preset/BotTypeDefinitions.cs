@@ -17,7 +17,7 @@ public sealed class BotType
 
 public class BotTypeDefinitions
 {
-    // Todo: convert to property in SPT 4.1, can't be done at the moment due to More Bots API
+    // Todo: convert to property when More Bots API allows (blocked for now)
     public static Dictionary<WildSpawnType, BotType> BotTypes = [];
     public static List<BotType> BotTypesList;
     public static readonly List<string> BotTypesNames = [];
