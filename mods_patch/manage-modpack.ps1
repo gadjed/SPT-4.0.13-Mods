@@ -46,8 +46,18 @@ function Confirm-Yes {
     return ($answer -match '^(?i)(y|yes|т|так)$')
 }
 
+function Normalize-SptPath {
+    param([string]$Dir)
+    if ([string]::IsNullOrWhiteSpace($Dir)) { return $null }
+    # cmd "D:\SPT\" escapes the closing quote → PowerShell may see D:\SPT"
+    $clean = $Dir.Trim().Trim('"').TrimEnd('\', '/')
+    if ([string]::IsNullOrWhiteSpace($clean)) { return $null }
+    return $clean
+}
+
 function Test-SptRoot {
     param([string]$Dir)
+    $Dir = Normalize-SptPath $Dir
     if ([string]::IsNullOrWhiteSpace($Dir)) { return $false }
     if (-not (Test-Path -LiteralPath $Dir)) { return $false }
     $eft = Join-Path $Dir "EscapeFromTarkov.exe"
@@ -70,11 +80,14 @@ function Initialize-GamePaths {
     if ($script:ResolvedSptRoot) { return }
 
     $candidate = $null
-    if (-not [string]::IsNullOrWhiteSpace($script:SptRoot) -and (Test-SptRoot $script:SptRoot)) {
-        $candidate = $script:SptRoot
+    $paramRoot = Normalize-SptPath $script:SptRoot
+    $envRoot = Normalize-SptPath $env:SPT_ROOT
+
+    if ($paramRoot -and (Test-SptRoot $paramRoot)) {
+        $candidate = $paramRoot
     }
-    elseif ($env:SPT_ROOT -and (Test-SptRoot $env:SPT_ROOT)) {
-        $candidate = $env:SPT_ROOT
+    elseif ($envRoot -and (Test-SptRoot $envRoot)) {
+        $candidate = $envRoot
     }
     elseif (Test-SptRoot (Get-Location).Path) {
         $candidate = (Get-Location).Path
@@ -92,7 +105,7 @@ function Initialize-GamePaths {
     if (-not $candidate) {
         Write-Host ""
         Write-Warn "Вкажіть шлях до кореня SPT (де EscapeFromTarkov.exe / SPT.Server.exe)."
-        $inputPath = Read-Host "Шлях SPT"
+        $inputPath = Normalize-SptPath (Read-Host "Шлях SPT")
         if (-not (Test-SptRoot $inputPath)) {
             Write-Err "Не схоже на корінь SPT: $inputPath"
             throw "Invalid SPT root"
@@ -100,7 +113,7 @@ function Initialize-GamePaths {
         $candidate = $inputPath
     }
 
-    $script:ResolvedSptRoot = (Resolve-Path -LiteralPath $candidate).Path
+    $script:ResolvedSptRoot = (Resolve-Path -LiteralPath (Normalize-SptPath $candidate)).Path
     $script:CacheDir = Join-Path $script:ResolvedSptRoot ".modpack-cache"
     $script:LocalZip = Join-Path $script:ResolvedSptRoot $AssetName
     New-Item -ItemType Directory -Force -Path $script:CacheDir | Out-Null
@@ -636,8 +649,10 @@ function Show-Menu {
     Write-Host ""
 }
 
-if (-not [string]::IsNullOrWhiteSpace($SptRoot)) {
-    $env:SPT_ROOT = $SptRoot
+$normalizedParam = Normalize-SptPath $SptRoot
+if ($normalizedParam) {
+    $SptRoot = $normalizedParam
+    $env:SPT_ROOT = $normalizedParam
 }
 
 while ($true) {

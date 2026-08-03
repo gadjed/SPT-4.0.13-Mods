@@ -5,10 +5,14 @@ cd /d "%~dp0"
 rem Thin bootstrap: fetch latest manager from GitHub, then run it against this game root.
 rem Only this .cmd needs to stay in the SPT folder permanently.
 
+rem %~dp0 always has a trailing backslash. Quoting "D:\SPT\" escapes the closing
+rem quote in cmd, so PowerShell would receive D:\SPT" and Test-Path would fail.
 set "GAME_ROOT=%~dp0"
-set "CACHE_DIR=%GAME_ROOT%.modpack-cache"
+if "%GAME_ROOT:~-1%"=="\" set "GAME_ROOT=%GAME_ROOT:~0,-1%"
+
+set "CACHE_DIR=%GAME_ROOT%\.modpack-cache"
 set "REMOTE_SCRIPT=%CACHE_DIR%\manage-modpack.ps1"
-set "LOCAL_FALLBACK=%GAME_ROOT%manage-modpack.ps1"
+set "LOCAL_FALLBACK=%GAME_ROOT%\manage-modpack.ps1"
 set "SCRIPT_URL=https://raw.githubusercontent.com/gadjed/SPT-4.0.13-Mods/main/mods_patch/manage-modpack.ps1"
 
 if not exist "%CACHE_DIR%" mkdir "%CACHE_DIR%" >nul 2>&1
