@@ -5,7 +5,7 @@ async (page) => {
     "FastTaxi-1.0.0.zip",
     "InsuranceControl-1.0.1.zip",
     "QuickSearch-1.0.0.zip",
-    "YellowFlareCurse-1.4.4.zip",
+    "YellowFlareCurse-1.4.5.zip",
   ];
   const results = {};
   for (const file of files) {
