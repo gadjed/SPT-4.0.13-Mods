@@ -159,6 +159,53 @@ async (page) => {
     },
     {
       create: true,
+      name: "Insure All (Prapor)",
+      guid: "gadjed.insureallprapor",
+      teaser:
+        "SPT 4.0.13 — stash button to insure equipped loadout with Prapor (no confirm).",
+      category: "Scripting",
+      source: "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
+      profileSafe: true,
+      description: [
+        "Adds a **Застраховать все** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API — no confirmation dialog.",
+        "",
+        "## Compatibility",
+        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.0) (`InsureAllPrapor-1.0.0.zip`)",
+        "",
+        "## Install",
+        "Extract into your SPT game root:",
+        "```",
+        "BepInEx/plugins/InsureAllPrapor.dll",
+        "```",
+        "",
+        "Config: `BepInEx/config/gadjed.insureallprapor.cfg` / F12 (`Enabled`, `ButtonLabel`, `Debug`).",
+        "",
+        "Equipped PMC gear only — not stash grids. Compatible with Insurance Control (server return rules).",
+        "",
+        "## Full mod pack + auto installer",
+        "Included in my SPT loadout assembly with an automatic install/update manager:",
+        "- Pack repository: " + PACK_REPO,
+        "- Installer release: " + INSTALLER,
+        "",
+        "## Source",
+        "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
+      ].join("\n"),
+      versions: [
+        {
+          version: "1.0.0",
+          spt: "~4.0.13",
+          download:
+            "https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/download/v1.0.0/InsureAllPrapor-1.0.0.zip",
+          virusTotal: vt(
+            "72e4983ec997bcb4d0d9e0b21c63fbdd788ba8b1b8f3a51547bf5a3036ec8078"
+          ),
+          description:
+            "SPT **4.0.13** release.\n\nArchive: `InsureAllPrapor-1.0.0.zip`.",
+        },
+      ],
+    },
+    {
+      create: true,
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:

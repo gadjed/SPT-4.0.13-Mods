@@ -1,0 +1,129 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>$(AssemblyTitle)</RootNamespace>
+    <AssemblyName>$(AssemblyTitle)-Client</AssemblyName>
+    <Nullable>enable</Nullable>
+    <Version>$(Version)</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RepositoryUrl>$(GithubRepoPath)</RepositoryUrl>
+    <Authors>$(Authors)</Authors>
+    <Title>$(AssemblyName)</Title>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="0Harmony">
+			<HintPath>References\0Harmony.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>References\hollowed.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="BepInEx">
+			<HintPath>References\BepInEx.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Comfort">
+			<HintPath>References\Comfort.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Comfort.Unity">
+			<HintPath>References\Comfort.Unity.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="CommonExtensions">
+			<HintPath>References\CommonExtensions.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="DissonanceVoip">
+			<HintPath>References\DissonanceVoip.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="DrakiaXYZ-BigBrain">
+		  <HintPath>References\DrakiaXYZ-BigBrain.dll</HintPath>
+		  <Private>False</Private>
+		</Reference>
+		<Reference Include="ItemComponent.Types">
+			<HintPath>References\ItemComponent.Types.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>References\Newtonsoft.Json.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>References\Sirenix.Serialization.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="spt-common">
+			<HintPath>References\spt-common.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="spt-custom">
+			<HintPath>References\spt-custom.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="spt-reflection">
+			<HintPath>References\spt-reflection.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="spt-singleplayer">
+			<HintPath>References\spt-singleplayer.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Unity.Postprocessing.Runtime">
+			<HintPath>References\Unity.Postprocessing.Runtime.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>References\Unity.TextMeshPro.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>References\UnityEngine.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.AIModule">
+			<HintPath>References\UnityEngine.AIModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>References\UnityEngine.CoreModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>References\UnityEngine.IMGUIModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+			<HintPath>References\UnityEngine.PhysicsModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>References\UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>References\UnityEngine.UI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\Shared\LICENSE.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+	<Import Project="..\Shared\QuestingBots-Shared.projitems" Label="Shared" />
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SkipQuestingBotsScripts)' != 'true'">
+	  <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)CopyFilesAfterBuild.ps1&quot; -modName &quot;$(AssemblyTitle)&quot; -configuration &quot;$(Configuration)&quot; -relPathToSptInstall &quot;$(RelativePathToRootSPTInstall)&quot;" />
+	</Target>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(SkipQuestingBotsScripts)' != 'true'">
+	  <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)..\Shared\UpdateModInfoBeforeBuild.ps1&quot; -guid &quot;$(SPTGUID)&quot; -modName &quot;$(AssemblyTitle)&quot; -author &quot;$(Authors)&quot; -modVersion &quot;$(Version)&quot; -sptVersion &quot;$(SPTVersion)&quot; -relPathToSptInstall &quot;$(RelativePathToRootSPTInstall)&quot;" />
+	</Target>
+
+</Project>

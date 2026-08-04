@@ -95,38 +95,45 @@ rm -rf \
   "$STAGE/pack/BepInEx/plugins/FastSurgery.dll"
 
 echo "==> Overlay MedRebalance 1.3.0"
-extract_zip_norm "${ROOT}/mods_files/MedRebalance/MedRebalance-1.3.0.zip" "$STAGE/overlay/med"
+extract_zip_norm "${ROOT}/mods_files/owned/MedRebalance/MedRebalance-1.3.0.zip" "$STAGE/overlay/med"
 merge_tree "$STAGE/overlay/med" "$STAGE/pack"
 if [[ -d "$STAGE/pack/SPT/user/mods/MedRebalance" ]]; then
   mkdir -p "$STAGE/pack/user/mods"
   merge_tree "$STAGE/pack/SPT/user/mods/MedRebalance" "$STAGE/pack/user/mods/MedRebalance"
 fi
 
-echo "==> Overlay YellowFlareCurse 1.4.4 (net9 / SPT 4.0.13)"
+echo "==> Overlay YellowFlareCurse 1.4.5 (net9 / SPT 4.0.13)"
 rm -rf \
   "$STAGE/pack/user/mods/YellowFlareCurse" \
   "$STAGE/pack/SPT/user/mods/YellowFlareCurse" \
   "$STAGE/pack/BepInEx/plugins/YellowFlareCurse.Client.dll" \
   "$STAGE/overlay/yfc"
-extract_zip_norm "${ROOT}/mods_files/YellowFlareCurse/YellowFlareCurse-1.4.4.zip" "$STAGE/overlay/yfc"
+extract_zip_norm "${ROOT}/mods_files/owned/YellowFlareCurse/YellowFlareCurse-1.4.5.zip" "$STAGE/overlay/yfc"
 merge_tree "$STAGE/overlay/yfc" "$STAGE/pack"
 
 echo "==> Overlay AutoMedHotkeys 1.0.3"
 rm -rf "$STAGE/overlay/amh"
-extract_zip_norm "${ROOT}/mods_files/AutoMedHotkeys/AutoMedHotkeys-1.0.3.zip" "$STAGE/overlay/amh"
+extract_zip_norm "${ROOT}/mods_files/owned/AutoMedHotkeys/AutoMedHotkeys-1.0.3.zip" "$STAGE/overlay/amh"
 merge_tree "$STAGE/overlay/amh" "$STAGE/pack"
 
 echo "==> Overlay InsuranceControl 1.0.1"
 rm -rf "$STAGE/overlay/ins"
-extract_zip_norm "${ROOT}/mods_files/InsuranceControl/InsuranceControl-1.0.1.zip" "$STAGE/overlay/ins"
+extract_zip_norm "${ROOT}/mods_files/owned/InsuranceControl/InsuranceControl-1.0.1.zip" "$STAGE/overlay/ins"
 merge_tree "$STAGE/overlay/ins" "$STAGE/pack"
+
+echo "==> Overlay InsureAllPrapor 1.0.0 (stash insure-all with Prapor)"
+rm -rf \
+  "$STAGE/pack/BepInEx/plugins/InsureAllPrapor.dll" \
+  "$STAGE/overlay/iap"
+extract_zip_norm "${ROOT}/mods_files/owned/InsureAllPrapor/InsureAllPrapor-1.0.0.zip" "$STAGE/overlay/iap"
+merge_tree "$STAGE/overlay/iap" "$STAGE/pack"
 
 echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
 rm -rf \
   "$STAGE/pack/user/mods/ModInventory" \
   "$STAGE/pack/SPT/user/mods/ModInventory" \
   "$STAGE/overlay/modinv"
-extract_zip_norm "${ROOT}/mods_files/ModInventory/ModInventory-0.1.0.zip" "$STAGE/overlay/modinv"
+extract_zip_norm "${ROOT}/mods_files/owned/ModInventory/ModInventory-0.1.0.zip" "$STAGE/overlay/modinv"
 merge_tree "$STAGE/overlay/modinv" "$STAGE/pack"
 
 echo "==> Overlay SAIN StealthEngage 4.4.4"
@@ -135,12 +142,12 @@ rm -rf \
   "$STAGE/pack/user/mods/Solarint-SAIN-ServerMod" \
   "$STAGE/pack/SPT/user/mods/Solarint-SAIN-ServerMod" \
   "$STAGE/overlay/sain"
-extract_zip_norm "${ROOT}/mods_files/SAIN/SAIN-StealthEngage-4.4.4.zip" "$STAGE/overlay/sain"
+extract_zip_norm "${ROOT}/mods_files/forks/SAIN/SAIN-StealthEngage-4.4.4.zip" "$STAGE/overlay/sain"
 merge_tree "$STAGE/overlay/sain" "$STAGE/pack"
 
 echo "==> Overlay FastSellInFlea 1.2.0"
 rm -rf "$STAGE/overlay/fsf"
-extract_zip_norm "${ROOT}/mods_files/FastSellInFlea/Kat-FastSellInFlea-1.2.0.zip" "$STAGE/overlay/fsf"
+extract_zip_norm "${ROOT}/mods_files/external/FastSellInFlea/Kat-FastSellInFlea-1.2.0.zip" "$STAGE/overlay/fsf"
 merge_tree "$STAGE/overlay/fsf" "$STAGE/pack"
 
 echo "==> Mirror server mods to user/mods and SPT/user/mods"
@@ -151,6 +158,7 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
+# Pack: v1.2.9
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
@@ -163,6 +171,7 @@ FastTaxi                 v1.0.0
 Fika-Plugin              v2.3.9
 Fika-Server              v2.3.5
 GildedKeyStorage         2.0.4
+InsureAllPrapor          v1.0.0
 InsuranceControl         v1.0.1
 LiveFleaPrices           2.0.1
 LootingBots              v1.7.0-spt-4.0
@@ -178,7 +187,7 @@ SPTQuestingBots          v0.12.1
 Saria-4.x.x              v2.0.1
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
-YellowFlareCurse         v1.4.4
+YellowFlareCurse         v1.4.5
 
 EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continuous), ContinuousHealing / FastSurgery (folded into MedRebalance), SVM (no redistribution; install from upstream via manage-modpack)
 EOF
@@ -201,7 +210,8 @@ SPT 4.0.13 — Mod Pack
 Клієнтські в BepInEx/plugins/ (+ patchers/).
 QuestingBots Continuous включає continuous population (колишній Scav Population).
 Med Rebalance 1.3.0 (колишній Fast Surgery + Continuous Healing).
-YellowFlareCurse 1.4.4 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
+YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
+InsureAllPrapor 1.0.0 (кнопка «Застраховать все» у Прапора на схроні),
 SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync).
 
@@ -294,7 +304,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll"]:
+for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

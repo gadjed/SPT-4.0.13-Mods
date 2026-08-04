@@ -10,9 +10,13 @@ Target: **SPT 4.0.13**.
 SPT mods/
 ├── README.md
 ├── README.uk.md
-├── mods/          # source per mod
-├── mods_files/    # latest GitHub release zips per mod (+ DESCRIPTION.md EN/UK)
-└── mods_patch/    # ModPack zip + install/update manager scripts
+├── docs/
+├── mods/
+│   ├── owned/      # original mods maintained here
+│   ├── forks/      # maintained forks of upstream mods
+│   └── external/   # third-party sources bundled in ModPack
+├── mods_files/     # latest release zips (+ DESCRIPTION.md EN/UK), same grouping
+└── mods_patch/     # ModPack zip + install/update manager scripts
 ```
 
 ## Automatic install / update
@@ -34,7 +38,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Mods
 
-### Own / maintained here (SPT 4.0.13)
+### Owned (`mods/owned/`)
 
 | Folder | Notes | Source |
 |--------|--------|--------|
@@ -44,12 +48,19 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `InsuranceControl` | Insurance refund control | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `ModInventory` | Host mod inventory API for client delta-sync | [gadjed/ModInventory-SPT-mod](https://github.com/gadjed/ModInventory-SPT-mod) |
 | `QuickSearch` | Faster container search (client) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
-| `Saria-4.x.x` | Saria Trader 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
-| `SPTQuestingBots` | QuestingBots Continuous (includes former Scav Population; replaces DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
+| `InsureAllPrapor` | Stash button — insure equipped loadout with Prapor | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Yellow flare curse | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
-| `SAIN` | SAIN StealthEngage (PMC careful engage on nearby gunfire) | [gadjed/SAIN-StealthEngage-SPT-mod](https://github.com/gadjed/SAIN-StealthEngage-SPT-mod) |
 
-### Third-party (bundled in ModPack)
+### Forks (`mods/forks/`)
+
+| Folder | Notes | Source |
+|--------|--------|--------|
+| `SAIN` | SAIN StealthEngage (PMC careful engage on nearby gunfire) | [gadjed/SAIN-StealthEngage-SPT-mod](https://github.com/gadjed/SAIN-StealthEngage-SPT-mod) |
+| `SPTQuestingBots` | QuestingBots Continuous (includes former Scav Population; replaces DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
+| `Saria-4.x.x` | Saria Trader 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
+| `SPT-Waypoints` | Waypoints — local fork base (DrakiaXYZ 1.8.2) | [DrakiaXYZ/SPT-Waypoints](https://github.com/DrakiaXYZ/SPT-Waypoints) |
+
+### External (`mods/external/`)
 
 | Folder | Mod | Source |
 |--------|-----|--------|
@@ -66,11 +77,10 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
 | `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
 | `SPT-BigBrain` | BigBrain (SAIN / bot deps) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
-| `SPT-Waypoints` | Waypoints | [DrakiaXYZ/SPT-Waypoints](https://github.com/DrakiaXYZ/SPT-Waypoints) |
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.8+`) ships the full server+client loadout (see MANIFEST in the zip), including **ModInventory** for host bootstrap / later client delta-sync
+- **ModPack 4.0.13** (`v1.2.9+`) ships the full server+client loadout (see MANIFEST in the zip), including **InsureAllPrapor** and **ModInventory** for host bootstrap / later client delta-sync
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**
@@ -83,3 +93,4 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 - Prefer the installer / ModPack release for installs; use this tree for reading and patching source.
 - Original upstream URLs are listed above (nested per-mod git history is not kept in the monorepo).
+- Bot AI stack design notes (UK): [`docs/bot-ai-stack-notes.uk.md`](docs/bot-ai-stack-notes.uk.md)

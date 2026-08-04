@@ -1,0 +1,13 @@
+<Project>
+	<PropertyGroup>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<AssemblyTitle>QuestingBotsContinuous</AssemblyTitle>
+		<Authors>gadjed</Authors>
+		<Version>0.12.1</Version>
+		<SPTVersion>~4.0.13</SPTVersion>
+		<SPTGUID>com.gadjed.questingbots.continuous</SPTGUID>
+		<GithubRepoPath>https://github.com/gadjed/QuestingBots-Continuous-SPT-mod</GithubRepoPath>
+		<RelativePathToRootSPTInstall>../../../</RelativePathToRootSPTInstall>
+		<SPTServerDebugPath>D:\SPT\Escape from Tarkov Single Player\Source\Server\SPTarkov.Server\bin\Debug\net9.0</SPTServerDebugPath>
+	</PropertyGroup>
+</Project>

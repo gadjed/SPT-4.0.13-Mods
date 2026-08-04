@@ -1,0 +1,42 @@
+# Insure All (Prapor)
+
+| | |
+|---|---|
+| **Version** | v1.0.0 |
+| **Type** | Client / Клієнт |
+| **Source** | https://github.com/gadjed/Insure-all-prapor-SPT-mod |
+| **Target** | SPT 4.0.13 |
+
+---
+
+## English
+
+### Description
+Adds a **Insure All** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles (vanilla insurance API, no confirmation dialog).
+
+### Settings
+(`BepInEx/config/gadjed.insureallprapor.cfg` / F12)
+- **Enabled** (default: true)
+- **ButtonLabel** (default: Застраховать все)
+- **Debug** (default: false)
+
+### Notes
+Install: `BepInEx/plugins/InsureAllPrapor.dll`.
+Equipped PMC gear only — not stash grids.
+
+---
+
+## Українська
+
+### Опис
+Додає кнопку **«Застраховать все»** біля слота шолома на екрані схрону. Один клік страхує екіпірований лутаут у **Прапора** за рублі (ванільний API, без підтвердження).
+
+### Налаштування
+(`BepInEx/config/gadjed.insureallprapor.cfg` / F12)
+- **Enabled** (типово: true)
+- **ButtonLabel** (типово: Застраховать все)
+- **Debug** (типово: false)
+
+### Примітки
+Встановлення: `BepInEx/plugins/InsureAllPrapor.dll`.
+Лише екіпірування PMC — не сітки схрону.

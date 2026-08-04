@@ -1,3 +1,0 @@
-repo=gadjed/SAIN-StealthEngage-SPT-mod
-tag=v4.4.4
-downloaded=2026-08-02T15:02:09Z

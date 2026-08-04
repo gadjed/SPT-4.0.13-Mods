@@ -1,0 +1,3 @@
+repo=TommySoucy/MoreCheckmarks
+tag=v2.2.0
+downloaded=2026-08-01T21:34:50Z

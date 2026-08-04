@@ -1,3 +1,0 @@
-repo=tyfon7/UIFixes
-tag=v5.3.11
-downloaded=2026-08-01T21:35:01Z

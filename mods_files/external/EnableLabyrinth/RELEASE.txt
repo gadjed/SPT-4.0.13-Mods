@@ -1,0 +1,3 @@
+repo=acidphantasm/enablelabyrinth-csharp
+tag=1.0.2
+downloaded=2026-08-01T21:34:37Z

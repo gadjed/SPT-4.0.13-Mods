@@ -10,9 +10,13 @@ Monorepo: вихідники, релізні архіви та інсталяц�
 SPT mods/
 ├── README.md
 ├── README.uk.md
-├── mods/          # вихідний код кожного мода
-├── mods_files/    # останні GitHub-релізи по модах (+ DESCRIPTION.md EN/UK)
-└── mods_patch/    # ModPack zip + скрипти встановлення / оновлення
+├── docs/
+├── mods/
+│   ├── owned/      # власні оригінальні моди
+│   ├── forks/      # підтримувані форки upstream
+│   └── external/   # сторонні сорси з ModPack
+├── mods_files/     # останні релізні zip (+ DESCRIPTION.md EN/UK), та сама група
+└── mods_patch/     # ModPack zip + скрипти встановлення / оновлення
 ```
 
 ## Автоматичне встановлення / оновлення
@@ -34,7 +38,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Моди
 
-### Власні / підтримуються тут (SPT 4.0.13)
+### Власні (`mods/owned/`)
 
 | Тека | Опис | Джерело |
 |------|------|---------|
@@ -44,12 +48,19 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `InsuranceControl` | Контроль повернення страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `ModInventory` | API інвентаря модів хоста для delta-sync клієнтів | [gadjed/ModInventory-SPT-mod](https://github.com/gadjed/ModInventory-SPT-mod) |
 | `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
-| `Saria-4.x.x` | Торговець Saria 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
-| `SPTQuestingBots` | QuestingBots Continuous (з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
+| `InsureAllPrapor` | Кнопка на схроні — застрахувати лутаут у Прапора | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
-| `SAIN` | SAIN StealthEngage (обережний вступ ЧВК у бій за пострілами) | [gadjed/SAIN-StealthEngage-SPT-mod](https://github.com/gadjed/SAIN-StealthEngage-SPT-mod) |
 
-### Сторонні (у ModPack)
+### Форки (`mods/forks/`)
+
+| Тека | Опис | Джерело |
+|------|------|---------|
+| `SAIN` | SAIN StealthEngage (обережний вступ ЧВК у бій за пострілами) | [gadjed/SAIN-StealthEngage-SPT-mod](https://github.com/gadjed/SAIN-StealthEngage-SPT-mod) |
+| `SPTQuestingBots` | QuestingBots Continuous (з колишнім Scav Population; замість DanW) | [gadjed/QuestingBots-Continuous-SPT-mod](https://github.com/gadjed/QuestingBots-Continuous-SPT-mod) |
+| `Saria-4.x.x` | Торговець Saria 2.0 | [gadjed/SariaTrader2.0-SPT-mod](https://github.com/gadjed/SariaTrader2.0-SPT-mod) |
+| `SPT-Waypoints` | Waypoints — база для локального форку (DrakiaXYZ 1.8.2) | [DrakiaXYZ/SPT-Waypoints](https://github.com/DrakiaXYZ/SPT-Waypoints) |
+
+### Зовнішні (`mods/external/`)
 
 | Тека | Мод | Джерело |
 |------|-----|---------|
@@ -66,14 +77,17 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `UIFixes` | UI Fixes | [tyfon7/UIFixes](https://github.com/tyfon7/UIFixes) |
 | `UnbreakableKeys` | Unbreakable Keys | [Toha3673/unbreakableKeys](https://github.com/Toha3673/unbreakableKeys) |
 | `SPT-BigBrain` | BigBrain (SAIN / bot deps) | [DrakiaXYZ/SPT-BigBrain](https://github.com/DrakiaXYZ/SPT-BigBrain) |
-| `SPT-Waypoints` | Waypoints | [DrakiaXYZ/SPT-Waypoints](https://github.com/DrakiaXYZ/SPT-Waypoints) |
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.8+`) — повний server+client loadout (див. MANIFEST у zip), включно з **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
+- **ModPack 4.0.13** (`v1.2.9+`) — повний server+client loadout (див. MANIFEST у zip), включно з **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
 - Пакт: `mods_patch/SPT-4.0.13-ModPack.zip` (GitHub Releases) — або інсталер вище
 - Nested layout SPT 4.x: серверні моди в `SPT/user/mods/` (інсталер синхронізує; паки вже з цим шляхом). Не лишайте DanW `QuestingBots` поруч із Continuous.
 - Не використовуйте зламаний ModPack `v1.2.5`
+
+## Документація розробки
+
+- [Нотатки: стек ШІ ботів](docs/bot-ai-stack-notes.uk.md) — Waypoints / BigBrain / SAIN / QuestingBots (тези, Q&A, бій і групи)

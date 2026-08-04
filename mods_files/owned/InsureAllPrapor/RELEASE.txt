@@ -1,0 +1,4 @@
+repo=gadjed/Insure-all-prapor-SPT-mod
+tag=v1.0.0
+sha256=72e4983ec997bcb4d0d9e0b21c63fbdd788ba8b1b8f3a51547bf5a3036ec8078
+downloaded=2026-08-04T20:55:10Z

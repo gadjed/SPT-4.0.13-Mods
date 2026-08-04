@@ -1,3 +1,0 @@
-repo=Toha3673/unbreakableKeys
-tag=2.0.0
-downloaded=2026-08-01T21:35:02Z

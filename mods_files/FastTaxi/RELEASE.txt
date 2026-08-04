@@ -1,3 +1,0 @@
-repo=gadjed/FastTaxi-SPT-mod
-tag=v1.0.0
-downloaded=2026-08-01T21:34:39Z

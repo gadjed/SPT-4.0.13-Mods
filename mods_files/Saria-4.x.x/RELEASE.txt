@@ -1,3 +1,0 @@
-repo=gadjed/SariaTrader2.0-SPT-mod
-tag=v2.0.1
-downloaded=2026-08-01T21:34:59Z

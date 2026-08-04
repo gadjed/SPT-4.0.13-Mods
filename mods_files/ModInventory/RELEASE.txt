@@ -1,3 +1,0 @@
-ModInventory v0.1.0
-SPT 4.0.13
-https://github.com/gadjed/ModInventory-SPT-mod/releases/tag/v0.1.0

@@ -75,7 +75,7 @@ repack_combo() {
 # Prefer local Build trees when available.
 pack_from_build_server() {
   local name="$1" zipname="$2"
-  local src="$ROOT/mods/$name/Build/SPT/user/mods/$name"
+  local src="$ROOT/mods/owned/$name/Build/SPT/user/mods/$name"
   local stage="$OUT/build-$name"
   rm -rf "$stage"
   mkdir -p "$stage/SPT/user/mods/$name"
@@ -87,7 +87,7 @@ pack_from_build_server() {
 
 pack_from_build_client() {
   local zipname="$1"
-  local dll="$ROOT/mods/QuickSearch/Build/SPT/BepInEx/plugins/QuickSearch.dll"
+  local dll="$ROOT/mods/owned/QuickSearch/Build/SPT/BepInEx/plugins/QuickSearch.dll"
   local stage="$OUT/build-qs"
   rm -rf "$stage"
   mkdir -p "$stage/BepInEx/plugins"
@@ -102,11 +102,11 @@ pack_from_build_combo() {
   local stage="$OUT/build-yfc"
   rm -rf "$stage"
   mkdir -p "$stage/SPT/user/mods/YellowFlareCurse" "$stage/BepInEx/plugins"
-  cp -R "$ROOT/mods/YellowFlareCurse/Build/SPT/user/mods/YellowFlareCurse/." \
+  cp -R "$ROOT/mods/owned/YellowFlareCurse/Build/SPT/user/mods/YellowFlareCurse/." \
     "$stage/SPT/user/mods/YellowFlareCurse/"
-  local client_dll="$ROOT/mods/YellowFlareCurse/Build/BepInEx/plugins/YellowFlareCurse.Client.dll"
+  local client_dll="$ROOT/mods/owned/YellowFlareCurse/Build/BepInEx/plugins/YellowFlareCurse.Client.dll"
   if [[ ! -f "$client_dll" ]]; then
-    client_dll="$ROOT/mods/YellowFlareCurse/Build/SPT/BepInEx/plugins/YellowFlareCurse.Client.dll"
+    client_dll="$ROOT/mods/owned/YellowFlareCurse/Build/SPT/BepInEx/plugins/YellowFlareCurse.Client.dll"
   fi
   cp "$client_dll" "$stage/BepInEx/plugins/"
   (cd "$stage" && zip -r -X -q "$OUT/$zipname" SPT BepInEx)
@@ -117,14 +117,14 @@ pack_from_build_combo() {
 pack_from_build_sain() {
   local zipname="$1"
   local stage="$OUT/build-sain"
-  local src_client="$ROOT/mods/SAIN/Build/BepInEx/plugins/SAIN"
-  local src_server="$ROOT/mods/SAIN/Build/SPT/user/mods/Solarint-SAIN-ServerMod"
+  local src_client="$ROOT/mods/forks/SAIN/Build/BepInEx/plugins/SAIN"
+  local src_server="$ROOT/mods/forks/SAIN/Build/SPT/user/mods/Solarint-SAIN-ServerMod"
   rm -rf "$stage"
   mkdir -p "$stage/BepInEx/plugins/SAIN" "$stage/SPT/user/mods/Solarint-SAIN-ServerMod"
   cp -R "$src_client/." "$stage/BepInEx/plugins/SAIN/"
   cp -R "$src_server/." "$stage/SPT/user/mods/Solarint-SAIN-ServerMod/"
-  if [[ -f "$ROOT/mods/SAIN/LICENSE" ]]; then
-    cp "$ROOT/mods/SAIN/LICENSE" "$ROOT/mods/SAIN/NOTICE" "$ROOT/mods/SAIN/README.md" \
+  if [[ -f "$ROOT/mods/forks/SAIN/LICENSE" ]]; then
+    cp "$ROOT/mods/forks/SAIN/LICENSE" "$ROOT/mods/forks/SAIN/NOTICE" "$ROOT/mods/forks/SAIN/README.md" \
       "$stage/SPT/user/mods/Solarint-SAIN-ServerMod/" 2>/dev/null || true
   fi
   (cd "$stage" && zip -r -X -q "$OUT/$zipname" BepInEx SPT)
