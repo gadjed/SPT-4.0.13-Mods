@@ -135,11 +135,13 @@ rm -rf \
 extract_zip_norm "${ROOT}/mods_files/owned/PackItems/PackItems-1.0.0.zip" "$STAGE/overlay/packitems"
 merge_tree "$STAGE/overlay/packitems" "$STAGE/pack"
 
-echo "==> Overlay DefibAllyRevive 1.0.0 (revive downed allies with defibrillator hotkey)"
+echo "==> Overlay DefibAllyRevive 1.0.1 (revive allies + fix 0/0 defibrillator uses)"
 rm -rf \
   "$STAGE/pack/BepInEx/plugins/DefibAllyRevive.dll" \
+  "$STAGE/pack/user/mods/DefibAllyRevive" \
+  "$STAGE/pack/SPT/user/mods/DefibAllyRevive" \
   "$STAGE/overlay/defib"
-extract_zip_norm "${ROOT}/mods_files/owned/DefibAllyRevive/DefibAllyRevive-1.0.0.zip" "$STAGE/overlay/defib"
+extract_zip_norm "${ROOT}/mods_files/owned/DefibAllyRevive/DefibAllyRevive-1.0.1.zip" "$STAGE/overlay/defib"
 merge_tree "$STAGE/overlay/defib" "$STAGE/pack"
 
 echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
@@ -194,14 +196,14 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.14
+# Pack: v1.2.15
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
 ---                      -----------
 AmandsGraphics           1.7.0
 AutoMedHotkeys           v1.0.3
-DefibAllyRevive          v1.0.0
+DefibAllyRevive          v1.0.1
 DynamicMaps              1.1.3
 EnableLabyrinth          1.0.2
 FastSellInFlea           1.2.0
@@ -253,7 +255,7 @@ Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuo
 YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
 InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
 PackItems 1.0.0 (stash context menu — pack matching items into cases),
-DefibAllyRevive 1.0.0 (revive downed allies with defibrillator on quick slots),
+DefibAllyRevive 1.0.1 (revive downed allies with defibrillator on quick slots; fix 0/0 uses),
 SAIN StealthEngage 4.4.4, Saria 2.0.5, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync),
 Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 only).
@@ -347,7 +349,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","DefibAllyRevive.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
+for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","DefibAllyRevive.dll","user/mods/DefibAllyRevive/DefibAllyRevive.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

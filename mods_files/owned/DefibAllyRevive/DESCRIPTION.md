@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | v1.0.0 |
-| **Type** | Client / Клієнт |
+| **Version** | v1.0.1 |
+| **Type** | Client + Server / Клієнт + Сервер |
 | **Target** | SPT 4.0.13 only |
 
 ---
@@ -19,6 +19,9 @@ Allows you to **revive downed allies** using a **Portable defibrillator** bound 
 
 Soft Fika support: if a teammate is already in Fika’s native downed/revive state, the same hotkey starts Fika’s revive when in range.
 
+The vanilla defibrillator is barter loot with **0 resource**, which the hotkey UI would show as **0/0**.  
+**v1.0.1** fixes that: UI shows a single charge, and the server sets the template to **1/1**.
+
 ### Settings (F12 / `BepInEx/config/gadjed.defiballyrevive.cfg`)
 | Setting | Default | Meaning |
 |---------|---------|---------|
@@ -33,7 +36,11 @@ Soft Fika support: if a teammate is already in Fika’s native downed/revive sta
 | Debug | false | Verbose logs |
 
 ### Install
-Copy `DefibAllyRevive.dll` → `BepInEx/plugins/`. No server mod.
+```text
+BepInEx/plugins/DefibAllyRevive.dll
+SPT/user/mods/DefibAllyRevive/DefibAllyRevive.dll
+```
+(On flat layouts also `user/mods/DefibAllyRevive/`.)
 
 ### Notes
 - Defibrillator template id: `5c052e6986f7746b207bc3c9`
@@ -53,5 +60,11 @@ Copy `DefibAllyRevive.dll` → `BepInEx/plugins/`. No server mod.
 
 М’яка підтримка Fika: якщо напарник уже в рідному downed Fika, той самий хоткей запускає їхнє оживлення в радіусі.
 
+У ванілі дефібрилятор — бартер з **0 ресурсу**, тому хоткей показував **0/0**.  
+**v1.0.1** це виправляє: у UI одне використання, на сервері шаблон **1/1**.
+
 ### Встановлення
-`DefibAllyRevive.dll` → `BepInEx/plugins/`. Серверний мод не потрібен.
+```text
+BepInEx/plugins/DefibAllyRevive.dll
+SPT/user/mods/DefibAllyRevive/DefibAllyRevive.dll
+```

@@ -84,7 +84,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.14+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **DefibAllyRevive**, **InsureAllPrapor**, **ModInventory**, **Skipper** (quest skip), and **AmandsGraphics 1.7.0** (brightness / post FX)
+- **ModPack 4.0.13** (`v1.2.15+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **DefibAllyRevive 1.0.1**, **InsureAllPrapor**, **ModInventory**, **Skipper** (quest skip), and **AmandsGraphics 1.7.0** (brightness / post FX)
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**

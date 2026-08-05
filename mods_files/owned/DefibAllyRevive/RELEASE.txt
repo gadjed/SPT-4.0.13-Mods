@@ -1,4 +1,4 @@
 ﻿repo=gadjed/Defib-ally-revive-SPT-mod
-tag=v1.0.0
-sha256=ea342f004eb943f3ad370da6ca56a85588115699616ddd25f092fa3f14566b9f
-downloaded=2026-08-05T20:25:32Z
+tag=v1.0.1
+sha256=e0f1450ce7e8bdd6e28db03e6fb33898346346fd3b2e9836eed7610559c2506a
+downloaded=2026-08-05T20:55:54Z

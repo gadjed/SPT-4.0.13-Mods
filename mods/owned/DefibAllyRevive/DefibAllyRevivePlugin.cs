@@ -12,7 +12,7 @@ public class DefibAllyRevivePlugin : BaseUnityPlugin
 {
     public const string PluginGuid = "gadjed.defiballyrevive";
     public const string PluginName = "Defib Ally Revive";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "1.0.1";
 
     /// <summary>Portable defibrillator (barter MedicalSupplies).</summary>
     public const string DefibrillatorTemplateId = "5c052e6986f7746b207bc3c9";
@@ -102,6 +102,8 @@ public class DefibAllyRevivePlugin : BaseUnityPlugin
         EnablePatch(new ActiveHealthControllerKillPatch());
         EnablePatch(new SetQuickSlotItemPatch());
         EnablePatch(new IsAtBindablePlacePatch());
+        EnablePatch(new QuickSlotDefibResourcePatch());
+        EnablePatch(new GridItemViewDefibResourcePatch());
         EnablePatch(new PlayerUpdateTickPatch());
 
         Log.LogInfo($"{PluginName} v{PluginVersion} loaded (SPT 4.0.13).");

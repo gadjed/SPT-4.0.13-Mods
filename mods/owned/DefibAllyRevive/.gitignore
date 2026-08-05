@@ -1,0 +1,12 @@
+/.vs
+/.idea
+/Build
+/bin
+/obj
+**/bin/
+**/obj/
+/References/*
+!/References/README.md
+*.zip
+*.user
+*.suo
