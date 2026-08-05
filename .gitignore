@@ -34,3 +34,8 @@ mods_patch/.modpack-cache/
 
 # Nested per-mod git dirs renamed during monorepo add
 **/.git.bak/
+
+# Per-mod build reference DLLs (README.md stays tracked)
+mods/**/References/*
+!mods/**/References/README.md
+
