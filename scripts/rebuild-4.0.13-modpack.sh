@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Rebuild SPT-4.0.13-ModPack.zip from last known-good full pack (v1.2.4),
 # replacing FastSurgery/ContinuousHealing with MedRebalance 1.3.0 and
 # applying safe 4.0.13 overlays. Always writes forward-slash zip paths.
@@ -128,6 +128,13 @@ rm -rf \
 extract_zip_norm "${ROOT}/mods_files/owned/InsureAllPrapor/InsureAllPrapor-1.0.3.zip" "$STAGE/overlay/iap"
 merge_tree "$STAGE/overlay/iap" "$STAGE/pack"
 
+echo "==> Overlay PackItems 1.0.0 (stash context menu — pack into cases)"
+rm -rf \
+  "$STAGE/pack/BepInEx/plugins/PackItems.dll" \
+  "$STAGE/overlay/packitems"
+extract_zip_norm "${ROOT}/mods_files/owned/PackItems/PackItems-1.0.0.zip" "$STAGE/overlay/packitems"
+merge_tree "$STAGE/overlay/packitems" "$STAGE/pack"
+
 echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
 rm -rf \
   "$STAGE/pack/user/mods/ModInventory" \
@@ -158,7 +165,7 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.9
+# Pack: v1.2.10
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
@@ -179,6 +186,7 @@ MedRebalance             v1.3.0
 ModInventory             v0.1.0
 MoreBotsAPI              2.0.1
 MoreCheckmarks           v2.2.0
+PackItems                v1.0.0
 QuickSearch              v1.0.0
 SAIN                     v4.4.4
 SPT-BigBrain             1.4.0
@@ -212,6 +220,7 @@ QuestingBots Continuous РІРєР»СЋС‡Р°С” continuous population (Р
 Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuous Healing).
 YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
 InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
+PackItems 1.0.0 (stash context menu — pack matching items into cases),
 SAIN StealthEngage 4.4.4, Saria 2.0.3, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync).
 
@@ -304,7 +313,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll"]:
+for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

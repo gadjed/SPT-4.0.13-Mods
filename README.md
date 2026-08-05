@@ -50,6 +50,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `QuickSearch` | Faster container search (client) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
 | `InsureAllPrapor` | Stash button — insure equipped loadout with Prapor | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Yellow flare curse | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
+| `PackItems` | Stash context menu — pack matching loose items into a case | [gadjed/Pack-items-SPT-mod](https://github.com/gadjed/Pack-items-SPT-mod) |
 
 ### Forks (`mods/forks/`)
 
@@ -80,7 +81,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.9+`) ships the full server+client loadout (see MANIFEST in the zip), including **InsureAllPrapor** and **ModInventory** for host bootstrap / later client delta-sync
+- **ModPack 4.0.13** (`v1.2.10+`) ships the full server+client loadout (see MANIFEST in the zip), including **PackItems**, **InsureAllPrapor**, and **ModInventory** for host bootstrap / later client delta-sync
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**

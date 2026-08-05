@@ -1,0 +1,4 @@
+repo=gadjed/Pack-items-SPT-mod
+tag=v1.0.0
+sha256=a5c26c3ca5ddbc3893a7d401ace5d97f59c6fe29eb84930bb4e10d7071f8d43e
+downloaded=2026-08-05T16:22:00Z

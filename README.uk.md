@@ -50,6 +50,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
 | `InsureAllPrapor` | Кнопка на схроні — застрахувати лутаут у Прапора | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
+| `PackItems` | Контекстне меню схрону — скласти підходящі предмети у кейс | [gadjed/Pack-items-SPT-mod](https://github.com/gadjed/Pack-items-SPT-mod) |
 
 ### Форки (`mods/forks/`)
 
@@ -80,7 +81,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.9+`) — повний server+client loadout (див. MANIFEST у zip), включно з **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
+- **ModPack 4.0.13** (`v1.2.10+`) — повний server+client loadout (див. MANIFEST у zip), включно з **PackItems**, **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
