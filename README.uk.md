@@ -51,6 +51,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `InsureAllPrapor` | Кнопка на схроні — застрахувати лутаут у Прапора | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 | `PackItems` | Контекстне меню схрону — скласти підходящі предмети у кейс | [gadjed/Pack-items-SPT-mod](https://github.com/gadjed/Pack-items-SPT-mod) |
+| `DefibAllyRevive` | Оживлення союзників дефібрилятором з хоткеїв | [gadjed/Defib-ally-revive-SPT-mod](https://github.com/gadjed/Defib-ally-revive-SPT-mod) |
 
 ### Форки (`mods/forks/`)
 
@@ -83,7 +84,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.13+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **InsureAllPrapor**, **ModInventory**, **Skipper** (пропуск квестів) і **AmandsGraphics 1.7.0** (яскравість / post FX)
+- **ModPack 4.0.13** (`v1.2.14+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **DefibAllyRevive**, **InsureAllPrapor**, **ModInventory**, **Skipper** (пропуск квестів) і **AmandsGraphics 1.7.0** (яскравість / post FX)
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
