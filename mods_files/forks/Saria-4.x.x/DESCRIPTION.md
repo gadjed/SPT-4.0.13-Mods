@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Version** | v2.0.4 |
+| **Version** | v2.0.5 |
 | **Type** | Server / Сервер |
 | **Source** | https://github.com/gadjed/SariaTrader2.0-SPT-mod |
 | **Target** | SPT 4.0.13 |
@@ -12,7 +12,7 @@
 ## English
 
 ### Description
-Adds custom trader Saria with a rebalanced LL1–4 assort (meds, ammo, gear, etc.), including SPEAR 6.8 ammo and Lancer magazines.
+Adds custom trader Saria with a rebalanced LL1–4 assort (meds, ammo, gear, etc.), including BlackRock chest rig, SPEAR 6.8 ammo, and Lancer magazines.
 
 ### Settings
 (`user/mods/Saria/config.json`)
@@ -29,7 +29,7 @@ Install: `user/mods/Saria/`. Replaces older Saria folders if present. After ModP
 ## Українська
 
 ### Опис
-Додає торговця Saria з перебалансованим асортиментом LL1–4 (меди, патрони, спорядження тощо), включно з набоями 6.8 і магазинами Lancer для SPEAR.
+Додає торговця Saria з перебалансованим асортиментом LL1–4 (меди, патрони, спорядження тощо), включно з розгрузкою BlackRock, набоями 6.8 і магазинами Lancer для SPEAR.
 
 ### Налаштування
 (`user/mods/Saria/config.json`)
