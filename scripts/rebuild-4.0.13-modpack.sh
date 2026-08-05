@@ -157,6 +157,14 @@ rm -rf "$STAGE/overlay/fsf"
 extract_zip_norm "${ROOT}/mods_files/external/FastSellInFlea/Kat-FastSellInFlea-1.2.0.zip" "$STAGE/overlay/fsf"
 merge_tree "$STAGE/overlay/fsf" "$STAGE/pack"
 
+echo "==> Overlay Saria Trader 2.0.4 (SPEAR 6.8 ammo + Lancer mags)"
+rm -rf \
+  "$STAGE/pack/user/mods/Saria" \
+  "$STAGE/pack/SPT/user/mods/Saria" \
+  "$STAGE/overlay/saria"
+extract_zip_norm "${ROOT}/mods_files/forks/Saria-4.x.x/SariaTrader2.0-2.0.4.zip" "$STAGE/overlay/saria"
+merge_tree "$STAGE/overlay/saria" "$STAGE/pack"
+
 echo "==> Mirror server mods to user/mods and SPT/user/mods"
 mirror_server_mods "$STAGE/pack"
 
@@ -165,7 +173,7 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.10
+# Pack: v1.2.11
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
@@ -192,7 +200,7 @@ SAIN                     v4.4.4
 SPT-BigBrain             1.4.0
 SPT-Waypoints            1.8.2
 SPTQuestingBots          v0.12.1
-Saria-4.x.x              v2.0.3
+Saria-4.x.x              v2.0.4
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
 YellowFlareCurse         v1.4.5
@@ -221,7 +229,7 @@ Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuo
 YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
 InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
 PackItems 1.0.0 (stash context menu — pack matching items into cases),
-SAIN StealthEngage 4.4.4, Saria 2.0.3, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
+SAIN StealthEngage 4.4.4, Saria 2.0.4, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync).
 
 Р’РёРєР»СЋС‡РµРЅРѕ РЅР°РІРјРёСЃРЅРѕ

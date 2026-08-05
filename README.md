@@ -81,7 +81,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.10+`) ships the full server+client loadout (see MANIFEST in the zip), including **PackItems**, **InsureAllPrapor**, and **ModInventory** for host bootstrap / later client delta-sync
+- **ModPack 4.0.13** (`v1.2.11+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.4** (SPEAR 6.8 ammo/mags), **PackItems**, **InsureAllPrapor**, and **ModInventory** for host bootstrap / later client delta-sync
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**

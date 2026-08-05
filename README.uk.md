@@ -81,7 +81,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.10+`) — повний server+client loadout (див. MANIFEST у zip), включно з **PackItems**, **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
+- **ModPack 4.0.13** (`v1.2.11+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.4** (набої/магазини SPEAR 6.8), **PackItems**, **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
