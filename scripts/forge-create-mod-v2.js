@@ -1,4 +1,4 @@
-async (page) => {
+﻿async (page) => {
   const FORGE_MOD_INDEX = 0; // 0..4
   const PACK_REPO = "https://github.com/gadjed/SPT-4.0.13-Mods";
   const INSTALLER =
@@ -8,7 +8,7 @@ async (page) => {
     {
       name: "Med Rebalance",
       guid: "gadjed.medrebalance",
-      teaser: "SPT 4.0.13 — medicine rebalance: fast CMS/splints, continuous heal, scratch top-ups, cancel on damage.",
+      teaser: "SPT 4.0.13 вЂ” medicine rebalance: fast CMS/splints, continuous heal, scratch top-ups, cancel on damage.",
       category: "Items",
       source: "https://github.com/gadjed/MedRebalance-SPT-mod",
       profileSafe: true,
@@ -16,7 +16,7 @@ async (page) => {
         "**Medicine rebalance** (formerly Fast Surgery): shorter surgical/splint use time (default **5s**), continuous multi-limb healing, scratch top-ups from medkit resource, cancel-on-damage.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — current `v1.3.0` combo (server + client)",
+        "- **SPT 4.0.13** вЂ” current `v1.3.0` combo (server + client)",
         "- Older archives under previous name: [v1.2.0](https://github.com/gadjed/MedRebalance-SPT-mod/releases/tag/v1.2.0) / [v1.1.0](https://github.com/gadjed/MedRebalance-SPT-mod/releases/tag/v1.1.0) (`FastSurgery-*.zip`)",
         "",
         "## Install",
@@ -43,15 +43,15 @@ async (page) => {
       name: "Fast Taxi",
       guid: "gadjed.fasttaxi",
       teaser:
-        "SPT 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
+        "SPT 4.0.13 вЂ” shorter paid car/taxi extract wait (default 8s).",
       category: "Locations",
       source: "https://github.com/gadjed/FastTaxi-SPT-mod",
       profileSafe: true,
       description: [
-        "Shortens paid car/taxi extract wait times (typically ~60s → configurable, default **8 seconds**).",
+        "Shortens paid car/taxi extract wait times (typically ~60s в†’ configurable, default **8 seconds**).",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -74,7 +74,7 @@ async (page) => {
       name: "Insurance Control",
       guid: "gadjed.insurancerefund",
       teaser:
-        "SPT 4.0.13 — insurance return time, lost chance, magazine/container contents.",
+        "SPT 4.0.13 вЂ” insurance return time, lost chance, magazine/container contents.",
       category: "Scripting",
       source: "https://github.com/gadjed/Insurance-refund-SPT-mod",
       profileSafe: false,
@@ -82,7 +82,7 @@ async (page) => {
         "Controls insurance return timing, lost chance, and whether magazines/containers return with contents.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.0) (`InsuranceControl-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.0) (`InsuranceControl-1.0.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -107,15 +107,15 @@ async (page) => {
       name: "Quick Search",
       guid: "gadjed.quicksearch",
       teaser:
-        "SPT 4.0.13 — search containers and corpses faster (default 3×).",
+        "SPT 4.0.13 вЂ” search containers and corpses faster (default 3Г—).",
       category: "Scripting",
       source: "https://github.com/gadjed/Quick-search-SPT-mod",
       profileSafe: true,
       description: [
-        "Speeds up searching containers and corpses by a configurable multiplier (default **3×**).",
+        "Speeds up searching containers and corpses by a configurable multiplier (default **3Г—**).",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -138,15 +138,15 @@ async (page) => {
       name: "Insure All (Prapor)",
       guid: "gadjed.insureallprapor",
       teaser:
-        "SPT 4.0.13 — stash button to insure equipped loadout with Prapor (no confirm).",
+        "SPT 4.0.13 вЂ” stash button to insure equipped loadout with Prapor (no confirm).",
       category: "Scripting",
       source: "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
       profileSafe: true,
       description: [
-        "Adds a **Застраховать все** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API — no confirmation dialog.",
+        "Adds a **Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµ** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API вЂ” no confirmation dialog.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.0) (`InsureAllPrapor-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.3) (`InsureAllPrapor-1.0.3.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -156,7 +156,7 @@ async (page) => {
         "",
         "Config: `BepInEx/config/gadjed.insureallprapor.cfg` / F12 (`Enabled`, `ButtonLabel`, `Debug`).",
         "",
-        "Equipped PMC gear only — not stash grids.",
+        "Equipped PMC gear only вЂ” not stash grids.",
         "",
         "## Full mod pack + auto installer",
         "Included in my SPT loadout assembly with an automatic install/update manager:",
@@ -171,7 +171,7 @@ async (page) => {
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:
-        "SPT 4.0.13 — yellow RSP-30 flare curse + delayed high-value airdrop.",
+        "SPT 4.0.13 вЂ” yellow RSP-30 flare curse + delayed high-value airdrop.",
       category: "Overhauls",
       source: "https://github.com/gadjed/Yellow-flare-curse-SPT-mod",
       profileSafe: true,
@@ -179,7 +179,7 @@ async (page) => {
         "Using an RSP-30 Yellow (once per raid) curses nearby scavs/PMCs, then triggers a high-value airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.4.5](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.5) (`YellowFlareCurse-1.4.5.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.4.5](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.5) (`YellowFlareCurse-1.4.5.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",

@@ -1,4 +1,4 @@
-async (page) => {
+﻿async (page) => {
   const PACK_REPO = "https://github.com/gadjed/SPT-4.0.13-Mods";
   const INSTALLER =
     "https://github.com/gadjed/SPT-4.0.13-Mods/releases/tag/mods_pack_installer_4.0.13";
@@ -27,15 +27,15 @@ async (page) => {
       create: true,
       name: "Fast Taxi",
       guid: "gadjed.fasttaxi",
-      teaser: "SPT 4.0.13 — shorter paid car/taxi extract wait (default 8s).",
+      teaser: "SPT 4.0.13 вЂ” shorter paid car/taxi extract wait (default 8s).",
       category: "Locations",
       source: "https://github.com/gadjed/FastTaxi-SPT-mod",
       profileSafe: true,
       description: [
-        "Shortens paid car/taxi extract wait times (typically ~60s → configurable, default **8 seconds**).",
+        "Shortens paid car/taxi extract wait times (typically ~60s в†’ configurable, default **8 seconds**).",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/FastTaxi-SPT-mod/releases/tag/v1.0.0) (`FastTaxi-1.0.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -71,7 +71,7 @@ async (page) => {
       name: "Insurance Control",
       guid: "gadjed.insurancerefund",
       teaser:
-        "SPT 4.0.13 — insurance return time, lost chance, magazine/container contents.",
+        "SPT 4.0.13 вЂ” insurance return time, lost chance, magazine/container contents.",
       category: "Scripting",
       source: "https://github.com/gadjed/Insurance-refund-SPT-mod",
       profileSafe: false,
@@ -79,7 +79,7 @@ async (page) => {
         "Controls insurance return timing, lost chance, and whether magazines/containers return with contents.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.1](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.1) (`InsuranceControl-1.0.1.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.1](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.1) (`InsuranceControl-1.0.1.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -117,15 +117,15 @@ async (page) => {
       create: true,
       name: "Quick Search",
       guid: "gadjed.quicksearch",
-      teaser: "SPT 4.0.13 — search containers and corpses faster (default 3×).",
+      teaser: "SPT 4.0.13 вЂ” search containers and corpses faster (default 3Г—).",
       category: "Scripting",
       source: "https://github.com/gadjed/Quick-search-SPT-mod",
       profileSafe: true,
       description: [
-        "Speeds up searching containers and corpses by a configurable multiplier (default **3×**).",
+        "Speeds up searching containers and corpses by a configurable multiplier (default **3Г—**).",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Quick-search-SPT-mod/releases/tag/v1.0.0) (`QuickSearch-1.0.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -162,15 +162,15 @@ async (page) => {
       name: "Insure All (Prapor)",
       guid: "gadjed.insureallprapor",
       teaser:
-        "SPT 4.0.13 — stash button to insure equipped loadout with Prapor (no confirm).",
+        "SPT 4.0.13 вЂ” stash button to insure equipped loadout with Prapor (no confirm).",
       category: "Scripting",
       source: "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
       profileSafe: true,
       description: [
-        "Adds a **Застраховать все** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API — no confirmation dialog.",
+        "Adds a **Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµ** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API вЂ” no confirmation dialog.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.0) (`InsureAllPrapor-1.0.0.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.3) (`InsureAllPrapor-1.0.3.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
@@ -180,7 +180,7 @@ async (page) => {
         "",
         "Config: `BepInEx/config/gadjed.insureallprapor.cfg` / F12 (`Enabled`, `ButtonLabel`, `Debug`).",
         "",
-        "Equipped PMC gear only — not stash grids. Compatible with Insurance Control (server return rules).",
+        "Equipped PMC gear only вЂ” not stash grids. Compatible with Insurance Control (server return rules).",
         "",
         "## Full mod pack + auto installer",
         "Included in my SPT loadout assembly with an automatic install/update manager:",
@@ -195,12 +195,12 @@ async (page) => {
           version: "1.0.0",
           spt: "~4.0.13",
           download:
-            "https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/download/v1.0.0/InsureAllPrapor-1.0.0.zip",
+            "https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/download/v1.0.3/InsureAllPrapor-1.0.3.zip",
           virusTotal: vt(
             "72e4983ec997bcb4d0d9e0b21c63fbdd788ba8b1b8f3a51547bf5a3036ec8078"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `InsureAllPrapor-1.0.0.zip`.",
+            "SPT **4.0.13** release.\n\nArchive: `InsureAllPrapor-1.0.3.zip`.",
         },
       ],
     },
@@ -209,7 +209,7 @@ async (page) => {
       name: "Yellow Flare Curse",
       guid: "gadjed.yellowflarecurse",
       teaser:
-        "SPT 4.0.13 — yellow flare curse: teleport hunt pack, Tagilla, high-value airdrop.",
+        "SPT 4.0.13 вЂ” yellow flare curse: teleport hunt pack, Tagilla, high-value airdrop.",
       category: "Overhauls",
       source: "https://github.com/gadjed/Yellow-flare-curse-SPT-mod",
       profileSafe: true,
@@ -217,7 +217,7 @@ async (page) => {
         "Successful **RSP-30 Yellow** (once per raid) teleports scavs into a hunt ring, optionally spawns Tagilla / cultists, allies scav AI against you, then drops a forced high-value SUPPLY airdrop after a delay.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** — [v1.4.5](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.5) (`YellowFlareCurse-1.4.5.zip`)",
+        "- **SPT 4.0.13** вЂ” [v1.4.5](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases/tag/v1.4.5) (`YellowFlareCurse-1.4.5.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",

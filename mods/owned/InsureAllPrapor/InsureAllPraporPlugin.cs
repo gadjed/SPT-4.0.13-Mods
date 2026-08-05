@@ -10,7 +10,7 @@ public class InsureAllPraporPlugin : BaseUnityPlugin
 {
     public const string PluginGuid = "gadjed.insureallprapor";
     public const string PluginName = "gadjed-InsureAllPrapor";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "1.0.3";
 
     /// <summary>Prapor trader MongoID.</summary>
     public const string PraporTraderId = "54cb50c76803fa8b248b4571";
@@ -45,6 +45,7 @@ public class InsureAllPraporPlugin : BaseUnityPlugin
         );
 
         new EquipmentTabShowPatch().Enable();
+        new ContainersPanelShowPatch().Enable();
         new EquipmentTabHidePatch().Enable();
 
         Log.LogInfo($"{PluginName} v{PluginVersion} loaded (SPT 4.0.13).");

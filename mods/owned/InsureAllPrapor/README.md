@@ -2,7 +2,7 @@
 
 **SPT 4.0.13 Compatible**
 
-Client mod that adds a **Застраховать все** button next to the helmet slot on the stash / inventory equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API — no confirmation dialog.
+Client mod that adds a **Застраховать все** button above the tactical vest (chest rig) on the stash / inventory equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API — no confirmation dialog.
 
 Developed and tested against **SPT 4.0.13**.
 
@@ -10,7 +10,7 @@ Developed and tested against **SPT 4.0.13**.
 
 ## Features
 
-- Button on the stash equipment panel, near the helmet slot
+- Button on the stash equipment panel, above the tactical vest slot
 - Insures all eligible equipped gear (weapons, armor, vest/backpack/pocket contents, attachments)
 - Uses Prapor’s normal paid insurance flow (`InsuranceCompanyClass`)
 - Skips the insure confirmation window
@@ -33,7 +33,7 @@ BepInEx/plugins/InsureAllPrapor.dll
 On load the BepInEx log should show:
 
 ```text
-[Info   :gadjed-InsureAllPrapor] gadjed-InsureAllPrapor v1.0.0 loaded (SPT 4.0.13).
+[Info   :gadjed-InsureAllPrapor] gadjed-InsureAllPrapor v1.0.3 loaded (SPT 4.0.13).
 ```
 
 ## Config

@@ -32,6 +32,7 @@ internal class EquipmentTabShowPatch : ModulePatch
         InventoryController inventoryController,
         InsuranceCompanyClass insurance,
         bool inRaid,
+        SlotView ____armorSlot,
         SlotView ____headwearSlot)
     {
         if (inRaid || inventoryController == null || insurance == null)
@@ -40,7 +41,46 @@ internal class EquipmentTabShowPatch : ModulePatch
             return;
         }
 
-        InsureAllButtonController.Show(__instance, ____headwearSlot, inventoryController, insurance);
+        // _tacticalVestSlot is NOT on EquipmentTab — vest is on ContainersPanel (created after this Show).
+        InsureAllButtonController.Show(
+            __instance,
+            ____armorSlot,
+            ____headwearSlot,
+            inventoryController,
+            insurance);
+    }
+}
+
+/// <summary>
+/// Vest / backpack / pockets SlotViews are built here, after EquipmentTab.Show.
+/// </summary>
+internal class ContainersPanelShowPatch : ModulePatch
+{
+    protected override MethodBase GetTargetMethod()
+    {
+        return AccessTools.Method(
+            typeof(ContainersPanel),
+            nameof(ContainersPanel.Show),
+            [
+                typeof(ItemContextAbstractClass),
+                typeof(InventoryEquipment),
+                typeof(InventoryController),
+                typeof(SkillManager),
+                typeof(InsuranceCompanyClass),
+                typeof(bool),
+            ]
+        )!;
+    }
+
+    [PatchPostfix]
+    public static void Postfix(ContainersPanel __instance, bool inRaid)
+    {
+        if (inRaid)
+        {
+            return;
+        }
+
+        InsureAllButtonController.RepositionAboveVest(__instance);
     }
 }
 

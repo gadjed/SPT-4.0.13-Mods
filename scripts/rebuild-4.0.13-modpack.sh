@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 # Rebuild SPT-4.0.13-ModPack.zip from last known-good full pack (v1.2.4),
 # replacing FastSurgery/ContinuousHealing with MedRebalance 1.3.0 and
 # applying safe 4.0.13 overlays. Always writes forward-slash zip paths.
@@ -121,11 +121,11 @@ rm -rf "$STAGE/overlay/ins"
 extract_zip_norm "${ROOT}/mods_files/owned/InsuranceControl/InsuranceControl-1.0.1.zip" "$STAGE/overlay/ins"
 merge_tree "$STAGE/overlay/ins" "$STAGE/pack"
 
-echo "==> Overlay InsureAllPrapor 1.0.0 (stash insure-all with Prapor)"
+echo "==> Overlay InsureAllPrapor 1.0.3 (stash insure-all with Prapor)"
 rm -rf \
   "$STAGE/pack/BepInEx/plugins/InsureAllPrapor.dll" \
   "$STAGE/overlay/iap"
-extract_zip_norm "${ROOT}/mods_files/owned/InsureAllPrapor/InsureAllPrapor-1.0.0.zip" "$STAGE/overlay/iap"
+extract_zip_norm "${ROOT}/mods_files/owned/InsureAllPrapor/InsureAllPrapor-1.0.3.zip" "$STAGE/overlay/iap"
 merge_tree "$STAGE/overlay/iap" "$STAGE/pack"
 
 echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
@@ -171,7 +171,7 @@ FastTaxi                 v1.0.0
 Fika-Plugin              v2.3.9
 Fika-Server              v2.3.5
 GildedKeyStorage         2.0.4
-InsureAllPrapor          v1.0.0
+InsureAllPrapor          v1.0.3
 InsuranceControl         v1.0.1
 LiveFleaPrices           2.0.1
 LootingBots              v1.7.0-spt-4.0
@@ -184,7 +184,7 @@ SAIN                     v4.4.4
 SPT-BigBrain             1.4.0
 SPT-Waypoints            1.8.2
 SPTQuestingBots          v0.12.1
-Saria-4.x.x              v2.0.1
+Saria-4.x.x              v2.0.3
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
 YellowFlareCurse         v1.4.5
@@ -193,43 +193,43 @@ EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continu
 EOF
 
 cat > "$STAGE/pack/INSTALL.txt" <<'EOF'
-SPT 4.0.13 — Mod Pack
+SPT 4.0.13 вЂ” Mod Pack
 =====================
 
-Встановлення
+Р’СЃС‚Р°РЅРѕРІР»РµРЅРЅСЏ
 ------------
-1. Встанови чистий SPT 4.0.13 і один раз запусти SPT.Server / гру.
-2. Розпакуй вміст цієї теки (або архіву) ПРЯМО в корінь SPT
-   (туда, де лежать EscapeFromTarkov.exe, BepInEx/, і SPT.Server.exe або SPT/SPT.Server.exe).
-3. Підтвердь злиття тек BepInEx і user / SPT/user.
-4. Запусти SPT.Server і перевір лог завантаження модів.
+1. Р’СЃС‚Р°РЅРѕРІРё С‡РёСЃС‚РёР№ SPT 4.0.13 С– РѕРґРёРЅ СЂР°Р· Р·Р°РїСѓСЃС‚Рё SPT.Server / РіСЂСѓ.
+2. Р РѕР·РїР°РєСѓР№ РІРјС–СЃС‚ С†С–С”С— С‚РµРєРё (Р°Р±Рѕ Р°СЂС…С–РІСѓ) РџР РЇРњРћ РІ РєРѕСЂС–РЅСЊ SPT
+   (С‚СѓРґР°, РґРµ Р»РµР¶Р°С‚СЊ EscapeFromTarkov.exe, BepInEx/, С– SPT.Server.exe Р°Р±Рѕ SPT/SPT.Server.exe).
+3. РџС–РґС‚РІРµСЂРґСЊ Р·Р»РёС‚С‚СЏ С‚РµРє BepInEx С– user / SPT/user.
+4. Р—Р°РїСѓСЃС‚Рё SPT.Server С– РїРµСЂРµРІС–СЂ Р»РѕРі Р·Р°РІР°РЅС‚Р°Р¶РµРЅРЅСЏ РјРѕРґС–РІ.
 
-Що в пакеті
+Р©Рѕ РІ РїР°РєРµС‚С–
 -----------
-Серверні моди в user/mods/ і дзеркально в SPT/user/mods/.
-Клієнтські в BepInEx/plugins/ (+ patchers/).
-QuestingBots Continuous включає continuous population (колишній Scav Population).
-Med Rebalance 1.3.0 (колишній Fast Surgery + Continuous Healing).
+РЎРµСЂРІРµСЂРЅС– РјРѕРґРё РІ user/mods/ С– РґР·РµСЂРєР°Р»СЊРЅРѕ РІ SPT/user/mods/.
+РљР»С–С”РЅС‚СЃСЊРєС– РІ BepInEx/plugins/ (+ patchers/).
+QuestingBots Continuous РІРєР»СЋС‡Р°С” continuous population (РєРѕР»РёС€РЅС–Р№ Scav Population).
+Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuous Healing).
 YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
-InsureAllPrapor 1.0.0 (кнопка «Застраховать все» у Прапора на схроні),
-SAIN StealthEngage 4.4.4, Saria 2.0.1, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
+InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
+SAIN StealthEngage 4.4.4, Saria 2.0.3, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync).
 
-Виключено навмисно
+Р’РёРєР»СЋС‡РµРЅРѕ РЅР°РІРјРёСЃРЅРѕ
 ------------------
-- QuestingBots (DanW) — замінено на QuestingBots Continuous
-- Scav Population — функціонал увійшов у QuestingBots Continuous
-- ContinuousHealing / FastSurgery — замінено на MedRebalance
+- QuestingBots (DanW) вЂ” Р·Р°РјС–РЅРµРЅРѕ РЅР° QuestingBots Continuous
+- Scav Population вЂ” С„СѓРЅРєС†С–РѕРЅР°Р» СѓРІС–Р№С€РѕРІ Сѓ QuestingBots Continuous
+- ContinuousHealing / FastSurgery вЂ” Р·Р°РјС–РЅРµРЅРѕ РЅР° MedRebalance
 - BigBrain Debug.dll
-- SVM / Greed.exe — не входить у збірку (ліцензія забороняє редистрибуцію).
-  За бажанням постав окремо через manage-modpack (пункт «Встановити SVM»).
+- SVM / Greed.exe вЂ” РЅРµ РІС…РѕРґРёС‚СЊ Сѓ Р·Р±С–СЂРєСѓ (Р»С–С†РµРЅР·С–СЏ Р·Р°Р±РѕСЂРѕРЅСЏС” СЂРµРґРёСЃС‚СЂРёР±СѓС†С–СЋ).
+  Р—Р° Р±Р°Р¶Р°РЅРЅСЏРј РїРѕСЃС‚Р°РІ РѕРєСЂРµРјРѕ С‡РµСЂРµР· manage-modpack (РїСѓРЅРєС‚ В«Р’СЃС‚Р°РЅРѕРІРёС‚Рё SVMВ»).
 
-Примітки
+РџСЂРёРјС–С‚РєРё
 --------
-- Fika: клієнт 2.3.9 + сервер 2.3.5 з GitHub releases.
-- ModInventory потрібен на хості з першого встановлення; далі клієнти можуть
-  оновлювати лише змінені файли через /modinventory/api/*.
-- Автоінсталер при оновленні прибирає старі FastSurgery / ContinuousHealing.
+- Fika: РєР»С–С”РЅС‚ 2.3.9 + СЃРµСЂРІРµСЂ 2.3.5 Р· GitHub releases.
+- ModInventory РїРѕС‚СЂС–Р±РµРЅ РЅР° С…РѕСЃС‚С– Р· РїРµСЂС€РѕРіРѕ РІСЃС‚Р°РЅРѕРІР»РµРЅРЅСЏ; РґР°Р»С– РєР»С–С”РЅС‚Рё РјРѕР¶СѓС‚СЊ
+  РѕРЅРѕРІР»СЋРІР°С‚Рё Р»РёС€Рµ Р·РјС–РЅРµРЅС– С„Р°Р№Р»Рё С‡РµСЂРµР· /modinventory/api/*.
+- РђРІС‚РѕС–РЅСЃС‚Р°Р»РµСЂ РїСЂРё РѕРЅРѕРІР»РµРЅРЅС– РїСЂРёР±РёСЂР°С” СЃС‚Р°СЂС– FastSurgery / ContinuousHealing.
 EOF
 
 echo "==> Validate required server mods"
