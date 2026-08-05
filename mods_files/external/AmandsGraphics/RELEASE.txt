@@ -1,0 +1,4 @@
+repo=Amands2Mello/AmandsGraphics
+tag=1.7.0
+forge=https://forge.sp-tarkov.com/mod/592/amandss-graphics
+downloaded=2026-07-31T18:44:53Z

@@ -1,0 +1,4 @@
+repo=acidphantasm/SPT-Skipper
+tag=1.1.4
+forge=https://forge.sp-tarkov.com/mod/1343/skipper
+downloaded=2026-07-31T18:46:04Z

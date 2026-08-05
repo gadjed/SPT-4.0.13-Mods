@@ -65,8 +65,10 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 | Folder | Mod | Source |
 |--------|-----|--------|
+| `AmandsGraphics` | Amands's Graphics (client; 1.7.0 / SPT 4.0) | [Amands2Mello/AmandsGraphics](https://github.com/Amands2Mello/AmandsGraphics) · [Forge](https://forge.sp-tarkov.com/mod/592/amandss-graphics) |
 | `FastSellInFlea` | Fast Sell In Flea (client; 1.2.0) | [Katrin0522/SPT-FastInFleaSell](https://github.com/Katrin0522/SPT-FastInFleaSell) |
 | `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
+| `Skipper` | Skipper — skip quests (client; 1.1.4) | [acidphantasm/SPT-Skipper](https://github.com/acidphantasm/SPT-Skipper) · [Forge](https://forge.sp-tarkov.com/mod/1343/skipper) |
 | `GildedKeyStorage` | Gilded Key Storage | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
 | `LiveFleaPrices` | Live Flea Prices | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
 | `Fika-Server` | Fika server | [project-fika/Fika-Server-CSharp](https://github.com/project-fika/Fika-Server-CSharp) |
@@ -81,7 +83,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.12+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **InsureAllPrapor**, and **ModInventory** for host bootstrap / later client delta-sync
+- **ModPack 4.0.13** (`v1.2.13+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **InsureAllPrapor**, **ModInventory**, **Skipper** (quest skip), and **AmandsGraphics 1.7.0** (brightness / post FX)
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**

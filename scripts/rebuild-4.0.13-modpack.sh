@@ -157,6 +157,20 @@ rm -rf "$STAGE/overlay/fsf"
 extract_zip_norm "${ROOT}/mods_files/external/FastSellInFlea/Kat-FastSellInFlea-1.2.0.zip" "$STAGE/overlay/fsf"
 merge_tree "$STAGE/overlay/fsf" "$STAGE/pack"
 
+echo "==> Overlay Skipper 1.1.4 (quest skip)"
+rm -rf \
+  "$STAGE/pack/BepInEx/plugins/Terkoiz.Skipper.dll" \
+  "$STAGE/overlay/skipper"
+extract_zip_norm "${ROOT}/mods_files/external/Skipper/Terkoiz-Skipper-1.1.4-overlay.zip" "$STAGE/overlay/skipper"
+merge_tree "$STAGE/overlay/skipper" "$STAGE/pack"
+
+echo "==> Overlay AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 only)"
+rm -rf \
+  "$STAGE/pack/BepInEx/plugins/AmandsGraphics" \
+  "$STAGE/overlay/amands"
+extract_zip_norm "${ROOT}/mods_files/external/AmandsGraphics/AmandsGraphics-1.7.0-overlay.zip" "$STAGE/overlay/amands"
+merge_tree "$STAGE/overlay/amands" "$STAGE/pack"
+
 echo "==> Overlay Saria Trader 2.0.5 (BlackRock + SPEAR 6.8 ammo/mags)"
 rm -rf \
   "$STAGE/pack/user/mods/Saria" \
@@ -173,11 +187,12 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.12
+# Pack: v1.2.13
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
 ---                      -----------
+AmandsGraphics           1.7.0
 AutoMedHotkeys           v1.0.3
 DynamicMaps              1.1.3
 EnableLabyrinth          1.0.2
@@ -201,6 +216,7 @@ SPT-BigBrain             1.4.0
 SPT-Waypoints            1.8.2
 SPTQuestingBots          v0.12.1
 Saria-4.x.x              v2.0.5
+Skipper                  1.1.4
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
 YellowFlareCurse         v1.4.5
@@ -230,7 +246,8 @@ YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0
 InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
 PackItems 1.0.0 (stash context menu — pack matching items into cases),
 SAIN StealthEngage 4.4.4, Saria 2.0.5, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
-ModInventory 0.1.0 (host API for later client delta-sync).
+ModInventory 0.1.0 (host API for later client delta-sync),
+Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 only).
 
 Р’РёРєР»СЋС‡РµРЅРѕ РЅР°РІРјРёСЃРЅРѕ
 ------------------
@@ -321,7 +338,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll"]:
+for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

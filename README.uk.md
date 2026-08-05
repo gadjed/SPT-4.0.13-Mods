@@ -65,8 +65,10 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 | Тека | Мод | Джерело |
 |------|-----|---------|
+| `AmandsGraphics` | Amands's Graphics (клієнт; 1.7.0 / SPT 4.0) | [Amands2Mello/AmandsGraphics](https://github.com/Amands2Mello/AmandsGraphics) · [Forge](https://forge.sp-tarkov.com/mod/592/amandss-graphics) |
 | `FastSellInFlea` | Fast Sell In Flea (клієнт; 1.2.0) | [Katrin0522/SPT-FastInFleaSell](https://github.com/Katrin0522/SPT-FastInFleaSell) |
 | `EnableLabyrinth` | Enable Labyrinth | [acidphantasm/enablelabyrinth-csharp](https://github.com/acidphantasm/enablelabyrinth-csharp) |
+| `Skipper` | Skipper — пропуск квестів (клієнт; 1.1.4) | [acidphantasm/SPT-Skipper](https://github.com/acidphantasm/SPT-Skipper) · [Forge](https://forge.sp-tarkov.com/mod/1343/skipper) |
 | `GildedKeyStorage` | Gilded Key Storage | [DrakiaXYZ/SPT-GildedKeyStorage-CSharp](https://github.com/DrakiaXYZ/SPT-GildedKeyStorage-CSharp) |
 | `LiveFleaPrices` | Live Flea Prices | [DrakiaXYZ/SPT-LiveFleaPrices-CSharp](https://github.com/DrakiaXYZ/SPT-LiveFleaPrices-CSharp) |
 | `Fika-Server` | Fika server | [project-fika/Fika-Server-CSharp](https://github.com/project-fika/Fika-Server-CSharp) |
@@ -81,7 +83,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.12+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **InsureAllPrapor** і **ModInventory** для bootstrap хоста / подальшого delta-sync клієнтів
+- **ModPack 4.0.13** (`v1.2.13+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **InsureAllPrapor**, **ModInventory**, **Skipper** (пропуск квестів) і **AmandsGraphics 1.7.0** (яскравість / post FX)
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**
