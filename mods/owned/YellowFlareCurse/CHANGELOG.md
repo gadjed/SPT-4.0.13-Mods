@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.6
+
+- Reworked curse airdrop container selection end-to-end:
+  - Client suppresses the **vanilla yellow-flare airdrop** (`AirDropTemplateId` → random WEAPON / COMMON)
+  - Client forces curse `ContainerTemplateId` through airplane + `InitContainerLoot` (gate)
+  - Server replaces loot at **LocationController.GetAirDropLoot** (+ AirdropService backup) with **SUPPLY / «Ящик техобеспечения»** + ForcedLoot
+- Host-only curse airdrop spawn under Fika
+
 ## 1.4.5
 
 - Fixed curse airdrop crate: fully replace loot with **SUPPLY / «Ящик техобеспечения»** + ForcedLoot (no more Common / «общей поддержки» or weapon crates)

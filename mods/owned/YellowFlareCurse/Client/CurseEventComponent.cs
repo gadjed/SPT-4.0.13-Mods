@@ -61,6 +61,7 @@ public class CurseEventComponent : MonoBehaviour
         AllianceActive = false;
         _airdropSpawned = false;
         _hasAirdropSupport = false;
+        CurseAirdropGate.Reset();
         _overlayVisible = false;
         _teleportStarted = false;
         _tagillaSpawnRequested = false;
@@ -494,6 +495,14 @@ public class CurseEventComponent : MonoBehaviour
             return;
         }
 
+        if (!FikaHost.IsAuthority())
+        {
+            ModLogger.Info("SpawnAirdrop skipped — not host/authority (Fika client).");
+            _airdropSpawned = true;
+            HideOverlay();
+            return;
+        }
+
         _airdropSpawned = true;
         _announceTitle = "CURSE AIRDROP";
         _announceSubtitle = "High-value crate inbound near the flare";
@@ -503,6 +512,7 @@ public class CurseEventComponent : MonoBehaviour
 
         try
         {
+            CurseAirdropGate.Arm();
             ModLogger.Info(
                 $"Requesting InitAirdrop near {_flarePosition} "
                     + $"(container={YellowFlareCursePlugin.CurseContainerId}, takeNearbyPoint=true)."
@@ -516,6 +526,7 @@ public class CurseEventComponent : MonoBehaviour
         }
         catch (System.Exception ex)
         {
+            CurseAirdropGate.Reset();
             ModLogger.Error($"Failed to spawn airdrop: {ex}");
             HideOverlay();
         }

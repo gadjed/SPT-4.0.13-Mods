@@ -212,11 +212,23 @@ function Remove-LegacyQuestingConflicts {
 
 function Remove-LegacyMedConflicts {
     param([string]$Root)
-    # Fast Surgery / Continuous Healing were folded into Med Rebalance (4.0.13).
-    # Strip leftovers if an older pack still shipped FastSurgery.
+    # Fast Surgery / Continuous Healing / AutoMedHotkeys / DefibAllyRevive / MedRebalance
+    # were folded into MedSuite (4.0.13). Strip leftovers from older packs.
+    $hasMedSuite = $false
+    foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
+        if (Test-Path -LiteralPath (Join-Path $modsDir "MedSuite")) { $hasMedSuite = $true; break }
+    }
+    if (-not $hasMedSuite -and (Test-Path -LiteralPath (Join-Path $Root "BepInEx\plugins\MedSuite.Client.dll"))) {
+        $hasMedSuite = $true
+    }
+
     foreach ($modsDir in (Get-ServerModRoots -Root $Root)) {
         if (-not (Test-Path -LiteralPath $modsDir)) { continue }
-        foreach ($legacy in @("FastSurgery")) {
+        $serverLegacy = @("FastSurgery")
+        if ($hasMedSuite) {
+            $serverLegacy += @("MedRebalance", "DefibAllyRevive")
+        }
+        foreach ($legacy in $serverLegacy) {
             $path = Join-Path $modsDir $legacy
             if (Test-Path -LiteralPath $path) {
                 Remove-Item -LiteralPath $path -Recurse -Force
@@ -226,13 +238,22 @@ function Remove-LegacyMedConflicts {
     }
 
     $plugins = Join-Path $Root "BepInEx\plugins"
-    foreach ($legacy in @(
-            "ContinuousHealing",
-            "ContinuousHealing.dll",
-            "FastSurgery.Client.dll",
-            "FastSurgery.dll",
-            "InsureAllPrapor.dll"
-        )) {
+    $clientLegacy = @(
+        "ContinuousHealing",
+        "ContinuousHealing.dll",
+        "FastSurgery.Client.dll",
+        "FastSurgery.dll",
+        "InsureAllPrapor.dll"
+    )
+    if ($hasMedSuite) {
+        $clientLegacy += @(
+            "AutoMedHotkeys.dll",
+            "DefibAllyRevive.dll",
+            "MedRebalance.Client.dll",
+            "MedRebalance.dll"
+        )
+    }
+    foreach ($legacy in $clientLegacy) {
         $path = Join-Path $plugins $legacy
         if (Test-Path -LiteralPath $path) {
             Remove-Item -LiteralPath $path -Recurse -Force

@@ -1,0 +1,53 @@
+using MedSuite.Client.AutoMed;
+using System.Reflection;
+using EFT.InventoryLogic;
+using SPT.Reflection.Patching;
+
+namespace MedSuite.Client.AutoMed.Patches;
+
+/// <summary>
+/// Re-evaluate hotkeys after an item leaves pockets/rig (e.g. moved into backpack/stash).
+/// </summary>
+internal class InventoryRemoveItemPatch : ModulePatch
+{
+    protected override MethodBase GetTargetMethod()
+    {
+        return typeof(TraderControllerClass).GetMethod(
+            nameof(TraderControllerClass.RaiseRemoveEvent),
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        )!;
+    }
+
+    [PatchPostfix]
+    public static void Postfix(TraderControllerClass __instance, GEventArgs3 args)
+    {
+        if (args == null || args.Status != CommandStatus.Succeed || args.Item == null)
+        {
+            return;
+        }
+
+        if (!InventoryOwnerUtil.IsLocalPlayerInventory(__instance))
+        {
+            return;
+        }
+
+        if (__instance is not InventoryController controller)
+        {
+            return;
+        }
+
+        if (!IsRelevant(args.Item))
+        {
+            return;
+        }
+
+        MedHotkeyBinder.RequestRefresh(controller);
+    }
+
+    private static bool IsRelevant(Item item)
+    {
+        return MedItemClassifier.IsMedkit(item)
+            || MedItemClassifier.IsBleedStopper(item)
+            || MedItemClassifier.IsBandage(item);
+    }
+}

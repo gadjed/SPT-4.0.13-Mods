@@ -1,6 +1,6 @@
 # Yellow Flare Curse
 
-**SPT 4.0.13** · **v1.4.5**
+**SPT 4.0.13** · **v1.4.6**
 
 Firing a successful **RSP-30 Yellow** flare starts a once-per-raid curse: scavs are pulled near you, stop fighting each other, hunt you (and your group), optional **Tagilla** / **cultists** spawn nearby, then after a delay an airdrop lands near the flare with **forced high-value loot** (when the map supports airdrops).
 
@@ -29,7 +29,7 @@ Firing a successful **RSP-30 Yellow** flare starts a once-per-raid curse: scavs 
 
 ## Install
 
-1. Download `YellowFlareCurse-1.4.5.zip` from [Releases](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases)
+1. Download `YellowFlareCurse-1.4.6.zip` from [Releases](https://github.com/gadjed/Yellow-flare-curse-SPT-mod/releases)
 2. Extract into your **SPT game root** (folder with `EscapeFromTarkov.exe` / `SPT/`)
 3. Restart the SPT **server** and the **game client**
 
@@ -38,6 +38,11 @@ SPT/user/mods/YellowFlareCurse/YellowFlareCurse.dll
 SPT/user/mods/YellowFlareCurse/config.json
 BepInEx/plugins/YellowFlareCurse.Client.dll
 ```
+
+## Changelog (1.4.6)
+
+- Curse owns the yellow-flare drop: vanilla flare airdrop suppressed; container forced to SUPPLY / техобеспечения + ForcedLoot
+- Client gate ensures curse container id reaches `getAirdropLoot`; server replaces at LocationController
 
 ## Changelog (1.4.5)
 

@@ -199,12 +199,34 @@ remove_legacy_questing_conflicts() {
 
 remove_legacy_med_conflicts() {
   local root="$1"
+  local has_medsuite=0
   local mods_dir
   for mods_dir in "${root}/SPT/user/mods" "${root}/user/mods"; do
+    if [[ -d "${mods_dir}/MedSuite" ]]; then
+      has_medsuite=1
+      break
+    fi
+  done
+  if [[ -f "${root}/BepInEx/plugins/MedSuite.Client.dll" ]]; then
+    has_medsuite=1
+  fi
+
+  for mods_dir in "${root}/SPT/user/mods" "${root}/user/mods"; do
     [[ -d "$mods_dir" ]] || continue
-    if [[ -e "${mods_dir}/FastSurgery" ]]; then
-      rm -rf "${mods_dir}/FastSurgery"
-      ok "  видалено застарілий FastSurgery з ${mods_dir#${root}/}"
+    local legacy
+    for legacy in FastSurgery; do
+      if [[ -e "${mods_dir}/${legacy}" ]]; then
+        rm -rf "${mods_dir}/${legacy}"
+        ok "  видалено застарілий ${legacy} з ${mods_dir#${root}/}"
+      fi
+    done
+    if [[ "$has_medsuite" -eq 1 ]]; then
+      for legacy in MedRebalance DefibAllyRevive; do
+        if [[ -e "${mods_dir}/${legacy}" ]]; then
+          rm -rf "${mods_dir}/${legacy}"
+          ok "  видалено застарілий ${legacy} з ${mods_dir#${root}/}"
+        fi
+      done
     fi
   done
   local plugins="${root}/BepInEx/plugins"
@@ -216,6 +238,14 @@ remove_legacy_med_conflicts() {
       ok "  видалено застарілий BepInEx/plugins/${legacy}"
     fi
   done
+  if [[ "$has_medsuite" -eq 1 ]]; then
+    for legacy in AutoMedHotkeys.dll DefibAllyRevive.dll MedRebalance.Client.dll MedRebalance.dll; do
+      if [[ -e "${plugins}/${legacy}" ]]; then
+        rm -rf "${plugins}/${legacy}"
+        ok "  видалено застарілий BepInEx/plugins/${legacy}"
+      fi
+    done
+  fi
 }
 
 remove_legacy_sain_conflicts() {

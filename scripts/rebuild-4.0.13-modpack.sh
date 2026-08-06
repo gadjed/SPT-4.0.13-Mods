@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Rebuild SPT-4.0.13-ModPack.zip from last known-good full pack (v1.2.4),
-# replacing FastSurgery/ContinuousHealing with MedRebalance 1.3.0 and
-# applying safe 4.0.13 overlays. Always writes forward-slash zip paths.
+# replacing FastSurgery/ContinuousHealing/AutoMedHotkeys/DefibAllyRevive/MedRebalance
+# with MedSuite 1.0.0 and applying safe 4.0.13 overlays. Always writes forward-slash zip paths.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -94,27 +94,34 @@ rm -rf \
   "$STAGE/pack/BepInEx/plugins/FastSurgery.Client.dll" \
   "$STAGE/pack/BepInEx/plugins/FastSurgery.dll"
 
-echo "==> Overlay MedRebalance 1.3.0"
-extract_zip_norm "${ROOT}/mods_files/owned/MedRebalance/MedRebalance-1.3.0.zip" "$STAGE/overlay/med"
-merge_tree "$STAGE/overlay/med" "$STAGE/pack"
-if [[ -d "$STAGE/pack/SPT/user/mods/MedRebalance" ]]; then
+echo "==> Overlay MedSuite 1.0.0 (replaces AutoMedHotkeys + DefibAllyRevive + MedRebalance)"
+rm -rf \
+  "$STAGE/pack/user/mods/MedRebalance" \
+  "$STAGE/pack/SPT/user/mods/MedRebalance" \
+  "$STAGE/pack/user/mods/DefibAllyRevive" \
+  "$STAGE/pack/SPT/user/mods/DefibAllyRevive" \
+  "$STAGE/pack/user/mods/MedSuite" \
+  "$STAGE/pack/SPT/user/mods/MedSuite" \
+  "$STAGE/pack/BepInEx/plugins/MedRebalance.Client.dll" \
+  "$STAGE/pack/BepInEx/plugins/AutoMedHotkeys.dll" \
+  "$STAGE/pack/BepInEx/plugins/DefibAllyRevive.dll" \
+  "$STAGE/pack/BepInEx/plugins/MedSuite.Client.dll" \
+  "$STAGE/overlay/medsuite"
+extract_zip_norm "${ROOT}/mods_files/owned/MedSuite/MedSuite-1.0.0.zip" "$STAGE/overlay/medsuite"
+merge_tree "$STAGE/overlay/medsuite" "$STAGE/pack"
+if [[ -d "$STAGE/pack/SPT/user/mods/MedSuite" ]]; then
   mkdir -p "$STAGE/pack/user/mods"
-  merge_tree "$STAGE/pack/SPT/user/mods/MedRebalance" "$STAGE/pack/user/mods/MedRebalance"
+  merge_tree "$STAGE/pack/SPT/user/mods/MedSuite" "$STAGE/pack/user/mods/MedSuite"
 fi
 
-echo "==> Overlay YellowFlareCurse 1.4.5 (net9 / SPT 4.0.13)"
+echo "==> Overlay YellowFlareCurse 1.4.6 (net9 / SPT 4.0.13)"
 rm -rf \
   "$STAGE/pack/user/mods/YellowFlareCurse" \
   "$STAGE/pack/SPT/user/mods/YellowFlareCurse" \
   "$STAGE/pack/BepInEx/plugins/YellowFlareCurse.Client.dll" \
   "$STAGE/overlay/yfc"
-extract_zip_norm "${ROOT}/mods_files/owned/YellowFlareCurse/YellowFlareCurse-1.4.5.zip" "$STAGE/overlay/yfc"
+extract_zip_norm "${ROOT}/mods_files/owned/YellowFlareCurse/YellowFlareCurse-1.4.6.zip" "$STAGE/overlay/yfc"
 merge_tree "$STAGE/overlay/yfc" "$STAGE/pack"
-
-echo "==> Overlay AutoMedHotkeys 1.0.3"
-rm -rf "$STAGE/overlay/amh"
-extract_zip_norm "${ROOT}/mods_files/owned/AutoMedHotkeys/AutoMedHotkeys-1.0.3.zip" "$STAGE/overlay/amh"
-merge_tree "$STAGE/overlay/amh" "$STAGE/pack"
 
 echo "==> Overlay InsuranceControl 1.1.0 (server return rules + client Insure All)"
 rm -rf \
@@ -132,15 +139,6 @@ rm -rf \
   "$STAGE/overlay/packitems"
 extract_zip_norm "${ROOT}/mods_files/owned/PackItems/PackItems-1.0.0.zip" "$STAGE/overlay/packitems"
 merge_tree "$STAGE/overlay/packitems" "$STAGE/pack"
-
-echo "==> Overlay DefibAllyRevive 1.0.1 (revive allies + fix 0/0 defibrillator uses)"
-rm -rf \
-  "$STAGE/pack/BepInEx/plugins/DefibAllyRevive.dll" \
-  "$STAGE/pack/user/mods/DefibAllyRevive" \
-  "$STAGE/pack/SPT/user/mods/DefibAllyRevive" \
-  "$STAGE/overlay/defib"
-extract_zip_norm "${ROOT}/mods_files/owned/DefibAllyRevive/DefibAllyRevive-1.0.1.zip" "$STAGE/overlay/defib"
-merge_tree "$STAGE/overlay/defib" "$STAGE/pack"
 
 echo "==> Overlay ModInventory 0.1.0 (host delta-sync API; bootstrap for manage-modpack clients)"
 rm -rf \
@@ -194,14 +192,12 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.16
+# Pack: v1.2.17
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
 ---                      -----------
 AmandsGraphics           1.7.0
-AutoMedHotkeys           v1.0.3
-DefibAllyRevive          v1.0.1
 DynamicMaps              1.1.3
 EnableLabyrinth          1.0.2
 FastSellInFlea           1.2.0
@@ -212,7 +208,7 @@ GildedKeyStorage         2.0.4
 InsuranceControl         v1.1.0
 LiveFleaPrices           2.0.1
 LootingBots              v1.7.0-spt-4.0
-MedRebalance             v1.3.0
+MedSuite                 v1.0.0
 ModInventory             v0.1.0
 MoreBotsAPI              2.0.1
 MoreCheckmarks           v2.2.0
@@ -226,9 +222,9 @@ Saria-4.x.x              v2.0.5
 Skipper                  1.1.4
 UIFixes                  v5.3.11
 UnbreakableKeys          2.0.0
-YellowFlareCurse         v1.4.5
+YellowFlareCurse         v1.4.6
 
-EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continuous), ContinuousHealing / FastSurgery (folded into MedRebalance), SVM (no redistribution; install from upstream via manage-modpack)
+EXCLUDED: QuestingBots-DanW, ScavPopulation (folded into SPTQuestingBots Continuous), ContinuousHealing / FastSurgery / AutoMedHotkeys / DefibAllyRevive / MedRebalance (folded into MedSuite), SVM (no redistribution; install from upstream via manage-modpack)
 EOF
 
 cat > "$STAGE/pack/INSTALL.txt" <<'EOF'
@@ -248,11 +244,10 @@ SPT 4.0.13 вЂ” Mod Pack
 РЎРµСЂРІРµСЂРЅС– РјРѕРґРё РІ user/mods/ С– РґР·РµСЂРєР°Р»СЊРЅРѕ РІ SPT/user/mods/.
 РљР»С–С”РЅС‚СЃСЊРєС– РІ BepInEx/plugins/ (+ patchers/).
 QuestingBots Continuous РІРєР»СЋС‡Р°С” continuous population (РєРѕР»РёС€РЅС–Р№ Scav Population).
-Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuous Healing).
-YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
+MedSuite 1.0.0 (AutoMedHotkeys + DefibAllyRevive + MedRebalance / continuous healing).
+YellowFlareCurse 1.4.6 (4.0.13/net9), FastSellInFlea 1.2.0,
 InsuranceControl 1.1.0 (return rules + Insure All stash button),
 PackItems 1.0.0 (stash context menu — pack matching items into cases),
-DefibAllyRevive 1.0.1 (revive downed allies with defibrillator on quick slots; fix 0/0 uses),
 SAIN StealthEngage 4.4.4, Saria 2.0.5, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
 ModInventory 0.1.0 (host API for later client delta-sync),
 Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 only).
@@ -261,7 +256,7 @@ Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 
 ------------------
 - QuestingBots (DanW) вЂ” Р·Р°РјС–РЅРµРЅРѕ РЅР° QuestingBots Continuous
 - Scav Population вЂ” С„СѓРЅРєС†С–РѕРЅР°Р» СѓРІС–Р№С€РѕРІ Сѓ QuestingBots Continuous
-- ContinuousHealing / FastSurgery вЂ” Р·Р°РјС–РЅРµРЅРѕ РЅР° MedRebalance
+- ContinuousHealing / FastSurgery / AutoMedHotkeys / DefibAllyRevive / MedRebalance вЂ” Р·Р°РјС–РЅРµРЅРѕ РЅР° MedSuite
 - BigBrain Debug.dll
 - SVM / Greed.exe вЂ” РЅРµ РІС…РѕРґРёС‚СЊ Сѓ Р·Р±С–СЂРєСѓ (Р»С–С†РµРЅР·С–СЏ Р·Р°Р±РѕСЂРѕРЅСЏС” СЂРµРґРёСЃС‚СЂРёР±СѓС†С–СЋ).
   Р—Р° Р±Р°Р¶Р°РЅРЅСЏРј РїРѕСЃС‚Р°РІ РѕРєСЂРµРјРѕ С‡РµСЂРµР· manage-modpack (РїСѓРЅРєС‚ В«Р’СЃС‚Р°РЅРѕРІРёС‚Рё SVMВ»).
@@ -271,7 +266,7 @@ Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 
 - Fika: РєР»С–С”РЅС‚ 2.3.9 + СЃРµСЂРІРµСЂ 2.3.5 Р· GitHub releases.
 - ModInventory РїРѕС‚СЂС–Р±РµРЅ РЅР° С…РѕСЃС‚С– Р· РїРµСЂС€РѕРіРѕ РІСЃС‚Р°РЅРѕРІР»РµРЅРЅСЏ; РґР°Р»С– РєР»С–С”РЅС‚Рё РјРѕР¶СѓС‚СЊ
   РѕРЅРѕРІР»СЋРІР°С‚Рё Р»РёС€Рµ Р·РјС–РЅРµРЅС– С„Р°Р№Р»Рё С‡РµСЂРµР· /modinventory/api/*.
-- Автo-інсталер при оновленні прибирає старі FastSurgery / ContinuousHealing / InsureAllPrapor.
+- Автo-інсталер при оновленні прибирає старі FastSurgery / ContinuousHealing / InsureAllPrapor / AutoMedHotkeys / DefibAllyRevive / MedRebalance.
 EOF
 
 echo "==> Validate required server mods"
@@ -280,7 +275,7 @@ REQUIRED=(
   Solarint-SAIN-ServerMod
   QuestingBotsContinuous
   YellowFlareCurse
-  MedRebalance
+  MedSuite
   InsuranceControl
   FastTaxi
   ModInventory
@@ -325,9 +320,9 @@ if bad:
 print("OK: no net10 server mods")
 PY
 
-if find "$STAGE/pack" \( -iname '*FastSurgery*' -o -iname '*ContinuousHealing*' \) | grep -q .; then
-  echo "Leftover FastSurgery/ContinuousHealing:" >&2
-  find "$STAGE/pack" \( -iname '*FastSurgery*' -o -iname '*ContinuousHealing*' \) >&2
+if find "$STAGE/pack" \( -iname '*FastSurgery*' -o -iname '*ContinuousHealing*' -o -iname '*AutoMedHotkeys*' -o -iname '*DefibAllyRevive*' -o -iname '*MedRebalance*' \) | grep -q .; then
+  echo "Leftover standalone med mods (folded into MedSuite):" >&2
+  find "$STAGE/pack" \( -iname '*FastSurgery*' -o -iname '*ContinuousHealing*' -o -iname '*AutoMedHotkeys*' -o -iname '*DefibAllyRevive*' -o -iname '*MedRebalance*' \) >&2
   die "legacy med leftovers present"
 fi
 
@@ -346,7 +341,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsuranceControl.Client.dll","PackItems.dll","DefibAllyRevive.dll","user/mods/DefibAllyRevive/DefibAllyRevive.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
+for need in ["MedSuite.Client.dll","user/mods/MedSuite/MedSuite.dll","InsuranceControl.Client.dll","PackItems.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

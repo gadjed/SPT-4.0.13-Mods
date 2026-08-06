@@ -21,7 +21,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Yellow Flare Curse";
     public override string Author { get; init; } = "gadjed";
     public override List<string>? Contributors { get; init; } = null;
-    public override SemanticVersioning.Version Version { get; init; } = new("1.4.5");
+    public override SemanticVersioning.Version Version { get; init; } = new("1.4.6");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.13");
     public override List<string>? Incompatibilities { get; init; } = null;
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
@@ -92,15 +92,21 @@ public class YellowFlareCurseMod(
 
         var airdropConfig = configServer.GetConfig<AirdropConfig>();
         airdropConfig.CustomAirdropMapping[CurseContainerId] = CurseAirdropType;
-        fileLog.Info($"{Tag} CustomAirdropMapping[{CurseContainerId}] = {CurseAirdropType} (fallback).");
+        fileLog.Info(
+            $"{Tag} CustomAirdropMapping[{CurseContainerId}] = {CurseAirdropType} "
+                + "(fallback only if replace patches miss)."
+        );
 
         patchManager.PatcherName = "YellowFlareCurse";
+        // LocationController first (HTTP entry), AirdropService as backup.
+        patchManager.AddPatch(new CurseGetAirDropLootPatch());
         patchManager.AddPatch(new CurseAirdropLootPatch());
         patchManager.EnablePatches();
 
         fileLog.Success(
-            $"{Tag} Loaded v1.4.5. Container={CurseContainerId}, Type={CurseAirdropType}, "
-                + $"ForcedLoot={ForcedLoot.Count}, crate=SUPPLY/техобеспечения. "
+            $"{Tag} Loaded v1.4.6. Container={CurseContainerId}, Type={CurseAirdropType}, "
+                + $"ForcedLoot={ForcedLoot.Count}, crate=SUPPLY/техобеспечения "
+                + $"({CurseAirdropLootBuilder.SupplyCrateTpl}). "
                 + $"FileLog={fileLog.LogFilePath}"
         );
 

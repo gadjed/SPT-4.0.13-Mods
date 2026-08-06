@@ -1,0 +1,14 @@
+# Client references
+
+Place these SPT 4.0.13 client assemblies in this folder (not committed):
+
+- `hollowed.dll` (publicized `Assembly-CSharp`)
+- `Comfort.dll`
+- `spt-reflection.dll`
+- `spt-common.dll`
+- `Sirenix.Serialization.dll`
+- `ItemComponent.Types.dll`
+
+BepInEx / Harmony / UnityEngine come from NuGet (`BepInEx.Core`, `UnityEngine.Modules`).
+
+You can copy game assemblies from an existing SPT client mod References folder (e.g. SAIN).

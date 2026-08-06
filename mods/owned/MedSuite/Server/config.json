@@ -1,0 +1,10 @@
+{
+  "UseTimeSeconds": 5,
+  "FixDefibrillatorResource": true,
+  "Items": {
+    "Immobilizing splint": true,
+    "Aluminum splint": true,
+    "CMS surgical kit": true,
+    "Surv12 field surgical kit": true
+  }
+}
