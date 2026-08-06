@@ -116,17 +116,15 @@ rm -rf "$STAGE/overlay/amh"
 extract_zip_norm "${ROOT}/mods_files/owned/AutoMedHotkeys/AutoMedHotkeys-1.0.3.zip" "$STAGE/overlay/amh"
 merge_tree "$STAGE/overlay/amh" "$STAGE/pack"
 
-echo "==> Overlay InsuranceControl 1.0.1"
-rm -rf "$STAGE/overlay/ins"
-extract_zip_norm "${ROOT}/mods_files/owned/InsuranceControl/InsuranceControl-1.0.1.zip" "$STAGE/overlay/ins"
-merge_tree "$STAGE/overlay/ins" "$STAGE/pack"
-
-echo "==> Overlay InsureAllPrapor 1.0.3 (stash insure-all with Prapor)"
+echo "==> Overlay InsuranceControl 1.1.0 (server return rules + client Insure All)"
 rm -rf \
+  "$STAGE/pack/user/mods/InsuranceControl" \
+  "$STAGE/pack/SPT/user/mods/InsuranceControl" \
   "$STAGE/pack/BepInEx/plugins/InsureAllPrapor.dll" \
-  "$STAGE/overlay/iap"
-extract_zip_norm "${ROOT}/mods_files/owned/InsureAllPrapor/InsureAllPrapor-1.0.3.zip" "$STAGE/overlay/iap"
-merge_tree "$STAGE/overlay/iap" "$STAGE/pack"
+  "$STAGE/pack/BepInEx/plugins/InsuranceControl.Client.dll" \
+  "$STAGE/overlay/ins"
+extract_zip_norm "${ROOT}/mods_files/owned/InsuranceControl/InsuranceControl-1.1.0.zip" "$STAGE/overlay/ins"
+merge_tree "$STAGE/overlay/ins" "$STAGE/pack"
 
 echo "==> Overlay PackItems 1.0.0 (stash context menu — pack into cases)"
 rm -rf \
@@ -196,7 +194,7 @@ cat > "$STAGE/pack/MANIFEST.txt" <<EOF
 # Mod pack manifest
 # Built: ${BUILT_AT}
 # Target: SPT 4.0.13
-# Pack: v1.2.15
+# Pack: v1.2.16
 # Server mods: user/mods + SPT/user/mods (mirrored)
 
 MOD                      RELEASE_TAG
@@ -211,8 +209,7 @@ FastTaxi                 v1.0.0
 Fika-Plugin              v2.3.9
 Fika-Server              v2.3.5
 GildedKeyStorage         2.0.4
-InsureAllPrapor          v1.0.3
-InsuranceControl         v1.0.1
+InsuranceControl         v1.1.0
 LiveFleaPrices           2.0.1
 LootingBots              v1.7.0-spt-4.0
 MedRebalance             v1.3.0
@@ -253,7 +250,7 @@ SPT 4.0.13 вЂ” Mod Pack
 QuestingBots Continuous РІРєР»СЋС‡Р°С” continuous population (РєРѕР»РёС€РЅС–Р№ Scav Population).
 Med Rebalance 1.3.0 (РєРѕР»РёС€РЅС–Р№ Fast Surgery + Continuous Healing).
 YellowFlareCurse 1.4.5 (4.0.13/net9), AutoMedHotkeys 1.0.3, FastSellInFlea 1.2.0,
-InsureAllPrapor 1.0.3 (РєРЅРѕРїРєР° В«Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµВ» Сѓ РџСЂР°РїРѕСЂР° РЅР° СЃС…СЂРѕРЅС–),
+InsuranceControl 1.1.0 (return rules + Insure All stash button),
 PackItems 1.0.0 (stash context menu — pack matching items into cases),
 DefibAllyRevive 1.0.1 (revive downed allies with defibrillator on quick slots; fix 0/0 uses),
 SAIN StealthEngage 4.4.4, Saria 2.0.5, Gilded Key Storage 2.0.4, Live Flea Prices 2.0.1,
@@ -274,7 +271,7 @@ Skipper 1.1.4 (quest skip), AmandsGraphics 1.7.0 (brightness / post FX; SPT 4.0 
 - Fika: РєР»С–С”РЅС‚ 2.3.9 + СЃРµСЂРІРµСЂ 2.3.5 Р· GitHub releases.
 - ModInventory РїРѕС‚СЂС–Р±РµРЅ РЅР° С…РѕСЃС‚С– Р· РїРµСЂС€РѕРіРѕ РІСЃС‚Р°РЅРѕРІР»РµРЅРЅСЏ; РґР°Р»С– РєР»С–С”РЅС‚Рё РјРѕР¶СѓС‚СЊ
   РѕРЅРѕРІР»СЋРІР°С‚Рё Р»РёС€Рµ Р·РјС–РЅРµРЅС– С„Р°Р№Р»Рё С‡РµСЂРµР· /modinventory/api/*.
-- РђРІС‚РѕС–РЅСЃС‚Р°Р»РµСЂ РїСЂРё РѕРЅРѕРІР»РµРЅРЅС– РїСЂРёР±РёСЂР°С” СЃС‚Р°СЂС– FastSurgery / ContinuousHealing.
+- Автo-інсталер при оновленні прибирає старі FastSurgery / ContinuousHealing / InsureAllPrapor.
 EOF
 
 echo "==> Validate required server mods"
@@ -349,7 +346,7 @@ bs=sum('\\' in n for n in z.namelist())
 mods=sorted({n.split('user/mods/',1)[1].split('/',1)[0] for n in names if 'user/mods/' in n and n.split('user/mods/',1)[1]})
 print(f"entries={len(names)} backslash={bs} server_mods={len(mods)}")
 print("mods:", ", ".join(mods))
-for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsureAllPrapor.dll","PackItems.dll","DefibAllyRevive.dll","user/mods/DefibAllyRevive/DefibAllyRevive.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
+for need in ["MedRebalance.Client.dll","AutoMedHotkeys.dll","InsuranceControl.Client.dll","PackItems.dll","DefibAllyRevive.dll","user/mods/DefibAllyRevive/DefibAllyRevive.dll","YellowFlareCurse.Client.dll","Fika.Core.dll","SAIN/SAIN.dll","Kat.FastSellInFlea.dll","Terkoiz.Skipper.dll","AmandsGraphics/AmandsGraphics.dll"]:
     ok=any(need in n for n in names)
     print(f"  client {need}: {'OK' if ok else 'MISSING'}")
 PY

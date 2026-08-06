@@ -1,8 +1,8 @@
-# Insurance Refund
+# Insurance Control
 
 **SPT 4.0.13 Compatible**
 
-Server mod that controls insurance return time, lost-item chance, and whether magazines / backpacks / rigs come back with their contents.
+Combined **server + client** mod: insurance return / content rules on the server, plus an **Insure All** stash button on the client (merged from Insure All Prapor).
 
 Developed and tested against **SPT 4.0.13**.
 
@@ -10,44 +10,63 @@ Developed and tested against **SPT 4.0.13**.
 
 ## Features
 
+### Server
+
 - Configurable insurance return delay (fixed seconds or per-trader hours)
-- **Debug fast return** via `DebugReturnSeconds` (e.g. `60` ≈ 1 minute)
+- Debug fast return via `DebugReturnSeconds`
 - Configurable lost-item chance per trader (Prapor / Therapist)
-- Magazines returned with loaded ammo
-- Backpacks and chest rigs returned with grid contents
-- Pre-raid inventory snapshot so LootingBots emptying a corpse does not strip insurance contents
-- Shorter insurance processing interval so short delays feel accurate
-- No client-side plugin required
+- Magazines returned with loaded ammo; backpacks / rigs with grid contents
+- Pre-raid inventory snapshot (LootingBots-safe)
+- Shorter insurance processing interval
+
+### Client
+
+- Stash button above the tactical vest — insure equipped loadout in one click
+- Trader selectable in F12 (Prapor or Therapist)
+- No confirmation dialog; skips already-insured / non-insurable items
+- Button label, size, and position configurable in F12
 
 ## Install
 
 1. Download `InsuranceControl-*.zip` from [Releases](https://github.com/gadjed/Insurance-refund-SPT-mod/releases)
-2. Extract the archive into your **SPT game root** (the folder that contains `SPT.Server.exe` / `user/`)
-3. Restart the SPT server
-
-The zip already contains the correct paths:
+2. Extract into your **SPT game root**
+3. Restart the SPT server and the game client
 
 ```text
-user/mods/InsuranceControl/InsuranceControl.dll
-user/mods/InsuranceControl/config.json
+SPT/user/mods/InsuranceControl/InsuranceControl.dll
+SPT/user/mods/InsuranceControl/config.json
+BepInEx/plugins/InsuranceControl.Client.dll
 ```
 
-On startup the server log should show lines like:
+Remove older standalone installs if present:
 
-```text
-[InsuranceControl] Prapor: lost chance 0% (return chance 100%)
-[InsuranceControl] DEBUG fast return enabled: 60s (poll every 20s).
-[InsuranceControl] Content enrichment + pre-raid snapshot patches enabled.
-[InsuranceControl] Loaded v1.0.2. Return=60s (DEBUG), MagsWithAmmo=True, ContainersWithContents=True.
-```
+- `user/mods/InsuranceControl/` from **Insurance Refund** alone is fine to overwrite
+- Delete `BepInEx/plugins/InsureAllPrapor.dll` (replaced by this client plugin)
 
-## Config
+## Client config (F12)
 
-Edit `user/mods/InsuranceControl/config.json`:
+`BepInEx/config/gadjed.insurancerefund.cfg` — or **F12** Configuration Manager:
+
+| Section | Key | Default | Description |
+|---------|-----|---------|-------------|
+| 1. Insure All | Enabled | `true` | Show the button |
+| 1. Insure All | Button Label | `Застраховать все` | Button text |
+| 1. Insure All | Insurer | `Prapor` | `Prapor` or `Therapist` |
+| 2. Button Layout | Offset Right | `190` | Horizontal offset from vest/armor |
+| 2. Button Layout | Gap Above Anchor | `12` | Vertical gap above the slot |
+| 2. Button Layout | Button Width / Height | `140` / `24` | Size |
+| 2. Button Layout | Font Size | `14` | Label font size |
+| 3. Debug | Verbose Logging | `false` | Extra BepInEx logs |
+
+Layout changes apply while the stash is open (no restart needed).
+
+## Server config
+
+Edit `SPT/user/mods/InsuranceControl/config.json` (server settings are not in F12):
 
 ```json
 {
-  "DebugReturnSeconds": 60,
+  "DebugReturnSeconds": 0,
   "ReturnTimeOverrideSeconds": 3600,
   "RunIntervalSeconds": 60,
   "StorageTimeOverrideSeconds": 0,
@@ -67,33 +86,29 @@ Edit `user/mods/InsuranceControl/config.json`:
 
 | Key | Description |
 |-----|-------------|
-| `DebugReturnSeconds` | Debug override. If `> 0`, insurance returns after this many seconds (e.g. `60` = ~1 min) and the poll interval is shortened. Set `0` for normal play. |
-| `ReturnTimeOverrideSeconds` | Fixed delay before insurance mail (seconds). `3600` = 1 hour. Set `0` to use `TraderReturnHours` instead. Ignored while debug is on. |
-| `RunIntervalSeconds` | How often the server checks for ready returns. Vanilla is `600`. Use something ≤ your return delay. |
-| `StorageTimeOverrideSeconds` | How long returned items stay in mail (`0` = trader default). |
-| `ReturnMagazinesWithAmmo` | Keep cartridges inside returned magazines (and chambered rounds on weapons). |
-| `ReturnContainersWithContents` | Keep items inside returned backpacks and chest rigs. |
-| `SimulateItemsBeingTaken` | Allow SPT's scavenger / attachment loot simulation. |
-| `LostChancePercent` | Chance an insured item is permanently lost (`0` = always returned). Vanilla ≈ Prapor `15`, Therapist `5`. |
-| `TraderReturnHours` | Min/max return window in hours. Used only when both debug and `ReturnTimeOverrideSeconds` are `0`. |
-
-Trader keys accept names (`Prapor`, `Therapist`) or their Mongo IDs.
+| `DebugReturnSeconds` | If `> 0`, return after N seconds and shorten the poll. `0` = normal. |
+| `ReturnTimeOverrideSeconds` | Fixed delay in seconds. `0` → use `TraderReturnHours`. |
+| `RunIntervalSeconds` | How often the server checks ready returns. Vanilla `600`. |
+| `StorageTimeOverrideSeconds` | Mail retention (`0` = trader default). |
+| `ReturnMagazinesWithAmmo` / `ReturnContainersWithContents` | Content enrichment |
+| `SimulateItemsBeingTaken` | SPT scavenger / attachment loot simulation |
+| `LostChancePercent` | Permanent loss % (`0` = always returned) |
+| `TraderReturnHours` | Hour window when override/debug seconds are `0` |
 
 ## Notes
 
-- At raid start the mod snapshots your PMC inventory. At raid end it merges that snapshot with the post-raid inventory so ammo/bag contents still return even if LootingBots (or players) emptied the corpse.
-- Content enrichment runs when insurance packages are created after a raid. Already-queued packages from older raids are not retroactively fixed.
-- Compatible with most insurance price mods. Avoid stacking with other mods that also rewrite `HandleInsuredItemLostEvent` / insurance return chance unless you know they cooperate.
+- Insure All covers **equipped PMC gear** only (not stash grids)
+- Needs enough rubles in stash
+- GUID `gadjed.insurancerefund` (client + server). Remove old `InsureAllPrapor.dll` (`gadjed.insureallprapor`)
 
 ## Build from source
 
-Requires **.NET 9** SDK.
-
 ```bash
-dotnet build InsuranceControl.csproj -c Release
+dotnet build Server/InsuranceControl.csproj -c Release
+dotnet build Client/InsuranceControl.Client.csproj -c Release
 ```
 
-Output is copied to `Build/SPT/user/mods/InsuranceControl/`.
+Output under `Build/SPT/user/mods/InsuranceControl/` and `Build/BepInEx/plugins/`.
 
 ## License
 

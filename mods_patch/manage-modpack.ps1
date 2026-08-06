@@ -230,7 +230,8 @@ function Remove-LegacyMedConflicts {
             "ContinuousHealing",
             "ContinuousHealing.dll",
             "FastSurgery.Client.dll",
-            "FastSurgery.dll"
+            "FastSurgery.dll",
+            "InsureAllPrapor.dll"
         )) {
         $path = Join-Path $plugins $legacy
         if (Test-Path -LiteralPath $path) {

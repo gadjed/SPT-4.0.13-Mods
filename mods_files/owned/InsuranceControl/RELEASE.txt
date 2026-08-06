@@ -1,2 +1,3 @@
-﻿1.0.1
-
+InsuranceControl 1.1.0 (SPT 4.0.13)
+Archive: InsuranceControl-1.1.0.zip
+Merged Insure All client into Insurance Control; F12 layout + insurer settings.

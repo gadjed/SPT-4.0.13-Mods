@@ -71,25 +71,28 @@
       name: "Insurance Control",
       guid: "gadjed.insurancerefund",
       teaser:
-        "SPT 4.0.13 вЂ” insurance return time, lost chance, magazine/container contents.",
+        "SPT 4.0.13 — insurance return rules + Insure All stash button (F12).",
       category: "Scripting",
       source: "https://github.com/gadjed/Insurance-refund-SPT-mod",
       profileSafe: false,
       description: [
-        "Controls insurance return timing, lost chance, and whether magazines/containers return with contents.",
+        "Server: insurance return timing, lost chance, magazine/container contents.",
+        "Client: **Insure All** stash button (Prapor or Therapist) with F12 layout settings.",
         "",
         "## Compatibility",
-        "- **SPT 4.0.13** вЂ” [v1.0.1](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.0.1) (`InsuranceControl-1.0.1.zip`)",
+        "- **SPT 4.0.13** — [v1.1.0](https://github.com/gadjed/Insurance-refund-SPT-mod/releases/tag/v1.1.0) (`InsuranceControl-1.1.0.zip`)",
         "",
         "## Install",
         "Extract into your SPT game root:",
         "```",
-        "user/mods/InsuranceControl/",
+        "SPT/user/mods/InsuranceControl/",
+        "BepInEx/plugins/InsuranceControl.Client.dll",
         "```",
         "",
-        "Config: `user/mods/InsuranceControl/config.json`.",
+        "Remove old `InsureAllPrapor.dll` if present.",
         "",
-        "Avoid stacking with other insurance-return mods.",
+        "Client config: F12 / `BepInEx/config/gadjed.insurancerefund.cfg`.",
+        "Server config: `SPT/user/mods/InsuranceControl/config.json`.",
         "",
         "## Full mod pack + auto installer",
         "Included in my SPT loadout assembly with an automatic install/update manager:",
@@ -101,15 +104,15 @@
       ].join("\n"),
       versions: [
         {
-          version: "1.0.1",
+          version: "1.1.0",
           spt: "~4.0.13",
           download:
-            "https://github.com/gadjed/Insurance-refund-SPT-mod/releases/download/v1.0.1/InsuranceControl-1.0.1.zip",
+            "https://github.com/gadjed/Insurance-refund-SPT-mod/releases/download/v1.1.0/InsuranceControl-1.1.0.zip",
           virusTotal: vt(
-            "94849dd67482b86b40176c9d4e4d708dcaa9200bf863e3406dac26b7411a00b4"
+            "2219f7b8262399d24a9174e21b912a2ebf78b9c92a2a16a5590304a8efcc3138"
           ),
           description:
-            "SPT **4.0.13** release.\n\nArchive: `InsuranceControl-1.0.1.zip`.",
+            "SPT **4.0.13** — merged Insure All client + F12 settings.\n\nArchive: `InsuranceControl-1.1.0.zip`.",
         },
       ],
     },
@@ -154,53 +157,6 @@
           ),
           description:
             "SPT **4.0.13** release.\n\nArchive: `QuickSearch-1.0.0.zip`.",
-        },
-      ],
-    },
-    {
-      create: true,
-      name: "Insure All (Prapor)",
-      guid: "gadjed.insureallprapor",
-      teaser:
-        "SPT 4.0.13 вЂ” stash button to insure equipped loadout with Prapor (no confirm).",
-      category: "Scripting",
-      source: "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
-      profileSafe: true,
-      description: [
-        "Adds a **Р—Р°СЃС‚СЂР°С…РѕРІР°С‚СЊ РІСЃРµ** button near the helmet slot on the stash equipment panel. One click insures your equipped loadout with **Prapor** for rubles using the vanilla insurance API вЂ” no confirmation dialog.",
-        "",
-        "## Compatibility",
-        "- **SPT 4.0.13** вЂ” [v1.0.0](https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/tag/v1.0.3) (`InsureAllPrapor-1.0.3.zip`)",
-        "",
-        "## Install",
-        "Extract into your SPT game root:",
-        "```",
-        "BepInEx/plugins/InsureAllPrapor.dll",
-        "```",
-        "",
-        "Config: `BepInEx/config/gadjed.insureallprapor.cfg` / F12 (`Enabled`, `ButtonLabel`, `Debug`).",
-        "",
-        "Equipped PMC gear only вЂ” not stash grids. Compatible with Insurance Control (server return rules).",
-        "",
-        "## Full mod pack + auto installer",
-        "Included in my SPT loadout assembly with an automatic install/update manager:",
-        "- Pack repository: " + PACK_REPO,
-        "- Installer release: " + INSTALLER,
-        "",
-        "## Source",
-        "https://github.com/gadjed/Insure-all-prapor-SPT-mod",
-      ].join("\n"),
-      versions: [
-        {
-          version: "1.0.0",
-          spt: "~4.0.13",
-          download:
-            "https://github.com/gadjed/Insure-all-prapor-SPT-mod/releases/download/v1.0.3/InsureAllPrapor-1.0.3.zip",
-          virusTotal: vt(
-            "72e4983ec997bcb4d0d9e0b21c63fbdd788ba8b1b8f3a51547bf5a3036ec8078"
-          ),
-          description:
-            "SPT **4.0.13** release.\n\nArchive: `InsureAllPrapor-1.0.3.zip`.",
         },
       ],
     },

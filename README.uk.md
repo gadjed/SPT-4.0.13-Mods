@@ -45,10 +45,9 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 | `MedRebalance` | Ребаланс медицини — швидка хірургія, continuous limbs, scratch heal, cancel on damage | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `AutoMedHotkeys` | Автоприв’язка медів до слотів 4/5/6 (схрон + рейд) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
 | `FastTaxi` | Коротший час очікування таксі / авто | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
-| `InsuranceControl` | Контроль повернення страховки | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
+| `InsuranceControl` | Правила повернення страховки (сервер) + кнопка «Застраховать все» (клієнт, F12) | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `ModInventory` | API інвентаря модів хоста для delta-sync клієнтів | [gadjed/ModInventory-SPT-mod](https://github.com/gadjed/ModInventory-SPT-mod) |
 | `QuickSearch` | Швидший пошук контейнерів (клієнт) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
-| `InsureAllPrapor` | Кнопка на схроні — застрахувати лутаут у Прапора | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Прокляття жовтої сигнальної ракети | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 | `PackItems` | Контекстне меню схрону — скласти підходящі предмети у кейс | [gadjed/Pack-items-SPT-mod](https://github.com/gadjed/Pack-items-SPT-mod) |
 | `DefibAllyRevive` | Оживлення союзників дефібрилятором з хоткеїв | [gadjed/Defib-ally-revive-SPT-mod](https://github.com/gadjed/Defib-ally-revive-SPT-mod) |
@@ -84,7 +83,7 @@ macOS / Linux: той самий процес через `mods_patch/manage-modp
 
 ## Примітки щодо збірки
 
-- **ModPack 4.0.13** (`v1.2.15+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **DefibAllyRevive 1.0.1**, **InsureAllPrapor**, **ModInventory**, **Skipper** (пропуск квестів) і **AmandsGraphics 1.7.0** (яскравість / post FX)
+- **ModPack 4.0.13** (`v1.2.16+`) — повний server+client loadout (див. MANIFEST у zip), включно з **Saria 2.0.5** (BlackRock, набої/магазини SPEAR 6.8), **PackItems**, **DefibAllyRevive 1.0.1**, **InsuranceControl 1.1.0** (повернення + «Застраховать все»), **ModInventory**, **Skipper** (пропуск квестів) і **AmandsGraphics 1.7.0** (яскравість / post FX)
 - Використовуйте **`SPTQuestingBots`** (Continuous); DanW QuestingBots і окремий **Scav Population** не включені
 - Краще **`SAIN` StealthEngage** замість стокового SAIN (ті самі шляхи / GUID); manage-modpack прибирає альтернативні теки SAIN
 - **SVM не редистрибутується** (upstream PUSL). Опційна установка через пункт меню **4**

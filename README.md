@@ -45,10 +45,9 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 | `MedRebalance` | Medicine rebalance — fast surgery, continuous limbs, scratch heal, cancel on damage | [gadjed/MedRebalance-SPT-mod](https://github.com/gadjed/MedRebalance-SPT-mod) |
 | `AutoMedHotkeys` | Auto-bind meds to slots 4/5/6 (stash + raid) | [gadjed/Auto-med-hotkeys-SPT-mod](https://github.com/gadjed/Auto-med-hotkeys-SPT-mod) |
 | `FastTaxi` | Shorter car/taxi extract wait | [gadjed/FastTaxi-SPT-mod](https://github.com/gadjed/FastTaxi-SPT-mod) |
-| `InsuranceControl` | Insurance refund control | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
+| `InsuranceControl` | Insurance return rules (server) + Insure All stash button (client, F12) | [gadjed/Insurance-refund-SPT-mod](https://github.com/gadjed/Insurance-refund-SPT-mod) |
 | `ModInventory` | Host mod inventory API for client delta-sync | [gadjed/ModInventory-SPT-mod](https://github.com/gadjed/ModInventory-SPT-mod) |
 | `QuickSearch` | Faster container search (client) | [gadjed/Quick-search-SPT-mod](https://github.com/gadjed/Quick-search-SPT-mod) |
-| `InsureAllPrapor` | Stash button — insure equipped loadout with Prapor | [gadjed/Insure-all-prapor-SPT-mod](https://github.com/gadjed/Insure-all-prapor-SPT-mod) |
 | `YellowFlareCurse` | Yellow flare curse | [gadjed/Yellow-flare-curse-SPT-mod](https://github.com/gadjed/Yellow-flare-curse-SPT-mod) |
 | `PackItems` | Stash context menu — pack matching loose items into a case | [gadjed/Pack-items-SPT-mod](https://github.com/gadjed/Pack-items-SPT-mod) |
 | `DefibAllyRevive` | Revive downed allies with defibrillator on quick slots | [gadjed/Defib-ally-revive-SPT-mod](https://github.com/gadjed/Defib-ally-revive-SPT-mod) |
@@ -84,7 +83,7 @@ macOS / Linux: use `mods_patch/manage-modpack.sh` the same way (`./manage-modpac
 
 ## Loadout notes
 
-- **ModPack 4.0.13** (`v1.2.15+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **DefibAllyRevive 1.0.1**, **InsureAllPrapor**, **ModInventory**, **Skipper** (quest skip), and **AmandsGraphics 1.7.0** (brightness / post FX)
+- **ModPack 4.0.13** (`v1.2.16+`) ships the full server+client loadout (see MANIFEST in the zip), including **Saria 2.0.5** (BlackRock, SPEAR 6.8 ammo/mags), **PackItems**, **DefibAllyRevive 1.0.1**, **InsuranceControl 1.1.0** (return rules + Insure All), **ModInventory**, **Skipper** (quest skip), and **AmandsGraphics 1.7.0** (brightness / post FX)
 - Use **`SPTQuestingBots`** (Continuous); DanW QuestingBots and standalone **Scav Population** are not included
 - Prefer **`SAIN` StealthEngage** over stock SAIN (same install paths / GUID); manage-modpack strips alternate SAIN folder names
 - **SVM is not redistributed** (upstream PUSL). Optional install via manage-modpack menu item **4**

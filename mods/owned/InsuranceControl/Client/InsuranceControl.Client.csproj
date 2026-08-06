@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>InsuranceControl.Client</RootNamespace>
+    <AssemblyName>InsuranceControl.Client</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
+    <Version>1.1.0</Version>
+    <Authors>gadjed</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\QuickSearch\References\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\QuickSearch\References\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\forks\SAIN\References\hollowed.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Comfort">
+      <HintPath>..\..\..\forks\SAIN\References\Comfort.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\..\..\forks\SAIN\References\Sirenix.Serialization.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="spt-reflection">
+      <HintPath>..\..\..\forks\SAIN\References\spt-reflection.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\QuickSearch\References\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\QuickSearch\References\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\forks\SPTQuestingBots\Client\References\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MakeDir Directories="$(ProjectDir)../Build/BepInEx/plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProjectDir)../Build/BepInEx/plugins" />
+  </Target>
+
+</Project>

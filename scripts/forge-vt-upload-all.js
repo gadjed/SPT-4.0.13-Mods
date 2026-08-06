@@ -3,9 +3,8 @@
   const files = [
     "MedRebalance-1.3.0.zip",
     "FastTaxi-1.0.0.zip",
-    "InsuranceControl-1.0.1.zip",
+    "InsuranceControl-1.1.0.zip",
     "QuickSearch-1.0.0.zip",
-    "InsureAllPrapor-1.0.3.zip",
     "YellowFlareCurse-1.4.5.zip",
   ];
   const results = {};

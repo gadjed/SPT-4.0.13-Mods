@@ -210,7 +210,7 @@ remove_legacy_med_conflicts() {
   local plugins="${root}/BepInEx/plugins"
   [[ -d "$plugins" ]] || return 0
   local legacy
-  for legacy in ContinuousHealing ContinuousHealing.dll FastSurgery.Client.dll FastSurgery.dll; do
+  for legacy in ContinuousHealing ContinuousHealing.dll FastSurgery.Client.dll FastSurgery.dll InsureAllPrapor.dll; do
     if [[ -e "${plugins}/${legacy}" ]]; then
       rm -rf "${plugins}/${legacy}"
       ok "  видалено застарілий BepInEx/plugins/${legacy}"
